@@ -1,0 +1,15 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+        <groupId>se.kth.id2203</groupId>
+        <artifactId>project17</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+  <groupId>se.kth.id2203</groupId>
+  <artifactId>project17-common</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>ID2203 Project 2017 Common</name>
+</project>
