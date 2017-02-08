@@ -12,6 +12,7 @@ in the report. Some of the issues to consider are:
 - Failure Detector
 - Routing Protocol
 - Replication Algorithm
+
 You will also have to write verification scenarios for your implementation. Distributed
 algorithms are notoriously difficult to test and verify, so do not take this part of the
 tasks lightly.
@@ -19,7 +20,7 @@ You are free to write your project in either Java or Scala Kompics.
 
 ## Tasks
 
-## Introduction to Kompics (0 Points)
+### Introduction to Kompics (0 Points)
 Implement all the PingPong examples from the Kompics tutorial at:
 http://kompics.sics.se and/or complete Programming Exercise 1 in Canvas.
 This task is optional and does not give any points. However, if you haven’t worked with
@@ -31,7 +32,7 @@ in Canvas as the course progresses, as they contain helpful information that you
 can use for your own solutions.
 If you have questions you can ask them during the tutorial exercise session.
 
-## Infrastructure (10 Points)
+### Infrastructure (10 Points)
 For this task you have to design the basic infrastructural layers for the key-value store.
 Your system should support a partitioned key-space of some kind (e.g. hash-partitioned
 strings or range-partitioned integers). The partitions need to be distributed over the
@@ -48,14 +49,14 @@ mentioned above. You should also be able to run in a simple deployment (it’s f
 run multiple JVMs on the same machine and consider them separate nodes).
 For the report describe and motivate all your decisions and tests.
 
-### Note
+#### Note
 Since not all of the subtasks of this section are of particular interest to this course,
 we are providing a template project you can use as a starting point for your code. You
 can find it at https://gits-15.sys.kth.se/lkroll/id2203project17. You are not
 required to use all or even any of the code in there, it is merely provided as a convenience
 to avoid that people waste too much time on unrelated coding work.
 
-## KV-Store (20 Points)
+### KV-Store (20 Points)
 After you have gotten the basic infrastructure working, you have to add a P UT(key, value)
 operation, that updates (or adds) a value at a key, to the GET from the previous task.
 As mentioned in the goals, the operations should fulfil the linearisable property, so make
@@ -68,7 +69,7 @@ As before, be sure to write test scenarios for the simulator that check the corr
 of your implementation. Especially be very careful to explain how you are verifying the
 linearisability of the store
 
-## Reconfiguration (10 Points + 10 Bonus Points)
+### Reconfiguration (10 Points + 10 Bonus Points)
 At this point your store is fairly static and can’t really deal with node failures apart from
 complaining about them. For this task you should implement reconfiguration support
 for your replication groups and your routing protocol. You should be able to deal with
@@ -80,7 +81,7 @@ properly in the report. However, you have to make sure that reconfiguration does
 violate linearisability for correct nodes.
 To get full points for this task you’ll have to write test scenarios that reconfigure the
 system and verify that for all correct nodes the operations are still linearisable.
-### Note
+#### Note
 This task is fairly open ended and can get quite difficult, depending on the choices
 you have made before. For the 10 required points, you are expected to make a good
 effort in writing some code and demonstrate in the report that you have understood
