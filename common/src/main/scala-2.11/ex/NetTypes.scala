@@ -26,7 +26,9 @@ final case class THeader(src: TAddress, dst: TAddress, proto: Transport) extends
     override def getSource(): TAddress = src
 }
 
-final case class TMessage[C <: KompicsEvent](header: THeader, payload: C) extends Msg[TAddress, THeader] {
+final case class TMessage[C <: KompicsEvent](src: TAddress, dst:TAddress, payload: C) extends Msg[TAddress, THeader] {
+    def header: THeader = THeader(src, dst, Transport.TCP)
+
     override def getDestination(): TAddress = header.dst
 
     override def getHeader(): THeader = header

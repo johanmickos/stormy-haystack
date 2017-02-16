@@ -36,7 +36,7 @@ class Pinger(init: Init[Pinger]) extends ComponentDefinition with StrictLogging 
     }
 
     net uponEvent {
-        case context@TMessage(_, Pong) => handle {
+        case context@TMessage(_, _, Pong) => handle {
             counter += 1
             logger.info(s"Got Pong #$counter!")
         }
@@ -48,7 +48,7 @@ class Pinger(init: Init[Pinger]) extends ComponentDefinition with StrictLogging 
     timer uponEvent {
         case PingTimeout(_) => handle {
             logger.info("Sending ping!")
-            trigger(TMessage(THeader(self, ponger, Transport.TCP), Ping) -> net)
+            trigger(TMessage(self, ponger, Ping) -> net)
         }
     }
 

@@ -15,10 +15,10 @@ class Ponger extends ComponentDefinition with StrictLogging {
         private val self = cfg.getValue[TAddress]("pingpong.self")
 
         net uponEvent {
-            case context@TMessage(_, Ping) => handle {
+            case context@TMessage(source, self, Ping) => handle {
                 counter += 1
                 logger.info(s"Got Ping #$counter!")
-                trigger(TMessage(THeader(self, context.getSource, Transport.TCP), Pong) -> net)
+                trigger(TMessage(self, source, Pong) -> net)
             }
             case x => handle {
                 logger.info(s"Got unknown: $x")
