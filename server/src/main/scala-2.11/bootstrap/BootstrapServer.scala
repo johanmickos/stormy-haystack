@@ -40,6 +40,7 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
             val timeout: Long = cfg.getValue[Long]("stormy.keepAlivePeriod") * 2
             val spt = new SchedulePeriodicTimeout(timeout, timeout)
             spt.setTimeoutEvent(new BootstrapTimeout(spt))
+            trigger(spt -> timer)
             timeoutId = Some(spt.getTimeoutEvent.getTimeoutId)
             active.add(self)
         }
@@ -82,13 +83,17 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
         case TMessage(source, self, Ready) => handle {
             ready.add(source)
         }
+        case x => handle {
+            logger.info(s"got: $x")
+        }
     }
 
     private def bootUp() = {
         logger.info("Threshold reached. Generating assignments now.")
         state = State.Seeding
         //  TODO Verify correctness of below. It's ugly
-        trigger(GetInitialAssignments(collection.immutable.Set() ++ active) -> boot)
+        val clone = collection.immutable.Set() ++ active
+        trigger(GetInitialAssignments(clone) -> boot)
     }
 
     override def tearDown(): Unit = {
