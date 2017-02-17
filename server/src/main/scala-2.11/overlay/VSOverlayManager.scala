@@ -1,9 +1,11 @@
 package overlay
 
 import java.util
+import java.util.Collections
 
 import se.sics.kompics.sl._
 import bootstrap.{Booted, Bootstrapping, GetInitialAssignments}
+import com.google.common.collect.Iterables
 import com.typesafe.scalalogging.StrictLogging
 import ex.{TAddress, TMessage}
 import se.sics.kompics.network.Network
@@ -37,8 +39,8 @@ class VSOverlayManager extends ComponentDefinition with StrictLogging {
         case TMessage(source, self, payload: RouteMessage) => handle {
             logger.info("Received route message")
             // TODO Check that lut.get() doesn't return None
-            val partition: util.Collection[TAddress] = lut.get.lookup(payload.key)
-            val randomTarget:TAddress = Random.shuffle(partition).iterator().next()
+            val partitions = lut.get.lookup(payload.key)
+            val randomTarget:TAddress = partitions.get.toList.head
             logger.info(s"Forwarding message to random target ${randomTarget.getIp()}")
             trigger(TMessage(self, randomTarget, payload) -> network)
         }
@@ -46,7 +48,7 @@ class VSOverlayManager extends ComponentDefinition with StrictLogging {
             lut match {
                 case Some(_) =>
                     logger.debug(s"Accepting connection request from $source")
-                    val size: Int = lut.get.getNodes.size()
+                    val size: Int = lut.get.getNodes.size
                     trigger(TMessage(self, source, Ack(payload.id, size)) -> network)
                 case None =>
                     logger.warn(s"Rejecting connection request from $source as system is not ready yet")
@@ -58,8 +60,8 @@ class VSOverlayManager extends ComponentDefinition with StrictLogging {
         case TMessage(source, self, payload: RouteMessage) => handle {
             logger.info("Received local route message")
             // TODO Check that lut.get() doesn't return None
-            val partition: util.Collection[TAddress] = lut.get.lookup(payload.key)
-            val randomTarget:TAddress = Random.shuffle(partition).iterator().next()
+            val partitions = lut.get.lookup(payload.key)
+            val randomTarget:TAddress = partitions.get.toList.head
             logger.info(s"Routing message for key ${payload.key} to $randomTarget")
             trigger(TMessage(self, randomTarget, payload.msg) -> network)
         }

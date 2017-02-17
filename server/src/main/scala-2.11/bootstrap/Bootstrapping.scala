@@ -1,6 +1,5 @@
 package bootstrap
 
-import com.google.common.collect.ImmutableSet
 import ex.TAddress
 import overlay.NodeAssignment
 import se.sics.kompics.KompicsEvent
@@ -12,7 +11,7 @@ class Bootstrapping extends Port {
     request[InitialAssignments]
 }
 
-case class GetInitialAssignments(nodes: ImmutableSet[TAddress]) extends KompicsEvent
+case class GetInitialAssignments(nodes: collection.immutable.Set[TAddress]) extends KompicsEvent
 case class Booted(assignment: NodeAssignment) extends KompicsEvent
 case class InitialAssignments(assignment: NodeAssignment) extends KompicsEvent
 

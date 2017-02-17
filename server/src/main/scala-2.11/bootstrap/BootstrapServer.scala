@@ -2,17 +2,13 @@ package bootstrap
 
 import java.util.UUID
 
-import com.google.common.collect.ImmutableSet
 import com.typesafe.scalalogging.StrictLogging
 import ex.{TAddress, TMessage}
 import overlay.NodeAssignment
 import se.sics.kompics.Start
-import se.sics.kompics.sl._
 import se.sics.kompics.network.Network
-import se.sics.kompics.sl.{ComponentDefinition, NegativePort, PositivePort}
+import se.sics.kompics.sl.{ComponentDefinition, NegativePort, PositivePort, _}
 import se.sics.kompics.timer.{CancelPeriodicTimeout, SchedulePeriodicTimeout, Timeout, Timer}
-
-import scala.collection.JavaConverters._
 
 object State extends Enumeration {
     type State = Value
@@ -92,7 +88,7 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
         logger.info("Threshold reached. Generating assignments now.")
         state = State.Seeding
         //  TODO Verify correctness of below. It's ugly
-        trigger(GetInitialAssignments(ImmutableSet.copyOf(active.asJava)) -> boot)
+        trigger(GetInitialAssignments(collection.immutable.Set() ++ active) -> boot)
     }
 
     override def tearDown(): Unit = {

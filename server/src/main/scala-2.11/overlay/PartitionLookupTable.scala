@@ -2,18 +2,20 @@ package overlay
 
 import java.util
 
-import com.google.common.collect.{ImmutableSet, TreeMultimap}
 import ex.TAddress
 
-class PartitionLookupTable(nodes: ImmutableSet[TAddress]) extends NodeAssignment {
-    private val partitions = TreeMultimap.create[Int, TAddress]()
-    partitions.putAll(0, nodes)
+import scala.collection.{mutable, _}
 
-    def getNodes: util.Collection[TAddress] = partitions.values()
+class PartitionLookupTable(nodes: collection.immutable.Set[TAddress]) extends NodeAssignment {
+    val partitions = new mutable.HashMap[Int, mutable.Set[TAddress]] with mutable.MultiMap[Int, TAddress]
+    // TODO test below
+    partitions ++ (nodes)
 
-    def lookup(key: String): util.Collection[TAddress] = {
+    def getNodes: Iterable[TAddress] = partitions.values.flatten
+
+    def lookup(key: String): Option[mutable.Set[TAddress]] = {
         val keyHash: Int = key.hashCode
-        val partition: Int = Some(partitions.keySet().floor(keyHash)).getOrElse(partitions.keySet().last())
+        val partition: Int = partitions.keySet.minBy(value => math.abs(value - keyHash))
         partitions.get(partition)
     }
 }
