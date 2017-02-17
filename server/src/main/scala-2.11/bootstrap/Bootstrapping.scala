@@ -15,3 +15,8 @@ class Bootstrapping extends Port {
 case class GetInitialAssignments(nodes: ImmutableSet[TAddress]) extends KompicsEvent
 case class Booted(assignment: NodeAssignment) extends KompicsEvent
 case class InitialAssignments(assignment: NodeAssignment) extends KompicsEvent
+
+case class Boot(assignment: NodeAssignment) extends KompicsEvent
+
+object CheckIn extends KompicsEvent
+object Ready extends KompicsEvent
