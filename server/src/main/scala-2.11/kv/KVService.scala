@@ -2,13 +2,13 @@ package kv
 
 import com.typesafe.scalalogging.StrictLogging
 import ex.{TAddress, TMessage}
+import overlay.Routing
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl.{ComponentDefinition, PositivePort, handle}
-import se.sics.kompics.timer.Timer
 
 class KVService extends ComponentDefinition with StrictLogging {
     val network: PositivePort[Network] = requires[Network]
-    val timer: PositivePort[Timer] = requires[Timer]
+    val route: PositivePort[Routing] = requires[Routing]
 
     val self: TAddress = cfg.getValue[TAddress]("stormy.address")
 

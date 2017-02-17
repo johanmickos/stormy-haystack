@@ -7,7 +7,7 @@ import se.sics.kompics.timer.Timer
 import se.sics.kompics.timer.java.JavaTimer
 
 class HostComponent extends ComponentDefinition {
-    val self = cfg.getValue[TAddress]("pingpong.self")
+    val self = cfg.getValue[TAddress]("stormy.address")
 
     val timer: Component = create(classOf[JavaTimer], Init.NONE)
     val network: Component = create(classOf[NettyNetwork], new NettyInit(self))

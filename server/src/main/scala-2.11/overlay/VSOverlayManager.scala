@@ -1,37 +1,34 @@
 package overlay
 
-import java.util
-import java.util.Collections
-
-import se.sics.kompics.sl._
-import bootstrap.{Booted, Bootstrapping, GetInitialAssignments}
-import com.google.common.collect.Iterables
+import bootstrap.{Booted, Bootstrapping, GetInitialAssignments, InitialAssignments}
 import com.typesafe.scalalogging.StrictLogging
 import ex.{TAddress, TMessage}
 import se.sics.kompics.network.Network
-import se.sics.kompics.sl.{ComponentDefinition, PositivePort}
+import se.sics.kompics.sl.{ComponentDefinition, PositivePort, _}
 import se.sics.kompics.timer.Timer
 
-import scala.util.Random
-
 class VSOverlayManager extends ComponentDefinition with StrictLogging {
+    val routing: NegativePort[Routing] = provides[Routing]
+
     val network: PositivePort[Network] = requires[Network]
     val timer: PositivePort[Timer] = requires[Timer]
-    val boot: PositivePort[Bootstrapping] = requires[Bootstrapping]
-    val routing: NegativePort[Routing] = provides[Routing]
+    val bootstrap: PositivePort[Bootstrapping] = requires[Bootstrapping]
 
     val self: TAddress = cfg.getValue[TAddress]("stormy.address")
 
     private var lut: Option[PartitionLookupTable] = None
 
-    boot uponEvent {
+    bootstrap uponEvent {
         case GetInitialAssignments(nodes) => handle {
             logger.info("Generating lookup table")
             lut = Some(new PartitionLookupTable(nodes))
+            logger.debug(s"Generated LUT: ${lut.get}")
+            trigger(InitialAssignments(lut.get) -> bootstrap)
         }
         case Booted(update: PartitionLookupTable) => handle {
             logger.info("Got node assignment. Overlay ready")
             lut = Some(update)
+            trigger(InitialAssignments(lut.get) -> bootstrap)
         }
     }
 
