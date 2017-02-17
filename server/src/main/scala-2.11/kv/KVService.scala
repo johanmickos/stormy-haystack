@@ -6,7 +6,7 @@ import se.sics.kompics.network.Network
 import se.sics.kompics.sl.{ComponentDefinition, PositivePort, handle}
 import se.sics.kompics.timer.Timer
 
-class KVService extends ComponentDefinition with StrictLogging{
+class KVService extends ComponentDefinition with StrictLogging {
     val network: PositivePort[Network] = requires[Network]
     val timer: PositivePort[Timer] = requires[Timer]
 

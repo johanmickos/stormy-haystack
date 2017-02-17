@@ -1,5 +1,7 @@
 import com.typesafe.scalalogging.StrictLogging
 import ex._
+import kv.KVService
+import overlay.VSOverlayManager
 import se.sics.kompics.Component
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
@@ -10,6 +12,11 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
     val network: PositivePort[Network] = requires[Network]
     val timer: PositivePort[Timer] = requires[Timer]
 
+    // Children
+    val kv = create(classOf[KVService], Init.NONE)
+    val overlay = create(classOf[VSOverlayManager], Init.NONE)
+
+    //  TODO BootServer or BootClient?
     val child: Component = {
         cfg.getValue[String]("pingpong.type") match {
             case "ponger" =>  create(classOf[Ponger], Init.NONE)
@@ -22,6 +29,7 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
         }
     }
 
+    // TODO Connect the rest (kv, overlay, boot...)
     connect[Network](network -> child)
     connect[Timer](timer -> child)
 

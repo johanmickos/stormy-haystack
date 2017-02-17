@@ -54,7 +54,7 @@ class VSOverlayManager extends ComponentDefinition with StrictLogging {
         }
     }
 
-    routing uponEvent {1
+    routing uponEvent {
         case TMessage(source, self, payload: RouteMessage) => handle {
             logger.info("Received local route message")
             // TODO Check that lut.get() doesn't return None
