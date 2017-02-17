@@ -1,0 +1,3 @@
+package overlay
+
+trait NodeAssignment
