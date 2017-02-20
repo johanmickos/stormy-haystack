@@ -5,6 +5,7 @@ import java.util.UUID
 import bootstrap.ClientState.State
 import com.typesafe.scalalogging.StrictLogging
 import ex.{TAddress, TMessage}
+import overlay.PartitionLookupTable
 import se.sics.kompics.sl._
 import se.sics.kompics.Start
 import se.sics.kompics.network.Network
@@ -39,7 +40,7 @@ class BootstrapClient extends ComponentDefinition with StrictLogging {
         }
     }
     network uponEvent {
-        case context@TMessage(source, self,  Boot(assignment)) => handle {
+        case context@TMessage(source, self,  Boot(assignment: PartitionLookupTable)) => handle {
             logger.info(s"Booting up $self")
             logger.debug(s"$context with $assignment")
             trigger(Booted(assignment) -> bootstrap)

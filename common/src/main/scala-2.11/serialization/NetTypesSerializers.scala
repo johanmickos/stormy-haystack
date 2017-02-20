@@ -10,7 +10,6 @@ import ex.TAddress
 
 import scala.pickling._
 import scala.pickling.Defaults._
-//import scala.pickling.binary._
 import scala.pickling.json._
 
 // Custom Serialization for TAddress (the case class itself is fine, but the InetSocketAddress is problematic)
@@ -86,6 +85,11 @@ object PickleSerializer extends Serializer {
     implicit val transportPickler = TransportPickler
     scala.pickling.runtime.GlobalRegistry.picklerMap += (transportPickler.tag.key -> (x => transportPickler))
     scala.pickling.runtime.GlobalRegistry.unpicklerMap += (transportPickler.tag.key -> transportPickler)
+
+    // Register custom pickler for LUT
+    implicit val lutPickler = LutPickler
+    scala.pickling.runtime.GlobalRegistry.picklerMap += (lutPickler.tag.key -> (x => lutPickler))
+    scala.pickling.runtime.GlobalRegistry.unpicklerMap += (lutPickler.tag.key -> lutPickler)
 
 //    override def toBinary(o: Any, buf: ByteBuf): Unit = {
 //        val ser = o.pickle

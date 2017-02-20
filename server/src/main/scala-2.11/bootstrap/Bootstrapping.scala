@@ -1,7 +1,7 @@
 package bootstrap
 
 import ex.TAddress
-import overlay.NodeAssignment
+import overlay.{NodeAssignment, PartitionLookupTable}
 import se.sics.kompics.KompicsEvent
 import se.sics.kompics.sl._
 
@@ -12,10 +12,10 @@ class Bootstrapping extends Port {
 }
 
 case class GetInitialAssignments(nodes: collection.immutable.Set[TAddress]) extends KompicsEvent
-case class Booted(assignment: NodeAssignment) extends KompicsEvent
-case class InitialAssignments(assignment: NodeAssignment) extends KompicsEvent
+case class Booted(assignment: PartitionLookupTable) extends KompicsEvent
+case class InitialAssignments(assignment: PartitionLookupTable) extends KompicsEvent
 
-final case class Boot(assignment: NodeAssignment) extends KompicsEvent
+final case class Boot(assignment: PartitionLookupTable) extends KompicsEvent
 
 object CheckIn extends KompicsEvent
 object Ready extends KompicsEvent

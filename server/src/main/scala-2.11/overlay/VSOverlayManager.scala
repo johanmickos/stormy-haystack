@@ -21,9 +21,10 @@ class VSOverlayManager extends ComponentDefinition with StrictLogging {
     bootstrap uponEvent {
         case GetInitialAssignments(nodes) => handle {
             logger.info("Generating lookup table")
-            lut = Some(new PartitionLookupTable(nodes))
-            logger.debug(s"Generated LUT: ${lut.get}")
-            trigger(InitialAssignments(lut.get) -> bootstrap)
+            val lut = new PartitionLookupTable
+            lut.generate(nodes)
+            logger.debug(s"Generated LUT: ${lut}")
+            trigger(InitialAssignments(lut) -> bootstrap)
         }
         case Booted(update: PartitionLookupTable) => handle {
             logger.info("Got node assignment. Overlay ready")

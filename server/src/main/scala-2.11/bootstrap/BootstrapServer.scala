@@ -4,7 +4,7 @@ import java.util.UUID
 
 import com.typesafe.scalalogging.StrictLogging
 import ex.{TAddress, TMessage}
-import overlay.NodeAssignment
+import overlay.{NodeAssignment, PartitionLookupTable}
 import se.sics.kompics.Start
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl.{ComponentDefinition, NegativePort, PositivePort, _}
@@ -32,7 +32,7 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
     private val active: collection.mutable.Set[TAddress] = collection.mutable.Set()
     private val ready: collection.mutable.Set[TAddress] = collection.mutable.Set()
 
-    private var initialAssignment: Option[NodeAssignment] = None
+    private var initialAssignment: Option[PartitionLookupTable] = None
 
     ctrl uponEvent {
         case _: Start => handle {
