@@ -1,0 +1,441 @@
+02/20 14:35:05 DEBUG[main] i.n.u.i.l.InternalLoggerFactory - Using SLF4J as the default logging framework
+02/20 14:35:05 DEBUG[main] i.n.u.i.PlatformDependent0 - java.nio.Buffer.address: available
+02/20 14:35:05 DEBUG[main] i.n.u.i.PlatformDependent0 - sun.misc.Unsafe.theUnsafe: available
+02/20 14:35:05 DEBUG[main] i.n.u.i.PlatformDependent0 - sun.misc.Unsafe.copyMemory: available
+02/20 14:35:05 DEBUG[main] i.n.u.i.PlatformDependent0 - java.nio.Bits.unaligned: true
+02/20 14:35:05 DEBUG[main] i.n.u.i.PlatformDependent - Java version: 8
+02/20 14:35:05 DEBUG[main] i.n.u.i.PlatformDependent - -Dio.netty.noUnsafe: false
+02/20 14:35:05 DEBUG[main] i.n.u.i.PlatformDependent - sun.misc.Unsafe: available
+02/20 14:35:05 DEBUG[main] i.n.u.i.PlatformDependent - -Dio.netty.noJavassist: false
+02/20 14:35:06 DEBUG[main] i.n.u.i.PlatformDependent - Javassist: available
+02/20 14:35:06 DEBUG[main] i.n.u.i.PlatformDependent - -Dio.netty.tmpdir: /tmp (java.io.tmpdir)
+02/20 14:35:06 DEBUG[main] i.n.u.i.PlatformDependent - -Dio.netty.bitMode: 64 (sun.arch.data.model)
+02/20 14:35:06 DEBUG[main] i.n.u.i.PlatformDependent - -Dio.netty.noPreferDirect: false
+02/20 14:35:06 INFO [main] NettyNetwork@8080 - Alternative Bind Interface set to null
+02/20 14:35:06 DEBUG[main] i.n.c.MultithreadEventLoopGroup - -Dio.netty.eventLoopThreads: 16
+02/20 14:35:06 DEBUG[main] i.n.c.n.NioEventLoop - -Dio.netty.noKeySetOptimization: false
+02/20 14:35:06 DEBUG[main] i.n.c.n.NioEventLoop - -Dio.netty.selectorAutoRebuildThreshold: 512
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@71652c98
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@51bde877
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@60b85ba1
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@492fc69e
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@117632cf
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@2fb68ec6
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@d71adc2
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@3add81c4
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@1a1d3c1a
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@1c65121
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@159e366
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@57dc9128
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@24528a25
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@17ae98d7
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@59221b97
+02/20 14:35:06 TRACE[main] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@6ac4944a
+02/20 14:35:06 DEBUG[main] i.n.u.i.JavassistTypeParameterMatcherGenerator - Generated: io.netty.util.internal.__matchers__.se.sics.kompics.network.MsgMatcher
+02/20 14:35:06 INFO [main] c.b.u.SocketUDT - library location : ./lib/bin
+02/20 14:35:06 INFO [main] c.b.u.SocketUDT - loader provider  : com.barchart.udt.lib.LibraryLoaderUDT
+02/20 14:35:06 INFO [main] c.b.u.l.PluginPropsUDT - ARCH/OS/LINK = amd64/Linux/gpp
+02/20 14:35:06 DEBUG[main] c.b.u.l.PluginPropsUDT - Loading aol.properties.
+02/20 14:35:06 INFO [main] c.b.u.l.LibraryLoaderUDT - Platform supported.
+02/20 14:35:06 INFO [main] c.b.u.l.LibraryLoaderUDT - Loading release libraries.
+02/20 14:35:06 DEBUG[main] c.b.u.l.ResourceManagerUDT - sourceURL=jar:file:/home/johan/.ivy2/cache/com.barchart.udt/barchart-udt-bundle/bundles/barchart-udt-bundle-2.3.0.jar!/lib/amd64-Linux-gpp/jni/libbarchart-udt-core-2.3.0-SNAPSHOT.so 
+02/20 14:35:06 DEBUG[main] c.b.u.l.ResourceManagerUDT - targetFile=/home/johan/school/2017-p3/distributed-systems-advanced/project/stormy-haystack/./lib/bin/lib/amd64-Linux-gpp/jni/libbarchart-udt-core-2.3.0-SNAPSHOT.so 
+02/20 14:35:06 DEBUG[main] c.b.u.l.ResourceManagerUDT - targetFolder=/home/johan/school/2017-p3/distributed-systems-advanced/project/stormy-haystack/./lib/bin/lib/amd64-Linux-gpp/jni 
+02/20 14:35:06 DEBUG[main] c.b.u.l.ResourceManagerUDT - found folder=/home/johan/school/2017-p3/distributed-systems-advanced/project/stormy-haystack/./lib/bin/lib/amd64-Linux-gpp/jni
+02/20 14:35:06 DEBUG[main] c.b.u.l.ResourceManagerUDT - already extracted; sourcePath=/lib/amd64-Linux-gpp/jni/libbarchart-udt-core-2.3.0-SNAPSHOT.so targetPath=./lib/bin/lib/amd64-Linux-gpp/jni/libbarchart-udt-core-2.3.0-SNAPSHOT.so
+02/20 14:35:06 INFO [main] c.b.u.l.LibraryLoaderUDT - Release libraries loaded.
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - native library load & init OK
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008e8] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 1 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008e7] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 2 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008e6] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 3 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008e5] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 4 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008e4] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 5 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008e3] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 6 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008e2] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 7 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008e1] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 8 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008e0] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 9 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008df] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 10 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008de] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 11 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008dd] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 12 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008dc] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 13 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008db] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 14 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008da] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 15 create
+02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008d9] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[main] c.b.u.EpollUDT - ep 16 create
+02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c starting
+02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Sending Start to child: Component(8923b8ec-b176-42fe-9e57-addf91c6d1fd):se.sics.kompics.timer.java.JavaTimer@52eacb4b
+02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Sending Start to child: Component(f85b0af6-449b-4ff7-a64f-6afc1116b3b5):se.sics.kompics.network.netty.NettyNetwork@31536e19
+02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Sending Start to child: Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(8923b8ec-b176-42fe-9e57-addf91c6d1fd):se.sics.kompics.timer.java.JavaTimer@52eacb4b started
+02/20 14:35:06 DEBUG[Kompics-worker-3] Kompics - Component(f85b0af6-449b-4ff7-a64f-6afc1116b3b5):se.sics.kompics.network.netty.NettyNetwork@31536e19 started
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@6f0bd940
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@461bfc35
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@5eae5286
+02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 starting
+02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Sending Start to child: Component(40f701c9-7890-41d5-9013-dd8a1d09e4e7):kv.KVService@68ff32da
+02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Sending Start to child: Component(9337001e-68e4-498d-8952-a94ad7b3abb5):overlay.VSOverlayManager@6638c1b5
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(40f701c9-7890-41d5-9013-dd8a1d09e4e7):kv.KVService@68ff32da started
+02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Sending Start to child: Component(0208b27a-1cf7-47c5-ba5c-d3c51f150374):bootstrap.BootstrapServer@2705cb8e
+02/20 14:35:06 DEBUG[Kompics-worker-5] Kompics - Component(9337001e-68e4-498d-8952-a94ad7b3abb5):overlay.VSOverlayManager@6638c1b5 started
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@3e54295c
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@f24260f
+02/20 14:35:06 DEBUG[Kompics-worker-5] Kompics - Component(0208b27a-1cf7-47c5-ba5c-d3c51f150374):bootstrap.BootstrapServer@2705cb8e started
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@1647898a
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@3a51c3a6
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@25500379
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@b6a5d82
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@21cb9ebc
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@15b325d0
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@30dda7d4
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@69826a00
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@14c137f2
+02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c got Started event from Component(8923b8ec-b176-42fe-9e57-addf91c6d1fd):se.sics.kompics.timer.java.JavaTimer@52eacb4b
+02/20 14:35:06 INFO [Kompics-worker-5] b.BootstrapServer - Starting bootstrap server on /127.0.0.1:8080 with boot threshold 3
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@18d01d1f
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 got Started event from Component(40f701c9-7890-41d5-9013-dd8a1d09e4e7):kv.KVService@68ff32da
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@45eefad6
+02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c active set has 1 members
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 active set has 1 members
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@3a337d4b
+02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c got Started event from Component(f85b0af6-449b-4ff7-a64f-6afc1116b3b5):se.sics.kompics.network.netty.NettyNetwork@31536e19
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@7e10de1f
+02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c active set has 2 members
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@32178
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@2c5acf20
+02/20 14:35:06 DEBUG[Kompics-worker-6] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 got Started event from Component(9337001e-68e4-498d-8952-a94ad7b3abb5):overlay.VSOverlayManager@6638c1b5
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@da236c5
+02/20 14:35:06 DEBUG[Kompics-worker-6] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 active set has 2 members
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@753af148
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@6c2b1676
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 got Started event from Component(0208b27a-1cf7-47c5-ba5c-d3c51f150374):bootstrap.BootstrapServer@2705cb8e
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@16f2f71c
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 active set has 3 members
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@afaef19
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 started
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@28e8ffbf
+02/20 14:35:06 DEBUG[Kompics-worker-6] s.s.k.t.j.JavaTimer - scheduled periodic timer(2000, 2000) bootstrap.BootstrapTimeout@49f02d6a
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@1c44c472
+02/20 14:35:06 DEBUG[Kompics-worker-5] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c got Started event from Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@1d0f9af1
+02/20 14:35:06 DEBUG[Kompics-worker-5] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c active set has 3 members
+02/20 14:35:06 DEBUG[Kompics-worker-5] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c started
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@40d03c6e
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@2faa26cc
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@15f7101f
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@744ed842
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.c.DefaultChannelId - -Dio.netty.processId: 1246 (auto-detected)
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.c.DefaultChannelId - -Dio.netty.machineId: 48:e2:44:ff:fe:f6:ff:b9 (auto-detected)
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.u.i.ThreadLocalRandom - -Dio.netty.initialSeedUniquifier: 0x8e066dc4c7486748 (took 0 ms)
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.PooledByteBufAllocator - -Dio.netty.allocator.numHeapArenas: 8
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.PooledByteBufAllocator - -Dio.netty.allocator.numDirectArenas: 8
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.PooledByteBufAllocator - -Dio.netty.allocator.pageSize: 8192
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.PooledByteBufAllocator - -Dio.netty.allocator.maxOrder: 11
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.PooledByteBufAllocator - -Dio.netty.allocator.chunkSize: 16777216
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.PooledByteBufAllocator - -Dio.netty.allocator.tinyCacheSize: 512
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.PooledByteBufAllocator - -Dio.netty.allocator.smallCacheSize: 256
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.PooledByteBufAllocator - -Dio.netty.allocator.normalCacheSize: 64
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.PooledByteBufAllocator - -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.PooledByteBufAllocator - -Dio.netty.allocator.cacheTrimInterval: 8192
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.ByteBufUtil - -Dio.netty.allocator.type: pooled
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.b.ByteBufUtil - -Dio.netty.threadLocalDirectBufferSize: 65536
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.u.NetUtil - Loopback interface: lo (lo, 0:0:0:0:0:0:0:1%lo)
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.u.NetUtil - /proc/sys/net/core/somaxconn: 128
+02/20 14:35:06 INFO [Kompics-worker-3] NettyNetwork@8080 - Successfully bound to ip:port /127.0.0.1:8080
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008d8] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 17 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008d7] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 18 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008d6] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 19 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008d5] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 20 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008d4] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 21 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008d3] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 22 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008d2] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 23 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008d1] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 24 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008d0] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 25 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008cf] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 26 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008ce] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 27 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008cd] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 28 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008cc] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 29 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008cb] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 30 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008ca] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 31 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008c9] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 32 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008c8] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 33 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008c7] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 34 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008c6] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 35 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008c5] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 36 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008c4] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 37 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008c3] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 38 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008c2] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 39 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008c1] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 40 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008c0] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 41 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008bf] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 42 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008be] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 43 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008bd] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 44 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008bc] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 45 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008bb] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 46 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008ba] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 47 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008b9] DATAGRAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.EpollUDT - ep 48 create
+02/20 14:35:06 DEBUG[Kompics-worker-3] c.b.u.SocketUDT - init : [id: 0x3d5008b8] STREAM INIT bind=null:0 peer=null:0
+02/20 14:35:06 DEBUG[nioEventLoopGroup-4-0] c.b.u.EpollUDT - ep 17 add [id: 0x3d5008b8] STREAM INIT bind=null:0 peer=null:0 ERROR
+02/20 14:35:06 DEBUG[nioEventLoopGroup-4-0] c.b.u.EpollUDT - ep 17 rem [id: 0x3d5008b8] STREAM LISTENING bind=/127.0.0.1:57281 peer=null:0
+02/20 14:35:06 DEBUG[nioEventLoopGroup-4-0] c.b.u.EpollUDT - ep 17 add [id: 0x3d5008b8] STREAM LISTENING bind=/127.0.0.1:57281 peer=null:0 ERROR_READ
+02/20 14:35:06 INFO [Kompics-worker-3] NettyNetwork@8080 - Successfully bound UDT to ip:port /127.0.0.1:57281 with config: {io.netty.channel.udt.UdtChannelOption#PROTOCOL_SEND_BUFFER_SIZE=100000000, MESSAGE_SIZE_ESTIMATOR=io.netty.channel.DefaultMessageSizeEstimator@37f8182a, io.netty.channel.udt.UdtChannelOption#PROTOCOL_RECEIVE_BUFFER_SIZE=100000000, WRITE_BUFFER_HIGH_WATER_MARK=65536, io.netty.channel.udt.UdtChannelOption#SYSTEM_SEND_BUFFER_SIZE=1048576, AUTO_READ=true, RCVBUF_ALLOCATOR=io.netty.channel.AdaptiveRecvByteBufAllocator@60b6b532, SO_SNDBUF=131072, SO_REUSEADDR=true, SO_BACKLOG=64, SO_RCVBUF=131072, CONNECT_TIMEOUT_MILLIS=30000, SO_LINGER=0, WRITE_BUFFER_LOW_WATER_MARK=32768, MAX_MESSAGES_PER_READ=16, WRITE_SPIN_COUNT=16, io.netty.channel.udt.UdtChannelOption#SYSTEM_RECEIVE_BUFFER_SIZE=1048576, ALLOCATOR=PooledByteBufAllocator(directByDefault: true)}
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@110f5912
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@387f3b41
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@4f315d2c
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@1a7b7edd
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@71d76349
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@3033eb01
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@75ae1816
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@34621de8
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@7ee5ed06
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@51a17a38
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@544aa6b2
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@70637c8e
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@213f3259
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@7b95fcfc
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@7aebaa0a
+02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@11873ed5
+02/20 14:35:06 DEBUG[Kompics-worker-3] i.n.u.i.JavassistTypeParameterMatcherGenerator - Generated: io.netty.util.internal.__matchers__.io.netty.channel.socket.DatagramPacketMatcher
+02/20 14:35:06 INFO [Kompics-worker-3] NettyNetwork@8080 - Successfully bound to ip:port /127.0.0.1:8080
+02/20 14:35:06 TRACE[nioEventLoopGroup-6-0] NettyNetwork@8080 - Channel connected: UDP /127.0.0.1:8080 => null ([id: 0xc7bee8ea, /127.0.0.1:8080])
+02/20 14:35:08 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@4a842e42
+02/20 14:35:08 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:10 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@4443c962
+02/20 14:35:10 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:12 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@407c4532
+02/20 14:35:12 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:14 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@57ec359
+02/20 14:35:14 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:16 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@6e630b8a
+02/20 14:35:16 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:18 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@3431c7fd
+02/20 14:35:18 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:20 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@16c6519c
+02/20 14:35:20 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:22 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@65513c16
+02/20 14:35:22 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:24 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@1398446d
+02/20 14:35:24 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:26 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@29ac67cc
+02/20 14:35:26 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:28 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@dc299d4
+02/20 14:35:28 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:30 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@611fa5f6
+02/20 14:35:30 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:32 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@30753e94
+02/20 14:35:32 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:34 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@7aadbd51
+02/20 14:35:34 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:36 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@63b897e9
+02/20 14:35:36 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:38 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@7f14ae7d
+02/20 14:35:38 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:40 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@668cbe95
+02/20 14:35:40 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:42 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@715cc020
+02/20 14:35:42 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:44 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@567c063d
+02/20 14:35:44 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:46 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@cc13dc9
+02/20 14:35:46 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:48 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@fba52d2
+02/20 14:35:48 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:50 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@18f0cec5
+02/20 14:35:50 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:52 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@2e8b6e08
+02/20 14:35:52 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:54 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@2ba13165
+02/20 14:35:54 INFO [Kompics-worker-3] b.BootstrapServer - 1 hosts in active set
+02/20 14:35:55 DEBUG[nioEventLoopGroup-3-0] i.n.u.i.JavassistTypeParameterMatcherGenerator - Generated: io.netty.util.internal.__matchers__.io.netty.buffer.ByteBufMatcher
+02/20 14:35:55 DEBUG[nioEventLoopGroup-3-0] i.n.u.i.JavassistTypeParameterMatcherGenerator - Generated: io.netty.util.internal.__matchers__.se.sics.kompics.network.netty.MessageWrapperMatcher
+02/20 14:35:55 TRACE[nioEventLoopGroup-3-0] NettyNetwork@8080 - Channel connected: TCP /127.0.0.1:8080 => /127.0.0.1:56426 ([id: 0x86c07ee3, /127.0.0.1:56426 => /127.0.0.1:8080])
+02/20 14:35:55 DEBUG[nioEventLoopGroup-3-1] i.n.u.ResourceLeakDetector - -Dio.netty.leakDetectionLevel: simple
+02/20 14:35:55 DEBUG[nioEventLoopGroup-3-1] i.n.u.Recycler - -Dio.netty.recycler.maxCapacity: 262144
+02/20 14:35:55 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - Trying to decode incoming 265 bytes of data from /127.0.0.1:56426 to /127.0.0.1:8080.
+02/20 14:35:55 TRACE[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - DS-ID: 100 ([100], 4)
+02/20 14:35:55 DEBUG[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - Using deserializer serialization.PickleSerializer$@1d5f475a for buffer with hint Optional.absent().
+02/20 14:35:56 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - Decoded incoming data from /127.0.0.1:56426: ex.TMessage@5b368a55
+02/20 14:35:56 INFO [Kompics-worker-3] NettyNetwork@8080 - Trying to send delayed messages: /127.0.0.1:9090 on TCP
+02/20 14:35:56 DEBUG[nioEventLoopGroup-3-1] NettyNetwork@8080 - Delivering message ex.TMessage@5b368a55 from /127.0.0.1:9090 to /127.0.0.1:8080 protocol TCP
+02/20 14:35:56 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@7650da01
+02/20 14:35:56 INFO [Kompics-worker-3] b.BootstrapServer - 2 hosts in active set
+02/20 14:35:57 TRACE[nioEventLoopGroup-3-2] NettyNetwork@8080 - Trying to decode incoming 265 bytes of data from /127.0.0.1:56426 to /127.0.0.1:8080.
+02/20 14:35:57 TRACE[nioEventLoopGroup-3-2] s.s.k.n.n.s.Serializers - DS-ID: 100 ([100], 4)
+02/20 14:35:57 DEBUG[nioEventLoopGroup-3-2] s.s.k.n.n.s.Serializers - Using deserializer serialization.PickleSerializer$@1d5f475a for buffer with hint Optional.absent().
+02/20 14:35:57 TRACE[nioEventLoopGroup-3-2] NettyNetwork@8080 - Decoded incoming data from /127.0.0.1:56426: ex.TMessage@5b368a55
+02/20 14:35:57 DEBUG[nioEventLoopGroup-3-2] NettyNetwork@8080 - Delivering message ex.TMessage@5b368a55 from /127.0.0.1:9090 to /127.0.0.1:8080 protocol TCP
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - Channel connected: TCP /127.0.0.1:8080 => /127.0.0.1:56428 ([id: 0x691bb5ab, /127.0.0.1:56428 => /127.0.0.1:8080])
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - Trying to decode incoming 265 bytes of data from /127.0.0.1:56428 to /127.0.0.1:8080.
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - DS-ID: 100 ([100], 4)
+02/20 14:35:58 DEBUG[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - Using deserializer serialization.PickleSerializer$@1d5f475a for buffer with hint Optional.absent().
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - Decoded incoming data from /127.0.0.1:56428: ex.TMessage@d3ff3289
+02/20 14:35:58 DEBUG[nioEventLoopGroup-3-1] NettyNetwork@8080 - Delivering message ex.TMessage@d3ff3289 from /127.0.0.1:9091 to /127.0.0.1:8080 protocol TCP
+02/20 14:35:58 INFO [Kompics-worker-3] NettyNetwork@8080 - Trying to send delayed messages: /127.0.0.1:9091 on TCP
+02/20 14:35:58 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@6848a4e8
+02/20 14:35:58 INFO [Kompics-worker-3] b.BootstrapServer - 3 hosts in active set
+02/20 14:35:58 INFO [Kompics-worker-3] b.BootstrapServer - Threshold reached. Generating assignments now.
+02/20 14:35:58 INFO [Kompics-worker-5] o.VSOverlayManager - Generating lookup table
+02/20 14:35:58 DEBUG[Kompics-worker-5] o.VSOverlayManager - Generated LUT: PartitionLookupTable(
+2 -> Set(/127.0.0.1:8080)
+1 -> Set(/127.0.0.1:9091)
+0 -> Set(/127.0.0.1:9090)
+)
+02/20 14:35:58 INFO [Kompics-worker-3] b.BootstrapServer - Seeding assignments
+02/20 14:35:58 DEBUG[Kompics-worker-3] b.BootstrapServer - PartitionLookupTable(
+2 -> Set(/127.0.0.1:8080)
+1 -> Set(/127.0.0.1:9091)
+0 -> Set(/127.0.0.1:9090)
+)
+02/20 14:35:58 DEBUG[Kompics-worker-5] NettyNetwork@8080 - Sending message MessageWrapper(ex.TMessage@4016503d). Local /127.0.0.1:8080, Remote /127.0.0.1:56426
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-2] NettyNetwork@8080 - Trying to encode outgoing data to /127.0.0.1:56426 from /127.0.0.1:8080: class ex.TMessage.
+02/20 14:35:58 DEBUG[Kompics-worker-3] NettyNetwork@8080 - Sending message MessageWrapper(ex.TMessage@dbdb4107). Local /127.0.0.1:8080, Remote /127.0.0.1:56428
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-2] s.s.k.n.n.s.Serializers - Checked rule for class ex.TMessage, found: 100
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-2] s.s.k.n.n.s.Serializers - ID: [0, 0, 0, 100] (3, 4)
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - Trying to encode outgoing data to /127.0.0.1:56428 from /127.0.0.1:8080: class ex.TMessage.
+02/20 14:35:58 TRACE[Kompics-worker-5] NettyNetwork@8080 - Delivering message ex.TMessage@b20534ef locally.
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - ID: [0, 0, 0, 100] (3, 4)
+02/20 14:35:58 DEBUG[nioEventLoopGroup-3-2] s.s.k.n.n.s.Serializers - Using serializer serialization.PickleSerializer$@1d5f475a for object ex.TMessage@4016503d (sID : [100]) .
+02/20 14:35:58 DEBUG[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - Using serializer serialization.PickleSerializer$@1d5f475a for object ex.TMessage@dbdb4107 (sID : [100]) .
+02/20 14:35:58 INFO [Kompics-worker-3] b.BootstrapServer - got: ex.TMessage@b20534ef
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-2] NettyNetwork@8080 - Trying to decode incoming 263 bytes of data from /127.0.0.1:56426 to /127.0.0.1:8080.
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-2] s.s.k.n.n.s.Serializers - DS-ID: 100 ([100], 4)
+02/20 14:35:58 DEBUG[nioEventLoopGroup-3-2] s.s.k.n.n.s.Serializers - Using deserializer serialization.PickleSerializer$@1d5f475a for buffer with hint Optional.absent().
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-2] NettyNetwork@8080 - Decoded incoming data from /127.0.0.1:56426: ex.TMessage@3a7dd1b0
+02/20 14:35:58 DEBUG[nioEventLoopGroup-3-2] NettyNetwork@8080 - Delivering message ex.TMessage@3a7dd1b0 from /127.0.0.1:9090 to /127.0.0.1:8080 protocol TCP
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - Trying to decode incoming 263 bytes of data from /127.0.0.1:56428 to /127.0.0.1:8080.
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - DS-ID: 100 ([100], 4)
+02/20 14:35:58 DEBUG[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - Using deserializer serialization.PickleSerializer$@1d5f475a for buffer with hint Optional.absent().
+02/20 14:35:58 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - Decoded incoming data from /127.0.0.1:56428: ex.TMessage@b6b3c067
+02/20 14:35:58 DEBUG[nioEventLoopGroup-3-1] NettyNetwork@8080 - Delivering message ex.TMessage@b6b3c067 from /127.0.0.1:9091 to /127.0.0.1:8080 protocol TCP
+02/20 14:36:00 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@1dc67cc7
+02/20 14:36:00 INFO [Kompics-worker-3] b.BootstrapServer - 3 hosts in ready set
+02/20 14:36:00 INFO [Kompics-worker-3] b.BootstrapServer - Finished seeding. Bootstrapping completed
+02/20 14:36:00 INFO [Kompics-worker-5] o.VSOverlayManager - Got node assignment. Overlay ready
+02/20 14:36:00 DEBUG[Kompics-worker-5] o.VSOverlayManager - List(/127.0.0.1:8080, /127.0.0.1:9091, /127.0.0.1:9090)
+02/20 14:36:00 INFO [Kompics-worker-3] b.BootstrapServer - Seeding assignments
+02/20 14:36:00 DEBUG[Kompics-worker-3] b.BootstrapServer - PartitionLookupTable(
+2 -> Set(/127.0.0.1:8080)
+1 -> Set(/127.0.0.1:9091)
+0 -> Set(/127.0.0.1:9090)
+)
+02/20 14:36:00 DEBUG[Kompics-worker-5] NettyNetwork@8080 - Sending message MessageWrapper(ex.TMessage@4016503d). Local /127.0.0.1:8080, Remote /127.0.0.1:56426
+02/20 14:36:00 DEBUG[Kompics-worker-3] NettyNetwork@8080 - Sending message MessageWrapper(ex.TMessage@dbdb4107). Local /127.0.0.1:8080, Remote /127.0.0.1:56428
+02/20 14:36:00 TRACE[nioEventLoopGroup-3-2] NettyNetwork@8080 - Trying to encode outgoing data to /127.0.0.1:56426 from /127.0.0.1:8080: class ex.TMessage.
+02/20 14:36:00 TRACE[nioEventLoopGroup-3-2] s.s.k.n.n.s.Serializers - ID: [0, 0, 0, 100] (3, 4)
+02/20 14:36:00 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - Trying to encode outgoing data to /127.0.0.1:56428 from /127.0.0.1:8080: class ex.TMessage.
+02/20 14:36:00 TRACE[Kompics-worker-5] NettyNetwork@8080 - Delivering message ex.TMessage@b20534ef locally.
+02/20 14:36:00 DEBUG[nioEventLoopGroup-3-2] s.s.k.n.n.s.Serializers - Using serializer serialization.PickleSerializer$@1d5f475a for object ex.TMessage@4016503d (sID : [100]) .
+02/20 14:36:00 TRACE[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - ID: [0, 0, 0, 100] (3, 4)
+02/20 14:36:00 DEBUG[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - Using serializer serialization.PickleSerializer$@1d5f475a for object ex.TMessage@dbdb4107 (sID : [100]) .
+02/20 14:36:00 INFO [Kompics-worker-3] b.BootstrapServer - got: ex.TMessage@b20534ef
+02/20 14:36:00 TRACE[nioEventLoopGroup-3-2] NettyNetwork@8080 - Trying to decode incoming 263 bytes of data from /127.0.0.1:56426 to /127.0.0.1:8080.
+02/20 14:36:00 TRACE[nioEventLoopGroup-3-2] s.s.k.n.n.s.Serializers - DS-ID: 100 ([100], 4)
+02/20 14:36:00 DEBUG[nioEventLoopGroup-3-2] s.s.k.n.n.s.Serializers - Using deserializer serialization.PickleSerializer$@1d5f475a for buffer with hint Optional.absent().
+02/20 14:36:00 TRACE[nioEventLoopGroup-3-2] NettyNetwork@8080 - Decoded incoming data from /127.0.0.1:56426: ex.TMessage@3a7dd1b0
+02/20 14:36:00 DEBUG[nioEventLoopGroup-3-2] NettyNetwork@8080 - Delivering message ex.TMessage@3a7dd1b0 from /127.0.0.1:9090 to /127.0.0.1:8080 protocol TCP
+02/20 14:36:00 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - Trying to decode incoming 263 bytes of data from /127.0.0.1:56428 to /127.0.0.1:8080.
+02/20 14:36:00 TRACE[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - DS-ID: 100 ([100], 4)
+02/20 14:36:00 DEBUG[nioEventLoopGroup-3-1] s.s.k.n.n.s.Serializers - Using deserializer serialization.PickleSerializer$@1d5f475a for buffer with hint Optional.absent().
+02/20 14:36:00 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - Decoded incoming data from /127.0.0.1:56428: ex.TMessage@b6b3c067
+02/20 14:36:00 DEBUG[nioEventLoopGroup-3-1] NettyNetwork@8080 - Delivering message ex.TMessage@b6b3c067 from /127.0.0.1:9091 to /127.0.0.1:8080 protocol TCP
+02/20 14:36:02 DEBUG[JavaTimer@52eacb4b] s.s.k.t.j.JavaTimer - trigger periodic timeout bootstrap.BootstrapTimeout@3fce4c03
+02/20 14:36:02 INFO [Kompics-worker-3] b.BootstrapServer - In DONE state, committing suicide
+02/20 14:36:02 DEBUG[Kompics-worker-5] Kompics - Component(0208b27a-1cf7-47c5-ba5c-d3c51f150374):bootstrap.BootstrapServer@2705cb8e dying
+02/20 14:36:02 DEBUG[Kompics-worker-3] s.s.k.t.j.JavaTimer - canceled periodic timer bootstrap.BootstrapTimeout@49f02d6a
+02/20 14:36:02 DEBUG[Kompics-worker-3] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 got Killed event from Component(0208b27a-1cf7-47c5-ba5c-d3c51f150374):bootstrap.BootstrapServer@2705cb8e
+02/20 14:36:02 DEBUG[Kompics-worker-3] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 active set has 2 members
+02/20 14:37:00 DEBUG[nioEventLoopGroup-3-2] NettyNetwork@8080 - TCP Channel /127.0.0.1:56426 was already closed.
+02/20 14:37:00 TRACE[nioEventLoopGroup-3-2] NettyNetwork@8080 - ChannelManagerState:
+udtPortMap{
+}
+tcpActiveChannels{
+/127.0.0.1:9090 -> [id: 0x86c07ee3, /127.0.0.1:56426 :> /127.0.0.1:8080]
+/127.0.0.1:9091 -> [id: 0x691bb5ab, /127.0.0.1:56428 :> /127.0.0.1:8080]
+}
+udtActiveChannels{
+}
+tcpChannels{
+/127.0.0.1:9090 -> [id: 0x86c07ee3, /127.0.0.1:56426 :> /127.0.0.1:8080]
+/127.0.0.1:9091 -> [id: 0x691bb5ab, /127.0.0.1:56428 :> /127.0.0.1:8080]
+}
+udtChannels{
+}
+tcpChannelsByRemote{
+/127.0.0.1:56428 -> [id: 0x691bb5ab, /127.0.0.1:56428 :> /127.0.0.1:8080]
+}
+udtChannelsByRemote{
+}
+address4Remote{
+}
+
+02/20 14:37:00 DEBUG[nioEventLoopGroup-3-1] NettyNetwork@8080 - TCP Channel /127.0.0.1:56428 was already closed.
+02/20 14:37:00 TRACE[nioEventLoopGroup-3-1] NettyNetwork@8080 - ChannelManagerState:
+udtPortMap{
+}
+tcpActiveChannels{
+/127.0.0.1:9090 -> [id: 0x86c07ee3, /127.0.0.1:56426 :> /127.0.0.1:8080]
+/127.0.0.1:9091 -> [id: 0x691bb5ab, /127.0.0.1:56428 :> /127.0.0.1:8080]
+}
+udtActiveChannels{
+}
+tcpChannels{
+/127.0.0.1:9090 -> [id: 0x86c07ee3, /127.0.0.1:56426 :> /127.0.0.1:8080]
+/127.0.0.1:9091 -> [id: 0x691bb5ab, /127.0.0.1:56428 :> /127.0.0.1:8080]
+}
+udtChannels{
+}
+tcpChannelsByRemote{
+}
+udtChannelsByRemote{
+}
+address4Remote{
+}
+
+
+Process finished with exit code 0
