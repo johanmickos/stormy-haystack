@@ -39,9 +39,10 @@ class BootstrapClient extends ComponentDefinition with StrictLogging {
         }
     }
     network uponEvent {
-        case TMessage(source, self,  content: Boot) => handle {
+        case context@TMessage(source, self,  Boot(assignment)) => handle {
             logger.info(s"Booting up $self")
-            trigger(Booted(content.assignment) -> bootstrap)
+            logger.debug(s"$context with $assignment")
+            trigger(Booted(assignment) -> bootstrap)
             trigger(new CancelPeriodicTimeout(timeoutId.get) -> timer)
             trigger(TMessage(self, server, Ready) -> network)
             state = ClientState.Started

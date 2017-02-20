@@ -10,7 +10,8 @@ import ex.TAddress
 
 import scala.pickling._
 import scala.pickling.Defaults._
-import scala.pickling.binary._
+//import scala.pickling.binary._
+import scala.pickling.json._
 
 // Custom Serialization for TAddress (the case class itself is fine, but the InetSocketAddress is problematic)
 object TAddressPickler extends Pickler[TAddress] with Unpickler[TAddress] with pickler.PrimitivePicklers with pickler.PrimitiveArrayPicklers {
@@ -74,6 +75,8 @@ object TransportPickler extends Pickler[Transport] with Unpickler[Transport] wit
 
 // serialize all object with Scala pickling
 object PickleSerializer extends Serializer {
+    private val charset = "UTF-8"
+
     override def identifier(): Int = 100
 
     // register our custom picklers for use with reflection picklers
@@ -84,19 +87,35 @@ object PickleSerializer extends Serializer {
     scala.pickling.runtime.GlobalRegistry.picklerMap += (transportPickler.tag.key -> (x => transportPickler))
     scala.pickling.runtime.GlobalRegistry.unpicklerMap += (transportPickler.tag.key -> transportPickler)
 
-    override def toBinary(o: Any, buf: ByteBuf): Unit = {
-        val ser = o.pickle
-        val bytes = ser.value
+//    override def toBinary(o: Any, buf: ByteBuf): Unit = {
+//        val ser = o.pickle
+//        val bytes = ser.value
+//        buf.writeInt(bytes.length)
+//        buf.writeBytes(bytes)
+//    }
+//
+//    override def fromBinary(buf: ByteBuf, hint: Optional[Object]): Object = {
+//        val len = buf.readInt()
+//        val ser = Array.ofDim[Byte](len)
+//        buf.readBytes(ser)
+//        val o = ser.unpickle[Any]
+//        o.asInstanceOf[Object]
+//    }
+
+    override def toBinary(obj: Any, buf: ByteBuf): Unit = {
+        val ser = obj.pickle
+        val bytes: Array[Byte] = ser.value.getBytes(charset)
         buf.writeInt(bytes.length)
         buf.writeBytes(bytes)
     }
 
     override def fromBinary(buf: ByteBuf, hint: Optional[Object]): Object = {
         val len = buf.readInt()
-        val ser = Array.ofDim[Byte](len)
-        buf.readBytes(ser)
-        val o = ser.unpickle[Any]
-        o.asInstanceOf[Object]
+        val bytes: Array[Byte] = Array.ofDim[Byte](len)
+        buf.readBytes(bytes)
+        val ser = new String(bytes, charset)
+        val unpickedObject = ser.unpickle[Any]
+        unpickedObject.asInstanceOf[Object]
     }
 
     // a nice implicit conversion between Guava's Optional and Scala's Option

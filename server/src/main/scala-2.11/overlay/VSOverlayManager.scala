@@ -27,6 +27,7 @@ class VSOverlayManager extends ComponentDefinition with StrictLogging {
         }
         case Booted(update: PartitionLookupTable) => handle {
             logger.info("Got node assignment. Overlay ready")
+            logger.debug(s"${update.getNodes}")
             lut = Some(update)
             trigger(InitialAssignments(lut.get) -> bootstrap)
         }
@@ -37,7 +38,7 @@ class VSOverlayManager extends ComponentDefinition with StrictLogging {
             logger.info("Received route message")
             // TODO Check that lut.get() doesn't return None
             val partitions = lut.get.lookup(payload.key)
-            val randomTarget:TAddress = partitions.get.toList.head
+            val randomTarget:TAddress = partitions.toList.head
             logger.info(s"Forwarding message to random target ${randomTarget.getIp()}")
             trigger(TMessage(self, randomTarget, payload) -> network)
         }
@@ -58,7 +59,7 @@ class VSOverlayManager extends ComponentDefinition with StrictLogging {
             logger.info("Received local route message")
             // TODO Check that lut.get() doesn't return None
             val partitions = lut.get.lookup(payload.key)
-            val randomTarget:TAddress = partitions.get.toList.head
+            val randomTarget:TAddress = partitions.toList.head
             logger.info(s"Routing message for key ${payload.key} to $randomTarget")
             trigger(TMessage(self, randomTarget, payload.msg) -> network)
         }

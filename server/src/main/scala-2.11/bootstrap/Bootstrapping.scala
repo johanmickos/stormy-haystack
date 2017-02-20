@@ -15,7 +15,7 @@ case class GetInitialAssignments(nodes: collection.immutable.Set[TAddress]) exte
 case class Booted(assignment: NodeAssignment) extends KompicsEvent
 case class InitialAssignments(assignment: NodeAssignment) extends KompicsEvent
 
-case class Boot(assignment: NodeAssignment) extends KompicsEvent
+final case class Boot(assignment: NodeAssignment) extends KompicsEvent
 
 object CheckIn extends KompicsEvent
 object Ready extends KompicsEvent

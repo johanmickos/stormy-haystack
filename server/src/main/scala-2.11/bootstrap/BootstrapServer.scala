@@ -62,6 +62,7 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
                         state = State.Done
                     }
                 case State.Done =>
+                    logger.info("In DONE state, committing suicide")
                     suicide()
             }
         }
@@ -69,7 +70,8 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
 
     boot uponEvent {
         case ev: InitialAssignments => handle {
-            logger.info("Seeding assignments...")
+            logger.info("Seeding assignments")
+            logger.debug(s"${ev.assignment}")
             initialAssignment = Some(ev.assignment)
             for (it <- active) trigger(TMessage(self, it, Boot(initialAssignment.get)) -> network)
             ready.add(self)
