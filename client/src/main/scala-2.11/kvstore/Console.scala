@@ -8,7 +8,6 @@ import org.jline.reader.{LineReader, LineReaderBuilder}
 import org.jline.terminal.{Terminal, TerminalBuilder}
 
 import scala.collection.mutable
-import scala.concurrent.Future
 
 object Console {
     private final val PROMPT: String = "> "

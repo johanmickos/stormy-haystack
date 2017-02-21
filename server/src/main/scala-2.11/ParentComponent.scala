@@ -1,6 +1,5 @@
 import bootstrap.{BootstrapClient, BootstrapServer, Bootstrapping}
 import com.typesafe.scalalogging.StrictLogging
-import ex._
 import kv.KVService
 import overlay.{Routing, VSOverlayManager}
 import se.sics.kompics.Component

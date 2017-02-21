@@ -3,7 +3,6 @@ package serialization
 import ex.TAddress
 import overlay.PartitionLookupTable
 
-import scala.collection.immutable.HashMap
 import scala.collection.mutable
 import scala.pickling._
 

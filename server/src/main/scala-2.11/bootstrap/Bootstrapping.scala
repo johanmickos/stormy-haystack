@@ -1,7 +1,7 @@
 package bootstrap
 
 import ex.TAddress
-import overlay.{NodeAssignment, PartitionLookupTable}
+import overlay.PartitionLookupTable
 import se.sics.kompics.KompicsEvent
 import se.sics.kompics.sl._
 

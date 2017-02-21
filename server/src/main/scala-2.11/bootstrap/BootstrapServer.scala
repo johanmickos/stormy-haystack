@@ -4,7 +4,7 @@ import java.util.UUID
 
 import com.typesafe.scalalogging.StrictLogging
 import ex.{TAddress, TMessage}
-import overlay.{NodeAssignment, PartitionLookupTable}
+import overlay.PartitionLookupTable
 import se.sics.kompics.Start
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl.{ComponentDefinition, NegativePort, PositivePort, _}

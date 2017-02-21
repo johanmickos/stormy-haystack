@@ -1,16 +1,14 @@
 package kvstore
 
-import java.util.UUID
-
 import com.google.common.util.concurrent.SettableFuture
 import com.typesafe.scalalogging.StrictLogging
 import ex.{TAddress, TMessage}
 import kv.{Operation, OperationResponse}
 import overlay.{Ack, Connect, RouteMessage}
-import se.sics.kompics.{Kompics, KompicsEvent, Start}
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
 import se.sics.kompics.timer.{SchedulePeriodicTimeout, Timeout, Timer}
+import se.sics.kompics.{Kompics, KompicsEvent, Start}
 
 
 class ClientService extends ComponentDefinition with StrictLogging {
