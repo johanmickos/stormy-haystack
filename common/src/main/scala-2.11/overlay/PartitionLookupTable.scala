@@ -6,14 +6,12 @@ import scala.collection.{mutable, _}
 
 class PartitionLookupTable  {
     var partitions: mutable.MultiMap[Int, TAddress] = new mutable.HashMap[Int, mutable.Set[TAddress]] with mutable.MultiMap[Int, TAddress]
-//    val partitions: TreeMultimap[Integer, TAddress] = TreeMultimap.create[Integer, TAddress]()
-//    val builder: Builder[TAddress] = ImmutableSet.builder[TAddress]()
-//    builder.addAll(nodes.asJava)
-//    partitions.putAll(0,  builder.build())
 
     def generate(nodes: collection.immutable.Set[TAddress]): Unit = {
         for ((node, i) <- nodes.zipWithIndex) {
-            partitions.put(i, collection.mutable.Set(node))
+//            partitions.put(i, collection.mutable.Set(node))
+            partitions.addBinding(0, node)
+
         }
     }
     def getNodes: Iterable[TAddress] = {

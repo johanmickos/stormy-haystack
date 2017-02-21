@@ -7,6 +7,8 @@ import se.sics.kompics.network.Network
 import se.sics.kompics.sl.{ComponentDefinition, PositivePort, _}
 import se.sics.kompics.timer.Timer
 
+import scala.util.Random
+
 class VSOverlayManager extends ComponentDefinition with StrictLogging {
     val routing: NegativePort[Routing] = provides[Routing]
 
@@ -35,13 +37,15 @@ class VSOverlayManager extends ComponentDefinition with StrictLogging {
     }
 
     network uponEvent {
-        case TMessage(source, self, payload: RouteMessage) => handle {
-            logger.info("Received route message")
+        case ctx@TMessage(source, self, payload: RouteMessage) => handle {
+            logger.info(s"Received route message: ${payload.msg.toString}")
             // TODO Check that lut.get() doesn't return None
             val partitions = lut.get.lookup(payload.key)
-            val randomTarget:TAddress = partitions.toList.head
-            logger.info(s"Forwarding message to random target ${randomTarget.getIp()}")
-            trigger(TMessage(self, randomTarget, payload) -> network)
+            // TODO Broadcast message to its replication group
+            val rnd = new Random()
+            val randomTarget:TAddress = partitions.toVector(rnd.nextInt(partitions.size))
+            logger.info(s"Forwarding message to random target ${randomTarget.getIp()}:${randomTarget.getPort}")
+            trigger(TMessage(source, randomTarget, payload.msg) -> network)
         }
         case TMessage(source, self, payload: Connect) => handle {
             lut match {
