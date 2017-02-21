@@ -38,11 +38,9 @@
 02/20 14:35:06 DEBUG[main] c.b.u.l.PluginPropsUDT - Loading aol.properties.
 02/20 14:35:06 INFO [main] c.b.u.l.LibraryLoaderUDT - Platform supported.
 02/20 14:35:06 INFO [main] c.b.u.l.LibraryLoaderUDT - Loading release libraries.
-02/20 14:35:06 DEBUG[main] c.b.u.l.ResourceManagerUDT - sourceURL=jar:file:/home/johan/.ivy2/cache/com.barchart.udt/barchart-udt-bundle/bundles/barchart-udt-bundle-2.3.0.jar!/lib/amd64-Linux-gpp/jni/libbarchart-udt-core-2.3.0-SNAPSHOT.so 
-02/20 14:35:06 DEBUG[main] c.b.u.l.ResourceManagerUDT - targetFile=/home/johan/school/2017-p3/distributed-systems-advanced/project/stormy-haystack/./lib/bin/lib/amd64-Linux-gpp/jni/libbarchart-udt-core-2.3.0-SNAPSHOT.so 
-02/20 14:35:06 DEBUG[main] c.b.u.l.ResourceManagerUDT - targetFolder=/home/johan/school/2017-p3/distributed-systems-advanced/project/stormy-haystack/./lib/bin/lib/amd64-Linux-gpp/jni 
-02/20 14:35:06 DEBUG[main] c.b.u.l.ResourceManagerUDT - found folder=/home/johan/school/2017-p3/distributed-systems-advanced/project/stormy-haystack/./lib/bin/lib/amd64-Linux-gpp/jni
-02/20 14:35:06 DEBUG[main] c.b.u.l.ResourceManagerUDT - already extracted; sourcePath=/lib/amd64-Linux-gpp/jni/libbarchart-udt-core-2.3.0-SNAPSHOT.so targetPath=./lib/bin/lib/amd64-Linux-gpp/jni/libbarchart-udt-core-2.3.0-SNAPSHOT.so
+
+[redacted]
+
 02/20 14:35:06 INFO [main] c.b.u.l.LibraryLoaderUDT - Release libraries loaded.
 02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - native library load & init OK
 02/20 14:35:06 DEBUG[main] c.b.u.SocketUDT - init : [id: 0x3d5008e8] DATAGRAM INIT bind=null:0 peer=null:0
@@ -80,13 +78,13 @@
 02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c starting
 02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Sending Start to child: Component(8923b8ec-b176-42fe-9e57-addf91c6d1fd):se.sics.kompics.timer.java.JavaTimer@52eacb4b
 02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Sending Start to child: Component(f85b0af6-449b-4ff7-a64f-6afc1116b3b5):se.sics.kompics.network.netty.NettyNetwork@31536e19
-02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Sending Start to child: Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901
+02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Sending Start to child: Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901
 02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(8923b8ec-b176-42fe-9e57-addf91c6d1fd):se.sics.kompics.timer.java.JavaTimer@52eacb4b started
 02/20 14:35:06 DEBUG[Kompics-worker-3] Kompics - Component(f85b0af6-449b-4ff7-a64f-6afc1116b3b5):se.sics.kompics.network.netty.NettyNetwork@31536e19 started
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@6f0bd940
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@461bfc35
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@5eae5286
-02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 starting
+02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901 starting
 02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Sending Start to child: Component(40f701c9-7890-41d5-9013-dd8a1d09e4e7):kv.KVService@68ff32da
 02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Sending Start to child: Component(9337001e-68e4-498d-8952-a94ad7b3abb5):overlay.VSOverlayManager@6638c1b5
 02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(40f701c9-7890-41d5-9013-dd8a1d09e4e7):kv.KVService@68ff32da started
@@ -107,30 +105,30 @@
 02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c got Started event from Component(8923b8ec-b176-42fe-9e57-addf91c6d1fd):se.sics.kompics.timer.java.JavaTimer@52eacb4b
 02/20 14:35:06 INFO [Kompics-worker-5] b.BootstrapServer - Starting bootstrap server on /127.0.0.1:8080 with boot threshold 3
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@18d01d1f
-02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 got Started event from Component(40f701c9-7890-41d5-9013-dd8a1d09e4e7):kv.KVService@68ff32da
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901 got Started event from Component(40f701c9-7890-41d5-9013-dd8a1d09e4e7):kv.KVService@68ff32da
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@45eefad6
 02/20 14:35:06 DEBUG[Kompics-worker-1] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c active set has 1 members
-02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 active set has 1 members
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901 active set has 1 members
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@3a337d4b
 02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c got Started event from Component(f85b0af6-449b-4ff7-a64f-6afc1116b3b5):se.sics.kompics.network.netty.NettyNetwork@31536e19
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@7e10de1f
 02/20 14:35:06 DEBUG[Kompics-worker-4] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c active set has 2 members
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@32178
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@2c5acf20
-02/20 14:35:06 DEBUG[Kompics-worker-6] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 got Started event from Component(9337001e-68e4-498d-8952-a94ad7b3abb5):overlay.VSOverlayManager@6638c1b5
+02/20 14:35:06 DEBUG[Kompics-worker-6] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901 got Started event from Component(9337001e-68e4-498d-8952-a94ad7b3abb5):overlay.VSOverlayManager@6638c1b5
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@da236c5
-02/20 14:35:06 DEBUG[Kompics-worker-6] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 active set has 2 members
+02/20 14:35:06 DEBUG[Kompics-worker-6] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901 active set has 2 members
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@753af148
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@6c2b1676
-02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 got Started event from Component(0208b27a-1cf7-47c5-ba5c-d3c51f150374):bootstrap.BootstrapServer@2705cb8e
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901 got Started event from Component(0208b27a-1cf7-47c5-ba5c-d3c51f150374):bootstrap.BootstrapServer@2705cb8e
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@16f2f71c
-02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 active set has 3 members
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901 active set has 3 members
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@afaef19
-02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 started
+02/20 14:35:06 DEBUG[Kompics-worker-2] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901 started
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@28e8ffbf
 02/20 14:35:06 DEBUG[Kompics-worker-6] s.s.k.t.j.JavaTimer - scheduled periodic timer(2000, 2000) bootstrap.BootstrapTimeout@49f02d6a
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@1c44c472
-02/20 14:35:06 DEBUG[Kompics-worker-5] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c got Started event from Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901
+02/20 14:35:06 DEBUG[Kompics-worker-5] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c got Started event from Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901
 02/20 14:35:06 TRACE[Kompics-worker-3] i.n.c.n.NioEventLoop - Instrumented an optimized java.util.Set into: sun.nio.ch.EPollSelectorImpl@1d0f9af1
 02/20 14:35:06 DEBUG[Kompics-worker-5] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c active set has 3 members
 02/20 14:35:06 DEBUG[Kompics-worker-5] Kompics - Component(a020cd7a-e09c-4550-bc7c-89528269b193):HostComponent@26c7ff0c started
@@ -388,8 +386,8 @@
 02/20 14:36:02 INFO [Kompics-worker-3] b.BootstrapServer - In DONE state, committing suicide
 02/20 14:36:02 DEBUG[Kompics-worker-5] Kompics - Component(0208b27a-1cf7-47c5-ba5c-d3c51f150374):bootstrap.BootstrapServer@2705cb8e dying
 02/20 14:36:02 DEBUG[Kompics-worker-3] s.s.k.t.j.JavaTimer - canceled periodic timer bootstrap.BootstrapTimeout@49f02d6a
-02/20 14:36:02 DEBUG[Kompics-worker-3] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 got Killed event from Component(0208b27a-1cf7-47c5-ba5c-d3c51f150374):bootstrap.BootstrapServer@2705cb8e
-02/20 14:36:02 DEBUG[Kompics-worker-3] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):ParentComponent@1dd1b901 active set has 2 members
+02/20 14:36:02 DEBUG[Kompics-worker-3] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901 got Killed event from Component(0208b27a-1cf7-47c5-ba5c-d3c51f150374):bootstrap.BootstrapServer@2705cb8e
+02/20 14:36:02 DEBUG[Kompics-worker-3] Kompics - Component(d3e9cf53-c724-4813-ab4a-d522854eba16):client.ParentComponent@1dd1b901 active set has 2 members
 02/20 14:37:00 DEBUG[nioEventLoopGroup-3-2] NettyNetwork@8080 - TCP Channel /127.0.0.1:56426 was already closed.
 02/20 14:37:00 TRACE[nioEventLoopGroup-3-2] NettyNetwork@8080 - ChannelManagerState:
 udtPortMap{
