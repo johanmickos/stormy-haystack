@@ -46,7 +46,7 @@ class VSOverlayManager extends ComponentDefinition with StrictLogging {
         case TMessage(source, self, payload: Connect) => handle {
             lut match {
                 case Some(_) =>
-                    logger.debug(s"Accepting connection request from $source")
+                    logger.debug(s"Accepting connection request from $source with ID ${payload.id}")
                     val size: Int = lut.get.getNodes.size
                     trigger(TMessage(self, source, Ack(payload.id, size)) -> network)
                 case None =>

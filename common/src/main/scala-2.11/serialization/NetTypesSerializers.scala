@@ -91,21 +91,6 @@ object PickleSerializer extends Serializer {
     scala.pickling.runtime.GlobalRegistry.picklerMap += (lutPickler.tag.key -> (x => lutPickler))
     scala.pickling.runtime.GlobalRegistry.unpicklerMap += (lutPickler.tag.key -> lutPickler)
 
-//    override def toBinary(o: Any, buf: ByteBuf): Unit = {
-//        val ser = o.pickle
-//        val bytes = ser.value
-//        buf.writeInt(bytes.length)
-//        buf.writeBytes(bytes)
-//    }
-//
-//    override def fromBinary(buf: ByteBuf, hint: Optional[Object]): Object = {
-//        val len = buf.readInt()
-//        val ser = Array.ofDim[Byte](len)
-//        buf.readBytes(ser)
-//        val o = ser.unpickle[Any]
-//        o.asInstanceOf[Object]
-//    }
-
     override def toBinary(obj: Any, buf: ByteBuf): Unit = {
         val ser = obj.pickle
         val bytes: Array[Byte] = ser.value.getBytes(charset)

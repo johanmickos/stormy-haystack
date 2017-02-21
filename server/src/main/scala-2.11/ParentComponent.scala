@@ -23,9 +23,6 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
                 create(classOf[BootstrapServer], Init.NONE)
             case "server" =>
                 create(classOf[BootstrapClient], Init.NONE)
-            case unknown =>
-                println(s"Received: ${unknown}")
-                create(classOf[Ponger], Init.NONE)
         }
     }
 

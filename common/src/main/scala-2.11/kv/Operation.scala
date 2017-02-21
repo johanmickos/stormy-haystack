@@ -10,6 +10,8 @@ object Code extends Enumeration {
     val NotImplemented, Ok, NotFound = Value
 }
 //  TODO Decide on key type & partitioning
-case class Operation(key: String, id: UUID) extends KompicsEvent
-case class OperationResponse(id: UUID, code: Code) extends KompicsEvent
+case class Operation(key: String) extends KompicsEvent {
+    val id: UUID = UUID.randomUUID()
+}
+case class OperationResponse(id: UUID, status: Code) extends KompicsEvent
 
