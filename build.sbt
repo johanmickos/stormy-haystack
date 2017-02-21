@@ -10,7 +10,8 @@ lazy val commonSettings = Seq(
     resolvers ++= Seq(
         Resolver.mavenLocal,
         "Kompics Releases" at "http://kompics.sics.se/maven/repository/",
-        "Kompics Snapshots" at "http://kompics.sics.se/maven/snapshotrepository/"
+        "Kompics Snapshots" at "http://kompics.sics.se/maven/snapshotrepository/",
+        "johnreed2 bintray" at "http://dl.bintray.com/content/johnreed2/maven" // For Intellij Scala Trace Debug
     ),
     libraryDependencies ++= Seq(
         "se.sics.kompics" %% "kompics-scala" % "0.9.2-SNAPSHOT",
@@ -18,7 +19,8 @@ lazy val commonSettings = Seq(
         "se.sics.kompics.basic" % "kompics-component-java-timer" % "0.9.2-SNAPSHOT",
         "ch.qos.logback" % "logback-classic" % "0.9.28",
         "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
-        "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0"
+        "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
+        "com.github.johnreedlol" %% "scala-trace-debug" % "3.0.6" // For Intellij Scala Trace Debug
     )
 )
 
