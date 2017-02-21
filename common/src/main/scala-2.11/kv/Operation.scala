@@ -11,7 +11,7 @@ object Code extends Enumeration {
 }
 //  TODO Decide on key type & partitioning
 case class Operation(key: String) extends KompicsEvent {
-    val id: UUID = UUID.randomUUID()
+    val id: String = UUID.randomUUID().toString
 }
-case class OperationResponse(id: UUID, status: Code) extends KompicsEvent
+case class OperationResponse(id: String, status: Code) extends KompicsEvent
 

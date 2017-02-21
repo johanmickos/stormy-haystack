@@ -27,7 +27,7 @@ class BootstrapClient extends ComponentDefinition with StrictLogging {
     val server: TAddress = cfg.getValue[TAddress]("stormy.bootstrapAddress")
 
     private var state: State = ClientState.Waiting
-    private var timeoutId: Option[UUID] = None
+    private var timeoutId: Option[String] = None
 
     ctrl uponEvent {
         case _: Start => handle {
@@ -36,7 +36,7 @@ class BootstrapClient extends ComponentDefinition with StrictLogging {
             val spt = new SchedulePeriodicTimeout(timeout, timeout)
             spt.setTimeoutEvent(new BootstrapTimeout(spt))
             trigger(spt -> timer)
-            timeoutId = Some(spt.getTimeoutEvent.getTimeoutId)
+            timeoutId = Some(spt.getTimeoutEvent.getTimeoutId.toString)
         }
     }
     network uponEvent {
@@ -44,7 +44,7 @@ class BootstrapClient extends ComponentDefinition with StrictLogging {
             logger.info(s"Booting up $self")
             logger.debug(s"$context with $assignment")
             trigger(Booted(assignment) -> bootstrap)
-            trigger(new CancelPeriodicTimeout(timeoutId.get) -> timer)
+            trigger(new CancelPeriodicTimeout(UUID.fromString(timeoutId.get)) -> timer)
             trigger(TMessage(self, server, Ready) -> network)
             state = ClientState.Started
         }
@@ -63,6 +63,6 @@ class BootstrapClient extends ComponentDefinition with StrictLogging {
     }
 
     override def tearDown(): Unit = {
-        trigger(new CancelPeriodicTimeout(timeoutId.get) -> timer)
+        trigger(new CancelPeriodicTimeout(UUID.fromString(timeoutId.get)) -> timer)
     }
 }

@@ -27,7 +27,7 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
     val bootThreshold: Int = cfg.getValue[Int]("stormy.bootThreshold")
 
     private var state: State = State.Collecting
-    private var timeoutId: Option[UUID] = None
+    private var timeoutId: Option[String] = None
 
     private val active: collection.mutable.Set[TAddress] = collection.mutable.Set()
     private val ready: collection.mutable.Set[TAddress] = collection.mutable.Set()
@@ -41,7 +41,7 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
             val spt = new SchedulePeriodicTimeout(timeout, timeout)
             spt.setTimeoutEvent(new BootstrapTimeout(spt))
             trigger(spt -> timer)
-            timeoutId = Some(spt.getTimeoutEvent.getTimeoutId)
+            timeoutId = Some(spt.getTimeoutEvent.getTimeoutId.toString)
             active.add(self)
         }
     }
@@ -99,7 +99,7 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
     }
 
     override def tearDown(): Unit = {
-        trigger(new CancelPeriodicTimeout(timeoutId.get) -> timer)
+        trigger(new CancelPeriodicTimeout(UUID.fromString(timeoutId.get)) -> timer)
     }
 }
 

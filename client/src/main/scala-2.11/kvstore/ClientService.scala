@@ -22,7 +22,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
     val coordinator: TAddress = config.getValue("stormy.coordinatorAddress", classOf[TAddress])
 
     private var connected: Option[Ack] = None
-    private val pending = new java.util.TreeMap[UUID, SettableFuture[OperationResponse]]()
+    private val pending = new java.util.TreeMap[String, SettableFuture[OperationResponse]]()
 
 
     ctrl uponEvent {
@@ -32,7 +32,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
             val spt = new SchedulePeriodicTimeout(timeout, timeout)
             spt.setTimeoutEvent(ConnectTimeout(spt))
             logger.debug(s"Setting up with timeout ID ${spt.getTimeoutEvent.getTimeoutId}")
-            trigger(TMessage(self, coordinator, Connect(spt.getTimeoutEvent.getTimeoutId)) -> network)
+            trigger(TMessage(self, coordinator, Connect(spt.getTimeoutEvent.getTimeoutId.toString)) -> network)
             trigger(spt -> timer)
         }
     }
@@ -69,7 +69,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
             logger.info(s"Received event: $ev\n${connected.get}\n${connected.get.id}\n${ev.getTimeoutId}")
             connected match {
                 case Some(ack: Ack) =>
-                    if (!ack.id.eq(ev.getTimeoutId)) {
+                    if (!ack.id.equals(ev.getTimeoutId.toString)) {
                         logger.error("Received wrong response ID earlier! System may be inconsistent. Shutting down")
                         System.exit(1)
                     }
