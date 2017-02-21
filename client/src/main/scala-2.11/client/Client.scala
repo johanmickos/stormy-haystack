@@ -53,7 +53,7 @@ object Client {
         val cu = cb.finalise
         cfg.apply(cu, ValueMerger.NONE)
         Kompics.createAndStart(classOf[ParentComponent])
-
+        Kompics.waitForTermination();
     }
 
     private def prepareOptions: Options = {

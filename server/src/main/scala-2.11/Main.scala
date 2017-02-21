@@ -19,6 +19,7 @@ object Main {
     def main(args: Array[String]): Unit = {
         try {
             Kompics.createAndStart(classOf[HostComponent])
+            Kompics.waitForTermination()
         } catch {
             case ex: Throwable =>
                 println(s"Unexpected exception: $ex")
