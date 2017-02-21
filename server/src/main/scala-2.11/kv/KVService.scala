@@ -14,8 +14,8 @@ class KVService extends ComponentDefinition with StrictLogging {
 
     network uponEvent {
         case context@TMessage(source, self, op: Operation) => handle {
-            logger.info(s"Got operation $op! Now implement me please :)")
-            trigger(TMessage(self, source, OperationResponse(op.id, Code.NotImplemented)) -> network)
+            logger.info(s"Got operation $op with ID ${op.id}! Now implement me please :)")
+            trigger(TMessage(self, source, OperationResponse(op.id, NotImplemented)) -> network)
         }
     }
 

@@ -1,6 +1,5 @@
 package kvstore
 
-import java.io.Console
 import java.util.UUID
 
 import com.google.common.util.concurrent.SettableFuture
@@ -59,6 +58,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
             sf match {
                 case Some(value) =>
                     value.set(response)
+                    // TODO Why do we set this? Do we have a ref. to it anywhere else?
                 case None => logger.warn(s"Operation ID ${response.id} was not pending! Ignoring response.")
             }
         }
@@ -81,7 +81,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
     }
 
     private[kvstore] def op(key: String) = {
-        val op = Operation(key)
+        val op = new Operation(key, Operation.genId())
         val owf = new OpWithFuture(op)
         trigger(owf, onSelf)
         owf.sf

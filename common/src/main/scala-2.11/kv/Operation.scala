@@ -2,16 +2,20 @@ package kv
 
 import java.util.UUID
 
-import kv.Code.Code
 import se.sics.kompics.KompicsEvent
+sealed trait Code
+case object NotImplemented extends Code
+case object NotFound extends Code
+case object Ok extends Code
 
-object Code extends Enumeration {
-    type Code = Value
-    val NotImplemented, Ok, NotFound = Value
-}
 //  TODO Decide on key type & partitioning
-case class Operation(key: String) extends KompicsEvent {
-    val id: String = UUID.randomUUID().toString
+object Operation {
+    def genId(): String = {
+        UUID.randomUUID().toString
+    }
+}
+final case class Operation(key: String, id: String) extends KompicsEvent {
+    override def toString: String = s"Operation(key=$key, id=$id)"
 }
 case class OperationResponse(id: String, status: Code) extends KompicsEvent
 
