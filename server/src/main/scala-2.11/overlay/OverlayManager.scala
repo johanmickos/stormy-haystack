@@ -9,7 +9,7 @@ import se.sics.kompics.timer.Timer
 
 import scala.util.Random
 
-class VSOverlayManager extends ComponentDefinition with StrictLogging {
+class OverlayManager extends ComponentDefinition with StrictLogging {
     val routing: NegativePort[Routing] = provides[Routing]
 
     val network: PositivePort[Network] = requires[Network]

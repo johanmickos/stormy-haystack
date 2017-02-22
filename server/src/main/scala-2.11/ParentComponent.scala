@@ -1,7 +1,7 @@
 import bootstrap.{BootstrapClient, BootstrapServer, Bootstrapping}
 import com.typesafe.scalalogging.StrictLogging
 import kv.KVService
-import overlay.{Routing, VSOverlayManager}
+import overlay.{Routing, OverlayManager}
 import se.sics.kompics.Component
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
@@ -14,7 +14,7 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
 
     // Children
     val kv = create(classOf[KVService], Init.NONE)
-    val overlay = create(classOf[VSOverlayManager], Init.NONE)
+    val overlay = create(classOf[OverlayManager], Init.NONE)
 
     val boot: Component = {
         // TODO Make these static somewhere
