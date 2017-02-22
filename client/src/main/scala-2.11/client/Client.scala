@@ -13,9 +13,9 @@ import serialization.PickleSerializer
 
 object Client {
 
-    val NAC = TAddressConverter
+    val converter = new TAddressConverter
 
-    Conversions.register(TAddressConverter)
+    Conversions.register(converter)
     Serializers.register(PickleSerializer, "pickleS")
     Serializers.register(classOf[TAddress], "pickleS")
     Serializers.register(classOf[THeader], "pickleS")
@@ -43,7 +43,7 @@ object Client {
         cb.setValue("stormy.address", self)
         if (cmd.hasOption("b")) {
             val serverS = cmd.getOptionValue("b")
-            val server = NAC.convert(serverS)
+            val server = converter.convert(serverS)
             if (server == null) {
                 System.err.println("Couldn't parse address string: " + serverS)
                 System.exit(1)

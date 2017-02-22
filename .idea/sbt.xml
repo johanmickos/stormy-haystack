@@ -16,6 +16,8 @@
             <option value="$PROJECT_DIR$/project" />
             <option value="$PROJECT_DIR$/server" />
             <option value="$PROJECT_DIR$/server/project" />
+            <option value="$PROJECT_DIR$/simulation" />
+            <option value="$PROJECT_DIR$/simulation/project" />
           </set>
         </option>
         <option name="sbtVersion" value="0.13.13" />

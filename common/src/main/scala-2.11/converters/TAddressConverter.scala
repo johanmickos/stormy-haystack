@@ -15,7 +15,7 @@ import ex.TAddress
   * To register:
   *     Conversions.register(TAddressConverter);
   */
-object TAddressConverter extends Converter[TAddress] with LazyLogging {
+class TAddressConverter extends Converter[TAddress] with LazyLogging {
 
     override def convert(o: Object): TAddress = {
         o match {

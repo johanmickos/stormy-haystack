@@ -14,7 +14,7 @@ object Main {
     Serializers.register(classOf[THeader], "pickleS")
     Serializers.register(classOf[TMessage[_]], "pickleS")
 
-    Conversions.register(TAddressConverter)
+    Conversions.register(new  TAddressConverter())
 
     def main(args: Array[String]): Unit = {
         try {

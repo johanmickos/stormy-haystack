@@ -17,6 +17,7 @@ lazy val commonSettings = Seq(
         "se.sics.kompics" %% "kompics-scala" % "0.9.2-SNAPSHOT",
         "se.sics.kompics.basic" % "kompics-component-netty-network" % "0.9.2-SNAPSHOT",
         "se.sics.kompics.basic" % "kompics-component-java-timer" % "0.9.2-SNAPSHOT",
+        "se.sics.kompics.simulator" % "core" % "0.9.2-SNAPSHOT",
         "ch.qos.logback" % "logback-classic" % "0.9.28",
         "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
         "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
@@ -27,3 +28,4 @@ lazy val commonSettings = Seq(
 lazy val common = (project in file("common")) settings commonSettings
 lazy val server = (project in file("server")) dependsOn common settings commonSettings
 lazy val client = (project in file("client")) dependsOn common settings commonSettings
+lazy val simulation = (project in file("simulation")) dependsOn common dependsOn server dependsOn client settings commonSettings
