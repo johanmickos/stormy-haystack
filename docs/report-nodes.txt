@@ -1,0 +1,8 @@
+## Collection of thoughts worth putting into the final project report
+
+# PICKLING AND SERIALIZING
+Due to Scala Pickling's limitations with nested objects and class hierarchies, we are currently forced to sacrifice efficient binary messages for the more cumbersome JSON ones.
+Additionally, the LUT pickler turns off Scala Pickling's structure sharing due to the parsed object referring to the wrong message sections.
+
+The pickling library attempted to share TAddress objects in the LUT to save space, but when unpickling the library pulled out the TMessagee itself and the Boot payload rather than the duplicated TAddress objects.
+
