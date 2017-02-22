@@ -3,7 +3,7 @@ package bootstrap
 import java.util.UUID
 
 import com.typesafe.scalalogging.StrictLogging
-import networking.{TAddress, TMessage}
+import networking.{NetAddress, NetMessage}
 import overlay.PartitionLookupTable
 import se.sics.kompics.Start
 import se.sics.kompics.network.Network
@@ -23,14 +23,14 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
     var network: PositivePort[Network] = requires[Network]
     var timer: PositivePort[Timer] = requires[Timer]
 
-    val self: TAddress = cfg.getValue[TAddress]("stormy.address")
+    val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
     val bootThreshold: Int = cfg.getValue[Int]("stormy.bootThreshold")
 
     private var state: State = State.Collecting
     private var timeoutId: Option[String] = None
 
-    private val active: collection.mutable.Set[TAddress] = collection.mutable.Set()
-    private val ready: collection.mutable.Set[TAddress] = collection.mutable.Set()
+    private val active: collection.mutable.Set[NetAddress] = collection.mutable.Set()
+    private val ready: collection.mutable.Set[NetAddress] = collection.mutable.Set()
 
     private var initialAssignment: Option[PartitionLookupTable] = None
 
@@ -73,16 +73,16 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
             logger.info("Seeding assignments")
             logger.debug(s"${ev.assignment}")
             initialAssignment = Some(ev.assignment)
-            for (it <- active) trigger(TMessage(self, it, Boot(initialAssignment.get)) -> network)
+            for (it <- active) trigger(NetMessage(self, it, Boot(initialAssignment.get)) -> network)
             ready.add(self)
         }
     }
 
     network uponEvent {
-        case TMessage(source, self, CheckIn) => handle {
+        case NetMessage(source, self, CheckIn) => handle {
             active.add(source)
         }
-        case TMessage(source, self, Ready) => handle {
+        case NetMessage(source, self, Ready) => handle {
             ready.add(source)
         }
         case x => handle {

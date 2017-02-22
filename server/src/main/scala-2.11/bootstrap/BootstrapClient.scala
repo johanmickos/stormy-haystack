@@ -4,7 +4,7 @@ import java.util.UUID
 
 import bootstrap.ClientState.State
 import com.typesafe.scalalogging.StrictLogging
-import networking.{TAddress, TMessage}
+import networking.{NetAddress, NetMessage}
 import overlay.PartitionLookupTable
 import se.sics.kompics.Start
 import se.sics.kompics.network.Network
@@ -22,8 +22,8 @@ class BootstrapClient extends ComponentDefinition with StrictLogging {
     val timer = requires[Timer]
     val network = requires[Network]
 
-    val self: TAddress = cfg.getValue[TAddress]("stormy.address")
-    val server: TAddress = cfg.getValue[TAddress]("stormy.coordinatorAddress")
+    val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
+    val server: NetAddress = cfg.getValue[NetAddress]("stormy.coordinatorAddress")
 
     private var state: State = ClientState.Waiting
     private var timeoutId: Option[String] = None
@@ -39,12 +39,12 @@ class BootstrapClient extends ComponentDefinition with StrictLogging {
         }
     }
     network uponEvent {
-        case context@TMessage(source, self,  Boot(assignment: PartitionLookupTable)) => handle {
+        case context@NetMessage(source, self,  Boot(assignment: PartitionLookupTable)) => handle {
             logger.info(s"Booting up $self")
             logger.debug(s"$context with $assignment")
             trigger(Booted(assignment) -> bootstrap)
             trigger(new CancelPeriodicTimeout(UUID.fromString(timeoutId.get)) -> timer)
-            trigger(TMessage(self, server, Ready) -> network)
+            trigger(NetMessage(self, server, Ready) -> network)
             state = ClientState.Started
         }
     }
@@ -53,9 +53,9 @@ class BootstrapClient extends ComponentDefinition with StrictLogging {
         case _: BootstrapTimeout => handle {
             state match {
                 case ClientState.Waiting =>
-                    trigger(TMessage(self, server, CheckIn) -> network)
+                    trigger(NetMessage(self, server, CheckIn) -> network)
                 case ClientState.Started =>
-                    trigger(TMessage(self, server, Ready) -> network)
+                    trigger(NetMessage(self, server, Ready) -> network)
                     suicide() // TODO Determine why we suicide here (and what it does)
             }
         }

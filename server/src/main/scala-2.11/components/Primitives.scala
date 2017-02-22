@@ -1,7 +1,7 @@
 package components
 
 import components.Ports._
-import networking.{TAddress, TMessage}
+import networking.{NetAddress, NetMessage}
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
 
@@ -10,7 +10,7 @@ object Primitives {
 
     object PerfectP2PLink {
 
-        val PerfectLinkMessage = TMessage
+        val PerfectLinkMessage = NetMessage
     }
 
     class PerfectP2PLink(init: Init[PerfectP2PLink]) extends ComponentDefinition {
@@ -18,8 +18,8 @@ object Primitives {
         val pLink = provides[PerfectLink]
         val network = requires[Network]
 
-        val self: TAddress = init match {
-            case Init(self: TAddress) => self
+        val self: NetAddress = init match {
+            case Init(self: NetAddress) => self
         }
 
         pLink uponEvent {
@@ -36,13 +36,13 @@ object Primitives {
 
     }
 
-    case class VectorClock(var vc: Map[TAddress, Int]) {
+    case class VectorClock(var vc: Map[NetAddress, Int]) {
 
-        def inc(addr: TAddress) = {
+        def inc(addr: NetAddress) = {
             vc = vc + ((addr, vc.get(addr).get + 1))
         }
 
-        def set(addr: TAddress, value: Int) = {
+        def set(addr: NetAddress, value: Int) = {
             vc = vc + ((addr, value))
         }
 
@@ -52,8 +52,8 @@ object Primitives {
 
     object VectorClock {
 
-        def empty(topology: scala.Seq[TAddress]): VectorClock = {
-            VectorClock(topology.foldLeft[Map[TAddress, Int]](Map[TAddress, Int]())((mp, addr) => mp + ((addr, 0))))
+        def empty(topology: scala.Seq[NetAddress]): VectorClock = {
+            VectorClock(topology.foldLeft[Map[NetAddress, Int]](Map[NetAddress, Int]())((mp, addr) => mp + ((addr, 0))))
         }
 
         def apply(that: VectorClock): VectorClock = {

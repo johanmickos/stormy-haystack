@@ -1,11 +1,11 @@
 package components.broadcasting
 
 import components.Ports._
-import networking.TAddress
+import networking.NetAddress
 import se.sics.kompics.sl._
 import se.sics.kompics.KompicsEvent
 
-case class OriginatedData(src: TAddress, payload: KompicsEvent) extends KompicsEvent
+case class OriginatedData(src: NetAddress, payload: KompicsEvent) extends KompicsEvent
 
 class EagerReliableBroadcast(init: Init[EagerReliableBroadcast]) extends ComponentDefinition {
 
@@ -15,7 +15,7 @@ class EagerReliableBroadcast(init: Init[EagerReliableBroadcast]) extends Compone
 
     //EagerReliableBroadcast Component State and Initialization
     val self = init match {
-        case Init(s: TAddress) => s
+        case Init(s: NetAddress) => s
     }
     var delivered = collection.mutable.Set[KompicsEvent]()
 

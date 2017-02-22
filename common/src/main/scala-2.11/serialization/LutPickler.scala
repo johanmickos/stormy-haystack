@@ -1,6 +1,6 @@
 package serialization
 
-import networking.TAddress
+import networking.NetAddress
 import overlay.PartitionLookupTable
 
 import scala.collection.mutable
@@ -20,9 +20,9 @@ object LutPickler extends Pickler[PartitionLookupTable] with Unpickler[Partition
             intPickler.pickle(picklee.replicationFactor, fieldBuilder)
         })
         builder.putField("partitions", { fieldBuilder =>
-            fieldBuilder.hintTag(mapPickler[Int, Set[TAddress]].tag)
+            fieldBuilder.hintTag(mapPickler[Int, Set[NetAddress]].tag)
             fieldBuilder.hintStaticallyElidedType()
-            mapPickler[Int, Set[TAddress]].pickle(picklee.partitions.map(kv => (kv._1, kv._2.toSet)).toMap, fieldBuilder)
+            mapPickler[Int, Set[NetAddress]].pickle(picklee.partitions.map(kv => (kv._1, kv._2.toSet)).toMap, fieldBuilder)
         })
         builder.endEntry()
     }
@@ -34,12 +34,12 @@ object LutPickler extends Pickler[PartitionLookupTable] with Unpickler[Partition
 
         val partitionReader = reader.readField("partitions")
         partitionReader.hintStaticallyElidedType()
-        val entry = mapPickler[Int, Set[TAddress]].unpickleEntry(partitionReader)
-        val partitionsMap = entry.asInstanceOf[Map[Int, Set[TAddress]]]
-        val partitions: mutable.MultiMap[Int, TAddress] = new mutable.HashMap[Int, mutable.Set[TAddress]] with mutable.MultiMap[Int, TAddress]
+        val entry = mapPickler[Int, Set[NetAddress]].unpickleEntry(partitionReader)
+        val partitionsMap = entry.asInstanceOf[Map[Int, Set[NetAddress]]]
+        val partitions: mutable.MultiMap[Int, NetAddress] = new mutable.HashMap[Int, mutable.Set[NetAddress]] with mutable.MultiMap[Int, NetAddress]
 
         val lut: PartitionLookupTable = new PartitionLookupTable(replicationFactor)
-        for ((partition: Int, nodes: Set[TAddress]) <- partitionsMap) {
+        for ((partition: Int, nodes: Set[NetAddress]) <- partitionsMap) {
             partitions.put(partition, mutable.Set(nodes.toSeq: _*))
         }
         lut.partitions = partitions

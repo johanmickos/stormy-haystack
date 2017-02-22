@@ -1,5 +1,5 @@
 import com.typesafe.scalalogging.StrictLogging
-import networking.TAddress
+import networking.NetAddress
 import se.sics.kompics.Component
 import se.sics.kompics.network.Network
 import se.sics.kompics.network.netty.{NettyInit, NettyNetwork}
@@ -8,7 +8,7 @@ import se.sics.kompics.timer.Timer
 import se.sics.kompics.timer.java.JavaTimer
 
 class HostComponent extends ComponentDefinition with StrictLogging {
-    val self = cfg.getValue[TAddress]("stormy.address")
+    val self = cfg.getValue[NetAddress]("stormy.address")
 
     val timer: Component = create(classOf[JavaTimer], Init.NONE)
     val network: Component = create(classOf[NettyNetwork], new NettyInit(self))

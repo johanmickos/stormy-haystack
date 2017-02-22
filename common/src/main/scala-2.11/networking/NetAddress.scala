@@ -6,7 +6,7 @@ import com.google.common.collect.ComparisonChain
 import com.google.common.primitives.UnsignedBytes
 import se.sics.kompics.network.Address
 
-final case class TAddress(isa: InetSocketAddress) extends Address with Comparable[TAddress] {
+final case class NetAddress(isa: InetSocketAddress) extends Address with Comparable[NetAddress] {
     override def asSocket(): InetSocketAddress = isa
 
     override def getIp: InetAddress = isa.getAddress
@@ -17,7 +17,7 @@ final case class TAddress(isa: InetSocketAddress) extends Address with Comparabl
         this.isa.equals(other.asSocket())
     }
 
-    override def compareTo(that: TAddress): Int = {
+    override def compareTo(that: NetAddress): Int = {
         ComparisonChain.start()
             .compare(this.isa.getAddress.getAddress, that.isa.getAddress.getAddress, UnsignedBytes.lexicographicalComparator())
             .compare(this.isa.getPort, that.isa.getPort)

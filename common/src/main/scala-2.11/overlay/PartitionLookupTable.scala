@@ -1,14 +1,14 @@
 package overlay
 
-import networking.TAddress
+import networking.NetAddress
 
 import scala.collection.{mutable, _}
 
 
 class PartitionLookupTable(val replicationFactor: Int)  {
-    var partitions: mutable.MultiMap[Int, TAddress] = new mutable.HashMap[Int, mutable.Set[TAddress]] with mutable.MultiMap[Int, TAddress]
+    var partitions: mutable.MultiMap[Int, NetAddress] = new mutable.HashMap[Int, mutable.Set[NetAddress]] with mutable.MultiMap[Int, NetAddress]
 
-    def generate(nodes: collection.immutable.Set[TAddress]): Unit = {
+    def generate(nodes: collection.immutable.Set[NetAddress]): Unit = {
         val numPartitions: Int = (nodes.size / replicationFactor).floor.toInt
         for ((node, i) <- nodes.zipWithIndex) {
             val partition: Int = i % numPartitions
@@ -21,11 +21,11 @@ class PartitionLookupTable(val replicationFactor: Int)  {
         // to trigger Stop Signal msg or lock the under-replicated partition
         partitions.values.flatten.size % replicationFactor != 0
     }
-    def getNodes: Iterable[TAddress] = {
+    def getNodes: Iterable[NetAddress] = {
         partitions.values.flatten
     }
 
-    def lookup(key: String): mutable.Set[TAddress] = {
+    def lookup(key: String): mutable.Set[NetAddress] = {
         val keyHash: Int = key.hashCode
         val partition: Int = Some(partitions.keySet.minBy(it => math.abs(keyHash - it))).getOrElse(partitions.keySet.last)
         partitions(partition)

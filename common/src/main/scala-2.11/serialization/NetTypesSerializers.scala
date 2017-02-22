@@ -6,21 +6,21 @@ import se.sics.kompics.network.netty.serialization.Serializer
 import se.sics.kompics.network.Transport
 import io.netty.buffer.ByteBuf
 import com.google.common.base.Optional
-import networking.TAddress
+import networking.NetAddress
 
 import scala.pickling._
 import scala.pickling.Defaults._
 import scala.pickling.json._
 
 // Custom Serialization for TAddress (the case class itself is fine, but the InetSocketAddress is problematic)
-object TAddressPickler extends Pickler[TAddress] with Unpickler[TAddress] with pickler.PrimitivePicklers with pickler.PrimitiveArrayPicklers {
+object TAddressPickler extends Pickler[NetAddress] with Unpickler[NetAddress] with pickler.PrimitivePicklers with pickler.PrimitiveArrayPicklers {
 
     import java.net.InetSocketAddress
     import java.net.InetAddress
 
-    override val tag = FastTypeTag[TAddress]
+    override val tag = FastTypeTag[NetAddress]
 
-    override def pickle(picklee: TAddress, builder: PBuilder): Unit = {
+    override def pickle(picklee: NetAddress, builder: PBuilder): Unit = {
         builder.hintTag(tag) // This is always required
         builder.beginEntry(picklee)
         builder.putField("ip", { fieldBuilder =>
@@ -43,7 +43,7 @@ object TAddressPickler extends Pickler[TAddress] with Unpickler[TAddress] with p
         val portReader = reader.readField("port")
         portReader.hintStaticallyElidedType()
         val port = intPickler.unpickleEntry(portReader).asInstanceOf[Int]
-        new TAddress(new InetSocketAddress(InetAddress.getByAddress(ip), port))
+        new NetAddress(new InetSocketAddress(InetAddress.getByAddress(ip), port))
     }
 }
 

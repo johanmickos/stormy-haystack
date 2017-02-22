@@ -6,7 +6,7 @@ import java.util.Map
 import se.sics.kompics.config.Conversions
 import se.sics.kompics.config.Converter
 import com.typesafe.scalalogging.LazyLogging
-import networking.TAddress
+import networking.NetAddress
 
 /**
   * Custom Java-esque converter for parsing application configurations with network addresses
@@ -15,16 +15,16 @@ import networking.TAddress
   * To register:
   *     Conversions.register(TAddressConverter);
   */
-class TAddressConverter extends Converter[TAddress] with LazyLogging {
+class TAddressConverter extends Converter[NetAddress] with LazyLogging {
 
-    override def convert(o: Object): TAddress = {
+    override def convert(o: Object): NetAddress = {
         o match {
             case m: Map[String, Any]@unchecked => {
                 try {
                     val hostname = Conversions.convert(m.get("host"), classOf[String])
                     val port = Conversions.convert(m.get("port"), classOf[Integer])
                     val ip = InetAddress.getByName(hostname)
-                    return TAddress(new InetSocketAddress(ip, port))
+                    return NetAddress(new InetSocketAddress(ip, port))
                 } catch {
                     case ex: Throwable =>
                         logger.error(s"Could not convert $m to TAddress", ex)
@@ -36,7 +36,7 @@ class TAddressConverter extends Converter[TAddress] with LazyLogging {
                     val ipport = s.split(":")
                     val ip = InetAddress.getByName(ipport(0))
                     val port = Integer.parseInt(ipport(1))
-                    return TAddress(new InetSocketAddress(ip, port))
+                    return NetAddress(new InetSocketAddress(ip, port))
                 } catch {
                     case ex: Throwable =>
                         logger.error(s"Could not convert '$s' to TAddress", ex)
@@ -48,8 +48,8 @@ class TAddressConverter extends Converter[TAddress] with LazyLogging {
         return null
     }
 
-    override def `type`(): Class[TAddress] = {
-        return classOf[TAddress]
+    override def `type`(): Class[NetAddress] = {
+        return classOf[NetAddress]
     }
 
 }

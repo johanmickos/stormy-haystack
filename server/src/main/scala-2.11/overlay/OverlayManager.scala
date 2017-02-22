@@ -2,7 +2,7 @@ package overlay
 
 import bootstrap.{Booted, Bootstrapping, GetInitialAssignments, InitialAssignments}
 import com.typesafe.scalalogging.StrictLogging
-import networking.{TAddress, TMessage}
+import networking.{NetAddress, NetMessage}
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl.{ComponentDefinition, PositivePort, _}
 import se.sics.kompics.timer.Timer
@@ -16,7 +16,7 @@ class OverlayManager extends ComponentDefinition with StrictLogging {
     val timer: PositivePort[Timer] = requires[Timer]
     val bootstrap: PositivePort[Bootstrapping] = requires[Bootstrapping]
 
-    val self: TAddress = cfg.getValue[TAddress]("stormy.address")
+    val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
     val replicationFactor: Int = cfg.getValue[Int]("stormy.replicationFactor")
 
     private var lut: Option[PartitionLookupTable] = None
@@ -40,22 +40,22 @@ class OverlayManager extends ComponentDefinition with StrictLogging {
     }
 
     network uponEvent {
-        case ctx@TMessage(source, self, payload: RouteMessage) => handle {
+        case ctx@NetMessage(source, self, payload: RouteMessage) => handle {
             logger.info(s"Received route message: ${payload.msg.toString}")
             // TODO Check that lut.get() doesn't return None
             val partitions = lut.get.lookup(payload.key)
             // TODO Broadcast message to its replication group
             val rnd = new Random()
-            val randomTarget:TAddress = partitions.toVector(rnd.nextInt(partitions.size))
+            val randomTarget:NetAddress = partitions.toVector(rnd.nextInt(partitions.size))
             logger.info(s"Forwarding message to random target ${randomTarget.getIp()}:${randomTarget.getPort}")
-            trigger(TMessage(source, randomTarget, payload.msg) -> network)
+            trigger(NetMessage(source, randomTarget, payload.msg) -> network)
         }
-        case TMessage(source, self, payload: Connect) => handle {
+        case NetMessage(source, self, payload: Connect) => handle {
             lut match {
                 case Some(_) =>
                     logger.debug(s"Accepting connection request from $source with ID ${payload.id}")
                     val size: Int = lut.get.getNodes.size
-                    trigger(TMessage(self, source, Ack(payload.id, size)) -> network)
+                    trigger(NetMessage(self, source, Ack(payload.id, size)) -> network)
                 case None =>
                     logger.warn(s"Rejecting connection request from $source as system is not ready yet")
             }
@@ -63,13 +63,13 @@ class OverlayManager extends ComponentDefinition with StrictLogging {
     }
 
     routing uponEvent {
-        case TMessage(source, self, payload: RouteMessage) => handle {
+        case NetMessage(source, self, payload: RouteMessage) => handle {
             logger.info("Received local route message")
             // TODO Check that lut.get() doesn't return None
             val partitions = lut.get.lookup(payload.key)
-            val randomTarget:TAddress = partitions.toList.head
+            val randomTarget:NetAddress = partitions.toList.head
             logger.info(s"Routing message for key ${payload.key} to $randomTarget")
-            trigger(TMessage(self, randomTarget, payload.msg) -> network)
+            trigger(NetMessage(self, randomTarget, payload.msg) -> network)
         }
     }
 

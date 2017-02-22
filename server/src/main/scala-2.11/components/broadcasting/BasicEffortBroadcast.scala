@@ -1,7 +1,7 @@
 package components.broadcasting
 
 import components.Ports._
-import networking.TAddress
+import networking.NetAddress
 import se.sics.kompics.sl._
 
 class BasicEffortBroadcast(init: Init[BasicEffortBroadcast]) extends ComponentDefinition {
@@ -10,7 +10,7 @@ class BasicEffortBroadcast(init: Init[BasicEffortBroadcast]) extends ComponentDe
     val beb = provides[BestEffortBroadcast]
 
     val (self, topology) = init match {
-        case Init(s: TAddress, t: Set[TAddress]@unchecked) => (s, t)
+        case Init(s: NetAddress, t: Set[NetAddress]@unchecked) => (s, t)
     }
 
     beb uponEvent {

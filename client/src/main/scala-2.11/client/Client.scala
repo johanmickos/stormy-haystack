@@ -4,7 +4,7 @@ import java.net.InetSocketAddress
 import java.util.UUID
 
 import converters.TAddressConverter
-import networking.{TAddress, THeader, TMessage}
+import networking.{NetAddress, NetHeader, NetMessage}
 import org.apache.commons.cli.{CommandLineParser, DefaultParser, Options}
 import se.sics.kompics.Kompics
 import se.sics.kompics.config.{Config, Conversions, ValueMerger}
@@ -17,9 +17,9 @@ object Client {
 
     Conversions.register(converter)
     Serializers.register(PickleSerializer, "pickleS")
-    Serializers.register(classOf[TAddress], "pickleS")
-    Serializers.register(classOf[THeader], "pickleS")
-    Serializers.register(classOf[TMessage[_]], "pickleS")
+    Serializers.register(classOf[NetAddress], "pickleS")
+    Serializers.register(classOf[NetHeader], "pickleS")
+    Serializers.register(classOf[NetMessage[_]], "pickleS")
 
     def main(args: Array[String]): Unit = {
         val opts: Options = prepareOptions
@@ -27,7 +27,7 @@ object Client {
         val cmd = clientParser.parse(opts, args)
 
         val cfg = Kompics.getConfig.asInstanceOf[Config.Impl]
-        var self: TAddress = cfg.getValue("stormy.address", classOf[TAddress])
+        var self: NetAddress = cfg.getValue("stormy.address", classOf[NetAddress])
         val cb: Config.Builder = cfg.modify(UUID.randomUUID())
         if (cmd.hasOption("p") || cmd.hasOption("i")) {
             var ip: String = self.asSocket().getHostString
@@ -38,7 +38,7 @@ object Client {
             if (cmd.hasOption("i")) {
                 ip = cmd.getOptionValue("i")
             }
-            self = TAddress(new InetSocketAddress(ip, port))
+            self = NetAddress(new InetSocketAddress(ip, port))
         }
         cb.setValue("stormy.address", self)
         if (cmd.hasOption("b")) {

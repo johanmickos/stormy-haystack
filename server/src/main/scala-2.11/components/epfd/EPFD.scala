@@ -2,7 +2,7 @@ package components.epfd
 
 import com.typesafe.scalalogging.StrictLogging
 import components.Ports.{PL_Deliver, PL_Send, PerfectLink}
-import networking.TAddress
+import networking.NetAddress
 import se.sics.kompics.Start
 import se.sics.kompics.sl._
 import se.sics.kompics.timer.{ScheduleTimeout, Timer}
@@ -16,15 +16,15 @@ class EPFD(epfdInit: Init[EPFD]) extends ComponentDefinition with StrictLogging 
     // TODO
     //configuration parameters
     val (self, topology) = epfdInit match {
-        case Init(s: TAddress, t: Set[TAddress]) => (s, t)
+        case Init(s: NetAddress, t: Set[NetAddress]) => (s, t)
     }
 
     //    val topology = cfg.getValue[List[TAddress]]("components.epfd.simulation.topology")
     val delta = cfg.getValue[Long]("components.epfd.simulation.delay")
 
     var period = cfg.getValue[Long]("components.epfd.simulation.delay")
-    var alive = Set(cfg.getValue[List[TAddress]]("components.epfd.simulation.topology"): _*)
-    var suspected = Set[TAddress]()
+    var alive = Set(cfg.getValue[List[NetAddress]]("components.epfd.simulation.topology"): _*)
+    var suspected = Set[NetAddress]()
     var seqnum = 0
 
     def startTimer(delay: Long): Unit = {
@@ -57,7 +57,7 @@ class EPFD(epfdInit: Init[EPFD]) extends ComponentDefinition with StrictLogging 
                 }
                 trigger(PL_Send(p, HeartbeatRequest(seqnum)) -> pLink)
             }
-            alive = Set[TAddress]()
+            alive = Set[NetAddress]()
             startTimer(period)
         }
     }

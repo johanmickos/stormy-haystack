@@ -1,5 +1,5 @@
 import converters.TAddressConverter
-import networking.{TAddress, THeader, TMessage}
+import networking.{NetAddress, NetHeader, NetMessage}
 import overlay.PartitionLookupTable
 import se.sics.kompics.Kompics
 import se.sics.kompics.config.Conversions
@@ -10,9 +10,9 @@ object Main {
 
     Serializers.register(PickleSerializer, "pickleS")
     Serializers.register(classOf[PartitionLookupTable], "pickleS")
-    Serializers.register(classOf[TAddress], "pickleS")
-    Serializers.register(classOf[THeader], "pickleS")
-    Serializers.register(classOf[TMessage[_]], "pickleS")
+    Serializers.register(classOf[NetAddress], "pickleS")
+    Serializers.register(classOf[NetHeader], "pickleS")
+    Serializers.register(classOf[NetMessage[_]], "pickleS")
 
     Conversions.register(new  TAddressConverter())
 

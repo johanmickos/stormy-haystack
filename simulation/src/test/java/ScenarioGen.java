@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-import networking.TAddress;
+import networking.NetAddress;
 import se.sics.kompics.Init;
 import se.sics.kompics.network.Address;
 import se.sics.kompics.simulator.SimulationScenario;
@@ -44,13 +44,13 @@ public abstract class ScenarioGen {
         @Override
         public StartNodeEvent generate(final Integer self) {
             return new StartNodeEvent() {
-                final TAddress selfAdr;
-                final TAddress bsAdr;
+                final NetAddress selfAdr;
+                final NetAddress bsAdr;
 
                 {
                     try {
-                        selfAdr = new TAddress(new InetSocketAddress("192.168.0." + self, 45678));
-                        bsAdr = new TAddress(new InetSocketAddress("192.168.0.1", 45678));
+                        selfAdr = new NetAddress(new InetSocketAddress("192.168.0." + self, 45678));
+                        bsAdr = new NetAddress(new InetSocketAddress("192.168.0.1", 45678));
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
@@ -98,20 +98,20 @@ public abstract class ScenarioGen {
         @Override
         public StartNodeEvent generate(final Integer self) {
             return new StartNodeEvent() {
-                final TAddress selfAdr;
-                final TAddress bsAdr;
+                final NetAddress selfAdr;
+                final NetAddress bsAdr;
 
                 {
                     try {
-                        selfAdr = new TAddress(new InetSocketAddress("192.168.1." + self, 45678));
-                        bsAdr = new TAddress(new InetSocketAddress("192.168.0.1", 45678));
+                        selfAdr = new NetAddress(new InetSocketAddress("192.168.1." + self, 45678));
+                        bsAdr = new NetAddress(new InetSocketAddress("192.168.0.1", 45678));
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
                 }
 
                 @Override
-                public TAddress getNodeAddress() {
+                public NetAddress getNodeAddress() {
                     return selfAdr;
                 }
 

@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  */
 
-import networking.TAddress;
-import networking.TMessage;
+import networking.NetAddress;
+import networking.NetMessage;
 import kv.Operation;
 import kv.OperationResponse;
 import org.slf4j.Logger;
@@ -49,8 +49,8 @@ public class ScenarioClient extends ComponentDefinition {
     protected final Positive<Network> net = requires(Network.class);
     protected final Positive<Timer> timer = requires(Timer.class);
     //******* Fields ******
-    private final TAddress self = config().getValue("stormy.address", TAddress.class);
-    private final TAddress server = config().getValue("stormy.coordinatorAddress", TAddress.class);
+    private final NetAddress self = config().getValue("stormy.address", NetAddress.class);
+    private final NetAddress server = config().getValue("stormy.coordinatorAddress", NetAddress.class);
     private final SimulationResultMap res = SimulationResultSingleton.getInstance();
     private final Map<String, String> pending = new TreeMap<>();
     //******* Handlers ******
@@ -62,16 +62,16 @@ public class ScenarioClient extends ComponentDefinition {
             for (int i = 0; i < messages; i++) {
                 Operation op = new Operation("test" + i, Operation.genId());
                 RouteMessage rm = new RouteMessage(op.key(), op); // don't know which partition is responsible, so ask the bootstrap server to forward it
-                trigger(new TMessage<>(self, server, rm), net);
+                trigger(new NetMessage<>(self, server, rm), net);
                 pending.put(op.id(), op.key());
                 LOG.info("Sending {}", op);
                 res.put(op.key(), "SENT");
             }
         }
     };
-    protected final Handler<TMessage> handler = new Handler<TMessage>() {
+    protected final Handler<NetMessage> handler = new Handler<NetMessage>() {
         @Override
-        public void handle(TMessage event) {
+        public void handle(NetMessage event) {
             LOG.debug("Got OperationResponse: {}", event.payload());
             if (event.payload() instanceof OperationResponse) {
                 OperationResponse content = (OperationResponse) event.payload();

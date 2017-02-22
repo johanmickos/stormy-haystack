@@ -3,7 +3,7 @@ package kvstore
 import com.google.common.util.concurrent.SettableFuture
 import com.typesafe.scalalogging.StrictLogging
 import kv.{Operation, OperationResponse}
-import networking.{TAddress, TMessage}
+import networking.{NetAddress, NetMessage}
 import overlay.{Ack, Connect, RouteMessage}
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
@@ -15,8 +15,8 @@ class ClientService extends ComponentDefinition with StrictLogging {
     var network: PositivePort[Network] = requires[Network]
     var timer: PositivePort[Timer] = requires[Timer]
 
-    val self: TAddress = config.getValue("stormy.address", classOf[TAddress])
-    val coordinator: TAddress = config.getValue("stormy.coordinatorAddress", classOf[TAddress])
+    val self: NetAddress = config.getValue("stormy.address", classOf[NetAddress])
+    val coordinator: NetAddress = config.getValue("stormy.coordinatorAddress", classOf[NetAddress])
 
     private var connected: Option[Ack] = None
     private val pending = new java.util.TreeMap[String, SettableFuture[OperationResponse]]()
@@ -29,7 +29,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
             val spt = new SchedulePeriodicTimeout(timeout, timeout)
             spt.setTimeoutEvent(ConnectTimeout(spt))
             logger.debug(s"Setting up with timeout ID ${spt.getTimeoutEvent.getTimeoutId}")
-            trigger(TMessage(self, coordinator, Connect(spt.getTimeoutEvent.getTimeoutId.toString)) -> network)
+            trigger(NetMessage(self, coordinator, Connect(spt.getTimeoutEvent.getTimeoutId.toString)) -> network)
             trigger(spt -> timer)
         }
     }
@@ -37,20 +37,20 @@ class ClientService extends ComponentDefinition with StrictLogging {
     loopbck uponEvent {
         case ctx@OpWithFuture(op) => handle {
             val msg: RouteMessage = RouteMessage(op.key, op) // don't know which partition is responsible, so ask the bootstrap server to forward it
-            trigger(TMessage(self, coordinator, msg) -> network)
+            trigger(NetMessage(self, coordinator, msg) -> network)
             pending.put(op.id, ctx.sf)
         }
     }
 
     network uponEvent {
-        case TMessage(source, self, ack: Ack) => handle {
+        case NetMessage(source, self, ack: Ack) => handle {
             logger.info(s"Client connected to $source, cluster size is ${ack.clusterSize}")
             connected = Some(ack)
             val console: Console = new Console(ClientService.this)
             val th: Thread = new Thread(console)
             th.start()
         }
-        case TMessage(source, self, response: OperationResponse) => handle {
+        case NetMessage(source, self, response: OperationResponse) => handle {
             logger.debug(s"Received respoonse $response")
             val sf: Option[SettableFuture[OperationResponse]] = Some(pending.remove(response.id))
             sf match {
