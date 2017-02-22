@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+usage() {
+    echo "Usage: $0 [-n|--num-nodes N]"
+}
 
 print_info() {
     echo    ".-----------[BEGIN STATUS]------------."
@@ -17,7 +20,8 @@ print_info() {
 PKILL_PATTERN="server.jar" # TODO Ensure this doesn't clash with other unrelated processes
 SCRIPT_LOC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 START=0
-N=6 # TODO Take from command line
+N=2
+MAX_N=5
 ARTIFACT_DIR="../out/artifacts/node_jar"
 JAR_LOC="${ARTIFACT_DIR}/server.jar"
 LOG_DIR="../logs/tmp"
@@ -39,7 +43,30 @@ if [ ! -d ${LOG_DIR} ]; then
     mkdir --parents ${LOG_DIR}
 fi
 
+for i in "$@"; do
 
+    case ${i} in
+        -n=*|--num-nodes=*)
+        N="${i#*=}"
+        if [ $N > $MAX_N ]; then
+            echo "ERROR: Entered number of nodes ${N} exceeds maximum of ${MAX_N}"
+            exit 1
+        fi
+        shift
+        ;;
+        -h|--help)
+        usage
+        exit 0
+        ;;
+        *)
+        echo "Unknown option: ${i}"
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+echo  -e "Launching ${N} data nodes\n"
 for ((i=0; i<N; i++)); do
     java -Dconfig.file=${CONF_DIR}/server-${i}.conf -jar ${JAR_LOC} &>>${LOG_DIR}/server-${i}.log &
     PIDS[$i]=$!
