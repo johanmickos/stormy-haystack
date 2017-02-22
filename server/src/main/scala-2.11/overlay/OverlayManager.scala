@@ -17,14 +17,18 @@ class OverlayManager extends ComponentDefinition with StrictLogging {
     val bootstrap: PositivePort[Bootstrapping] = requires[Bootstrapping]
 
     val self: TAddress = cfg.getValue[TAddress]("stormy.address")
+    val replicationFactor: Int = cfg.getValue[Int]("stormy.replicationFactor")
 
     private var lut: Option[PartitionLookupTable] = None
 
     bootstrap uponEvent {
         case GetInitialAssignments(nodes) => handle {
             logger.info("Generating lookup table")
-            val plut = new PartitionLookupTable
+            val plut = new PartitionLookupTable(replicationFactor)
             plut.generate(nodes)
+            if (plut.isUnderReplicated) {
+                logger.warn("System is under-replicated")
+            }
             logger.debug(s"Generated LUT: ${plut}")
             trigger(InitialAssignments(plut) -> bootstrap)
         }

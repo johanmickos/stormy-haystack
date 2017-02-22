@@ -4,18 +4,24 @@ import ex.TAddress
 
 import scala.collection.{mutable, _}
 
-class PartitionLookupTable  {
+
+class PartitionLookupTable(val replicationFactor: Int)  {
     var partitions: mutable.MultiMap[Int, TAddress] = new mutable.HashMap[Int, mutable.Set[TAddress]] with mutable.MultiMap[Int, TAddress]
 
     def generate(nodes: collection.immutable.Set[TAddress]): Unit = {
+        val numPartitions = (nodes.size % replicationFactor) + 1
         for ((node, i) <- nodes.zipWithIndex) {
-//            partitions.put(i, collection.mutable.Set(node))
-            partitions.addBinding(0, node)
-
+            val partition: Int = (i/numPartitions).floor.toInt
+            partitions.addBinding(partition, node)
         }
     }
+
+    def isUnderReplicated: Boolean = {
+        // Under-replicated? Should probably be caught in whomever is managing us
+        // to trigger Stop Signal msg or lock the under-replicated partition
+        partitions.values.flatten.size % replicationFactor != 0
+    }
     def getNodes: Iterable[TAddress] = {
-//        partitions.values.asScala
         partitions.values.flatten
     }
 
