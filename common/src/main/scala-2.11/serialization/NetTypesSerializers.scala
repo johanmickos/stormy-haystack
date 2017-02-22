@@ -6,7 +6,7 @@ import se.sics.kompics.network.netty.serialization.Serializer
 import se.sics.kompics.network.Transport
 import io.netty.buffer.ByteBuf
 import com.google.common.base.Optional
-import ex.TAddress
+import networking.TAddress
 
 import scala.pickling._
 import scala.pickling.Defaults._

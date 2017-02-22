@@ -6,7 +6,7 @@ import java.util.Map
 import se.sics.kompics.config.Conversions
 import se.sics.kompics.config.Converter
 import com.typesafe.scalalogging.LazyLogging
-import ex.TAddress
+import networking.TAddress
 
 /**
   * Custom Java-esque converter for parsing application configurations with network addresses

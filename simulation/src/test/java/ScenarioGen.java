@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-import ex.TAddress;
+import networking.TAddress;
 import se.sics.kompics.Init;
 import se.sics.kompics.network.Address;
 import se.sics.kompics.simulator.SimulationScenario;

@@ -4,12 +4,11 @@ import java.util.UUID
 
 import bootstrap.ClientState.State
 import com.typesafe.scalalogging.StrictLogging
-import ex.{TAddress, TMessage}
+import networking.{TAddress, TMessage}
 import overlay.PartitionLookupTable
-import se.sics.kompics.sl._
 import se.sics.kompics.Start
 import se.sics.kompics.network.Network
-import se.sics.kompics.sl.{ComponentDefinition, NegativePort}
+import se.sics.kompics.sl.{ComponentDefinition, NegativePort, _}
 import se.sics.kompics.timer.{CancelPeriodicTimeout, SchedulePeriodicTimeout, Timer}
 
 object ClientState extends Enumeration {

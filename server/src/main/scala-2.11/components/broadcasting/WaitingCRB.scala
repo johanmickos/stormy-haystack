@@ -2,7 +2,7 @@ package components.broadcasting
 
 import components.Ports._
 import components.Primitives.VectorClock
-import ex.TAddress
+import networking.TAddress
 import se.sics.kompics.sl.{Init, _}
 import se.sics.kompics.{KompicsEvent, ComponentDefinition => _, Port => _}
 

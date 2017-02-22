@@ -1,5 +1,5 @@
 import com.typesafe.scalalogging.StrictLogging
-import ex.TAddress
+import networking.TAddress
 import se.sics.kompics.Component
 import se.sics.kompics.network.Network
 import se.sics.kompics.network.netty.{NettyInit, NettyNetwork}

@@ -1,5 +1,5 @@
 import converters.TAddressConverter
-import ex.{TAddress, THeader, TMessage}
+import networking.{TAddress, THeader, TMessage}
 import overlay.PartitionLookupTable
 import se.sics.kompics.Kompics
 import se.sics.kompics.config.Conversions

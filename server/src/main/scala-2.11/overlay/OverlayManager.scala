@@ -2,7 +2,7 @@ package overlay
 
 import bootstrap.{Booted, Bootstrapping, GetInitialAssignments, InitialAssignments}
 import com.typesafe.scalalogging.StrictLogging
-import ex.{TAddress, TMessage}
+import networking.{TAddress, TMessage}
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl.{ComponentDefinition, PositivePort, _}
 import se.sics.kompics.timer.Timer

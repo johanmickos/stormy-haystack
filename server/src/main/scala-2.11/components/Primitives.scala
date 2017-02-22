@@ -1,9 +1,9 @@
 package components
 
 import components.Ports._
-import ex.{TAddress, TMessage}
-import se.sics.kompics.sl._
+import networking.{TAddress, TMessage}
 import se.sics.kompics.network.Network
+import se.sics.kompics.sl._
 
 object Primitives {
     import components.Primitives.PerfectP2PLink._

@@ -2,7 +2,7 @@ package components.epfd
 
 import com.typesafe.scalalogging.StrictLogging
 import components.Ports.{PL_Deliver, PL_Send, PerfectLink}
-import ex.TAddress
+import networking.TAddress
 import se.sics.kompics.Start
 import se.sics.kompics.sl._
 import se.sics.kompics.timer.{ScheduleTimeout, Timer}

@@ -1,6 +1,6 @@
 package bootstrap
 
-import ex.TAddress
+import networking.TAddress
 import overlay.PartitionLookupTable
 import se.sics.kompics.KompicsEvent
 import se.sics.kompics.sl._

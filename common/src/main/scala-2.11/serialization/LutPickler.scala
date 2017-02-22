@@ -1,6 +1,6 @@
 package serialization
 
-import ex.TAddress
+import networking.TAddress
 import overlay.PartitionLookupTable
 
 import scala.collection.mutable

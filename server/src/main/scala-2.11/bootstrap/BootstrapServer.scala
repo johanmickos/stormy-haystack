@@ -3,7 +3,7 @@ package bootstrap
 import java.util.UUID
 
 import com.typesafe.scalalogging.StrictLogging
-import ex.{TAddress, TMessage}
+import networking.{TAddress, TMessage}
 import overlay.PartitionLookupTable
 import se.sics.kompics.Start
 import se.sics.kompics.network.Network

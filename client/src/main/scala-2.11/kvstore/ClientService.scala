@@ -2,8 +2,8 @@ package kvstore
 
 import com.google.common.util.concurrent.SettableFuture
 import com.typesafe.scalalogging.StrictLogging
-import ex.{TAddress, TMessage}
 import kv.{Operation, OperationResponse}
+import networking.{TAddress, TMessage}
 import overlay.{Ack, Connect, RouteMessage}
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl._

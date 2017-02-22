@@ -1,7 +1,7 @@
 package client
 
-import ex.TAddress
 import kvstore.ClientService
+import networking.TAddress
 import se.sics.kompics.network.Network
 import se.sics.kompics.{Channel, Component, ComponentDefinition, Init}
 import se.sics.kompics.network.netty.{NettyInit, NettyNetwork}

@@ -1,6 +1,6 @@
 package components.epfd
 
-import ex.TAddress
+import networking.TAddress
 import se.sics.kompics.KompicsEvent
 import se.sics.kompics.sl._
 import se.sics.kompics.timer.{ScheduleTimeout, Timeout}

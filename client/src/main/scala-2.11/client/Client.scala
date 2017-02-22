@@ -4,7 +4,7 @@ import java.net.InetSocketAddress
 import java.util.UUID
 
 import converters.TAddressConverter
-import ex.{TAddress, THeader, TMessage}
+import networking.{TAddress, THeader, TMessage}
 import org.apache.commons.cli.{CommandLineParser, DefaultParser, Options}
 import se.sics.kompics.Kompics
 import se.sics.kompics.config.{Config, Conversions, ValueMerger}

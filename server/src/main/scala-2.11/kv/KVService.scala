@@ -1,7 +1,7 @@
 package kv
 
 import com.typesafe.scalalogging.StrictLogging
-import ex.{TAddress, TMessage}
+import networking.{TAddress, TMessage}
 import overlay.Routing
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl.{ComponentDefinition, PositivePort, handle}

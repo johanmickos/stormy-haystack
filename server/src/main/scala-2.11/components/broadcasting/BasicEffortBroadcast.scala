@@ -1,7 +1,7 @@
 package components.broadcasting
 
 import components.Ports._
-import ex.TAddress
+import networking.TAddress
 import se.sics.kompics.sl._
 
 class BasicEffortBroadcast(init: Init[BasicEffortBroadcast]) extends ComponentDefinition {

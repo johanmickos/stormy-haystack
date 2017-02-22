@@ -1,6 +1,6 @@
 package overlay
 
-import ex.TAddress
+import networking.TAddress
 
 import scala.collection.{mutable, _}
 

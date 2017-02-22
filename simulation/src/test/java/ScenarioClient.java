@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  */
 
-import ex.TAddress;
-import ex.TMessage;
+import networking.TAddress;
+import networking.TMessage;
 import kv.Operation;
 import kv.OperationResponse;
 import org.slf4j.Logger;

@@ -1,7 +1,7 @@
 package components
 
+import networking.TAddress
 import se.sics.kompics.KompicsEvent
-import ex.TAddress
 import se.sics.kompics.sl._
 
 object Ports {
