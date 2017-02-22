@@ -53,6 +53,6 @@ read -n1 -s key
 
 echo -e "\nTerminating Stormy Haystack data servers"
 for ((i=0; i<N; i++)); do
-    pkill -f ${PKILL_PATTERN}
+    kill -9 ${PIDS[$i]}
 done
 echo "Done 👍"
