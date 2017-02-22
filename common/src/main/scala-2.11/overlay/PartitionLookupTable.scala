@@ -9,9 +9,9 @@ class PartitionLookupTable(val replicationFactor: Int)  {
     var partitions: mutable.MultiMap[Int, TAddress] = new mutable.HashMap[Int, mutable.Set[TAddress]] with mutable.MultiMap[Int, TAddress]
 
     def generate(nodes: collection.immutable.Set[TAddress]): Unit = {
-        val numPartitions = (nodes.size % replicationFactor) + 1
+        val numPartitions: Int = (nodes.size / replicationFactor).floor.toInt
         for ((node, i) <- nodes.zipWithIndex) {
-            val partition: Int = (i/numPartitions).floor.toInt
+            val partition: Int = i % numPartitions
             partitions.addBinding(partition, node)
         }
     }
