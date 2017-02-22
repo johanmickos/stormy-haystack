@@ -24,7 +24,7 @@ class BootstrapClient extends ComponentDefinition with StrictLogging {
     val network = requires[Network]
 
     val self: TAddress = cfg.getValue[TAddress]("stormy.address")
-    val server: TAddress = cfg.getValue[TAddress]("stormy.bootstrapAddress")
+    val server: TAddress = cfg.getValue[TAddress]("stormy.coordinatorAddress")
 
     private var state: State = ClientState.Waiting
     private var timeoutId: Option[String] = None

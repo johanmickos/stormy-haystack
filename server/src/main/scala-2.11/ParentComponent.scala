@@ -17,6 +17,7 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
     val overlay = create(classOf[VSOverlayManager], Init.NONE)
 
     val boot: Component = {
+        // TODO Make these static somewhere
         cfg.getValue[String]("stormy.type") match {
             case "coordinator" =>
                 create(classOf[BootstrapServer], Init.NONE)
