@@ -11,18 +11,17 @@ object Primitives {
 
     object PerfectP2PLink {
 
-        case class PerfectLinkInit(selfAddr: TAddress) extends Init[PerfectP2PLink]
-
-        case class PerfectLinkMessage(_src: TAddress, _dst: TAddress, _payload: KompicsEvent) extends TMessage(_src, _dst, _payload)
-
+        val PerfectLinkMessage = TMessage
     }
 
-    class PerfectP2PLink(pp2pInit: PerfectLinkInit) extends ComponentDefinition {
+    class PerfectP2PLink(init: Init[PerfectP2PLink]) extends ComponentDefinition {
 
         val pLink = provides[PerfectLink]
         val network = requires[Network]
 
-        val self = pp2pInit.selfAddr
+        val self: TAddress = init match {
+            case Init(self: TAddress) => self
+        }
 
         pLink uponEvent {
             case PL_Send(dest, payload) => handle {
