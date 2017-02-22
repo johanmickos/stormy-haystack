@@ -3,7 +3,6 @@ package components
 import components.Ports._
 import ex.{TAddress, TMessage}
 import se.sics.kompics.sl._
-import se.sics.kompics.KompicsEvent
 import se.sics.kompics.network.Network
 
 object Primitives {
