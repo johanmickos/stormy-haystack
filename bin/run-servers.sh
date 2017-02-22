@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-usage() {
-    echo "Usage: $0 [-n|--num-nodes N]"
-}
 
 print_info() {
     echo    ".-----------[BEGIN STATUS]------------."
@@ -16,7 +13,24 @@ print_info() {
     echo -e "'-----------[END   STATUS]------------'\n"
 }
 
-## Launches N data servers
+print_done() {
+    echo "Done 👍"
+}
+
+terminate() {
+    echo -e "\nTerminating Stormy Haystack data servers"
+    for ((i=0; i<N; i++)); do
+        kill -9 ${PIDS[$i]}
+    done
+}
+
+interrupt_handler() {
+    echo -e "\nCaught interrupt signal. Terminating..."
+    terminate
+    print_done
+    exit
+}
+
 PKILL_PATTERN="server.jar" # TODO Ensure this doesn't clash with other unrelated processes
 SCRIPT_LOC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 START=0
@@ -26,6 +40,11 @@ ARTIFACT_DIR="../out/artifacts/node_jar"
 JAR_LOC="${ARTIFACT_DIR}/server.jar"
 LOG_DIR="../logs/tmp"
 CONF_DIR="../conf"
+
+usage() {
+    echo "Usage: $0 [-n|--num-nodes N]"
+    echo -e "\n\tLaunches ${N} or N data nodes based on server-{i}.conf configuration files in ${CONF_DIR}"
+}
 
 if [ ! "$(pwd)" == "${SCRIPT_LOC}" ]; then
     echo "WARNING: Script needs to be run from its location. Exiting."
@@ -72,6 +91,8 @@ for ((i=0; i<N; i++)); do
     PIDS[$i]=$!
 done
 
+trap interrupt_handler INT
+
 
 print_info
 
@@ -82,4 +103,5 @@ echo -e "\nTerminating Stormy Haystack data servers"
 for ((i=0; i<N; i++)); do
     kill -9 ${PIDS[$i]}
 done
-echo "Done 👍"
+
+print_done
