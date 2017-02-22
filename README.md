@@ -18,6 +18,10 @@ algorithms are notoriously difficult to test and verify, so do not take this par
 tasks lightly.
 You are free to write your project in either Java or Scala Kompics.
 
+
+## Preliminary Architecture Overview
+![Suggested architecture](https://github.com/jarlopez/stormy-haystack/blob/master/prelim-report-arch.png)
+
 ## Tasks
 
 ### Introduction to Kompics (0 Points)
