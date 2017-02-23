@@ -121,7 +121,7 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
                     var (tsprime: Int, vsuffixPrime: mutable.Seq[Any]) = (0, mutable.Seq[Any]())
                     // TODO Is there a cleaner way to express the if-statement below?
                     // TODO Right now it's just copy-pasta from the PDF
-                    for ((tsPrimePrime: Int, vsuffixPrimePrime: mutable.Seq[Any]) <- readList.values) {
+                    for ((tsPrimePrime: Int, vsuffixPrimePrime: mutable.Seq[Any] @unchecked) <- readList.values) {
                         if ((tsprime < tsPrimePrime) || (tsprime == tsPrimePrime && vsuffixPrime.size < vsuffixPrimePrime.size)) {
                             tsprime = tsPrimePrime
                             vsuffixPrime = vsuffixPrimePrime

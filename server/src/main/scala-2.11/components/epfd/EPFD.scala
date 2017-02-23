@@ -15,8 +15,8 @@ class EPFD(epfdInit: Init[EPFD]) extends ComponentDefinition with StrictLogging 
 
     // TODO
     //configuration parameters
-    val (self, topology) = epfdInit match {
-        case Init(s: NetAddress, t: Set[NetAddress]) => (s, t)
+    val (self: NetAddress, topology: Set[NetAddress]) = epfdInit match {
+        case Init(s: NetAddress, t: Set[NetAddress] @unchecked) => (s, t)
     }
 
     //    val topology = cfg.getValue[List[TAddress]]("components.epfd.simulation.topology")
