@@ -27,8 +27,10 @@ import se.sics.kompics.network.Address;
 import se.sics.kompics.simulator.SimulationScenario;
 import se.sics.kompics.simulator.adaptor.Operation1;
 import se.sics.kompics.simulator.adaptor.distributions.extra.BasicIntSequentialDistribution;
+import se.sics.kompics.simulator.events.system.KillNodeEvent;
 import se.sics.kompics.simulator.events.system.StartNodeEvent;
 import stormy.ParentComponent;
+import stormy.components.epfd.EPFD;
 import stormy.networking.NetAddress;
 
 import java.net.InetSocketAddress;
@@ -164,5 +166,53 @@ public abstract class ScenarioGen {
                 terminateAfterTerminationOf(500000, startClients);
             }
         };
+    }
+
+
+    static Operation1 killNode = new Operation1<KillNodeEvent, Integer>() {
+        @Override
+        public KillNodeEvent generate(final Integer self) {
+            return new KillNodeEvent() {
+                NetAddress selfAdr;
+                {
+                    selfAdr = new NetAddress(new InetSocketAddress("192.193.0." + self, 10000));
+                }
+
+                @Override
+                public Address getNodeAddress() {
+                    return selfAdr;
+                }
+
+                @Override
+                public String toString() {
+                    return "Kill node in EPFD<" + selfAdr.toString() + ">";
+                }
+            };
+        }
+    };
+
+
+    public static SimulationScenario testEPFD_Properties() {
+        SimulationScenario testEPFD = new SimulationScenario() {
+            {
+                StochasticProcess killNode1 = new StochasticProcess() {
+                    {
+                        raise(1, killNode, new BasicIntSequentialDistribution(1));
+                    }
+                };
+
+                StochasticProcess killNode2 = new StochasticProcess() {
+                    {
+                        raise(1, killNode, new BasicIntSequentialDistribution(2));
+                    }
+                };
+
+                killNode1.start();
+                killNode2.startAfterTerminationOf(1000, killNode1);
+                terminateAfterTerminationOf(5000, killNode2);
+            }
+        };
+
+        return testEPFD;
     }
 }
