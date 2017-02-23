@@ -46,17 +46,15 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
 
     ctrl uponEvent {
         case _: Start => handle {
-            // TODO
+            logger.info("Starting abortable sequence consensus")
         }
     }
 
     def prefix(av: mutable.Seq[Any], al: Int): mutable.Seq[Any] = {
-        // TODO
-        av
+        av.take(al)
     }
     def suffix(av: mutable.Seq[Any], l: Int): mutable.Seq[Any]  = {
-        // TODO
-        av
+        av.takeRight(l)
     }
 
     asc uponEvent {
