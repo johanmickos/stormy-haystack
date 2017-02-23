@@ -2,24 +2,22 @@ package kvstore
 
 import com.google.common.util.concurrent.SettableFuture
 import com.typesafe.scalalogging.StrictLogging
-import kv.{Operation, OperationResponse}
-import networking.{NetAddress, NetMessage}
-import overlay.{Ack, Connect, RouteMessage}
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
 import se.sics.kompics.timer.{SchedulePeriodicTimeout, Timeout, Timer}
 import se.sics.kompics.{Kompics, KompicsEvent, Start}
+import stormy.kv.{Operation, OperationResponse}
+import stormy.networking.{NetAddress, NetMessage}
+import stormy.overlay.{Ack, Connect, RouteMessage}
 
 
 class ClientService extends ComponentDefinition with StrictLogging {
-    var network: PositivePort[Network] = requires[Network]
-    var timer: PositivePort[Timer] = requires[Timer]
-
     val self: NetAddress = config.getValue("stormy.address", classOf[NetAddress])
     val coordinator: NetAddress = config.getValue("stormy.coordinatorAddress", classOf[NetAddress])
-
-    private var connected: Option[Ack] = None
     private val pending = new java.util.TreeMap[String, SettableFuture[OperationResponse]]()
+    var network: PositivePort[Network] = requires[Network]
+    var timer: PositivePort[Timer] = requires[Timer]
+    private var connected: Option[Ack] = None
 
 
     ctrl uponEvent {
@@ -56,7 +54,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
             sf match {
                 case Some(value) =>
                     value.set(response)
-                    // TODO Why do we set this? Do we have a ref. to it anywhere else?
+                // TODO Why do we set this? Do we have a ref. to it anywhere else?
                 case None => logger.warn(s"Operation ID ${response.id} was not pending! Ignoring response.")
             }
         }
@@ -88,6 +86,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
 }
 
 case class ConnectTimeout(spt: SchedulePeriodicTimeout) extends Timeout(spt)
+
 case class OpWithFuture(op: Operation) extends KompicsEvent {
     val sf: SettableFuture[OperationResponse] = SettableFuture.create[OperationResponse]
 }

@@ -3,13 +3,13 @@ package client
 import java.net.InetSocketAddress
 import java.util.UUID
 
-import converters.TAddressConverter
-import networking.{NetAddress, NetHeader, NetMessage}
 import org.apache.commons.cli.{CommandLineParser, DefaultParser, Options}
 import se.sics.kompics.Kompics
 import se.sics.kompics.config.{Config, Conversions, ValueMerger}
 import se.sics.kompics.network.netty.serialization.Serializers
-import serialization.PickleSerializer
+import stormy.converters.TAddressConverter
+import stormy.networking.{NetAddress, NetHeader, NetMessage}
+import stormy.serialization.PickleSerializer
 
 object Client {
 

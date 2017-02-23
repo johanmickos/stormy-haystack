@@ -22,13 +22,14 @@
  * THE SOFTWARE.
  */
 
-import networking.NetAddress;
 import se.sics.kompics.Init;
 import se.sics.kompics.network.Address;
 import se.sics.kompics.simulator.SimulationScenario;
 import se.sics.kompics.simulator.adaptor.Operation1;
 import se.sics.kompics.simulator.adaptor.distributions.extra.BasicIntSequentialDistribution;
 import se.sics.kompics.simulator.events.system.StartNodeEvent;
+import stormy.ParentComponent;
+import stormy.networking.NetAddress;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;

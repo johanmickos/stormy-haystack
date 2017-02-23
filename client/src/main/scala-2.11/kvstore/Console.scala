@@ -2,21 +2,32 @@ package kvstore
 
 import java.io.PrintWriter
 
-import kv.OperationResponse
 import org.apache.log4j.{LogManager, Logger, PatternLayout, WriterAppender}
 import org.jline.reader.{LineReader, LineReaderBuilder}
 import org.jline.terminal.{Terminal, TerminalBuilder}
+import stormy.kv.OperationResponse
 
 import scala.collection.mutable
 
 object Console {
     private final val PROMPT: String = "> "
 }
+
 class Console(service: ClientService) extends Runnable {
+    val exitCommand: Command = new Command() {
+        override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
+            out.get.println("Exiting...")
+            System.exit(0)
+            true
+        }
+
+        override def usage: String = "exit|quit"
+
+        override def help: String = "Closes the shell"
+    }
+    val commandSet: Set[Command] = commands.values.toSet
     private val commands = new mutable.HashMap[String, Command]
-    private var out: Option[PrintWriter] = None
-    private var terminal: Terminal = _
-    private var reader: LineReader = _
+    var longestCom: Int = 0
 
     commands.put("op", new Command() {
         override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
@@ -35,26 +46,14 @@ class Console(service: ClientService) extends Runnable {
 
         override def help: String = "Just a test operation...replace with proper PUT|GET|CAS"
     })
-
-    val exitCommand: Command = new Command() {
-        override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
-            out.get.println("Exiting...")
-            System.exit(0)
-            true
-        }
-
-        override def usage: String = "exit|quit"
-
-        override def help: String = "Closes the shell"
-    }
+    var padTo = 0
 
     commands.put("exit", exitCommand)
     commands.put("quit", exitCommand)
-
-    var longestCom: Int = 0
-    var padTo = 0
-    val commandSet: Set[Command] = commands.values.toSet
-    for(command <- commandSet) {
+    private var out: Option[PrintWriter] = None
+    private var terminal: Terminal = _
+    private var reader: LineReader = _
+    for (command <- commandSet) {
         val useLength: Int = command.usage.length
         if (useLength > longestCom) {
             longestCom = useLength
@@ -68,7 +67,8 @@ class Console(service: ClientService) extends Runnable {
             .terminal(terminal)
             .build()
         out = Some(terminal.writer())
-        val layout: PatternLayout = new PatternLayout() // TODO Make coloredPatternLayout
+        val layout: PatternLayout = new PatternLayout()
+        // TODO Make coloredPatternLayout
         val rootLogger: Logger = LogManager.getRootLogger
         rootLogger.removeAllAppenders()
         rootLogger.addAppender(new WriterAppender(layout, out.get))
@@ -89,7 +89,7 @@ class Console(service: ClientService) extends Runnable {
                         cmd = cmd.toLowerCase
                         c = commands.get(cmd)
                     }
-                    if (c.isDefined &&  !c.get.execute(cmdline, service)) {
+                    if (c.isDefined && !c.get.execute(cmdline, service)) {
                         out.get.print("Usage: ")
                         out.get.println(c.get.usage)
                     }
@@ -101,10 +101,14 @@ class Console(service: ClientService) extends Runnable {
 
     abstract class Command {
         def execute(cmdline: Array[String], worker: ClientService): Boolean
+
         def usage: String
+
         def help: String
     }
+
 }
+
 /*
 public class Console implements Runnable {
 

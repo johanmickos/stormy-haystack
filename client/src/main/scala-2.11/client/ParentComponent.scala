@@ -1,12 +1,12 @@
 package client
 
 import kvstore.ClientService
-import networking.NetAddress
 import se.sics.kompics.network.Network
-import se.sics.kompics.{Channel, Component, ComponentDefinition, Init}
 import se.sics.kompics.network.netty.{NettyInit, NettyNetwork}
 import se.sics.kompics.timer.Timer
 import se.sics.kompics.timer.java.JavaTimer
+import se.sics.kompics.{Channel, Component, ComponentDefinition, Init}
+import stormy.networking.NetAddress
 
 class ParentComponent extends ComponentDefinition {
     val self: NetAddress = config.getValue("stormy.address", classOf[NetAddress])

@@ -22,19 +22,19 @@
  * THE SOFTWARE.
  */
 
-import networking.NetAddress;
-import networking.NetMessage;
-import kv.Operation;
-import kv.OperationResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import overlay.RouteMessage;
 import se.sics.kompics.ComponentDefinition;
 import se.sics.kompics.Handler;
 import se.sics.kompics.Positive;
 import se.sics.kompics.Start;
 import se.sics.kompics.network.Network;
 import se.sics.kompics.timer.Timer;
+import stormy.kv.Operation;
+import stormy.kv.OperationResponse;
+import stormy.networking.NetAddress;
+import stormy.networking.NetMessage;
+import stormy.overlay.RouteMessage;
 
 import java.util.Map;
 import java.util.TreeMap;

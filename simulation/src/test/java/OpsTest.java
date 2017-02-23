@@ -22,12 +22,12 @@
  * THE SOFTWARE.
  */
 
-import converters.TAddressConverter;
 import junit.framework.Assert;
 import org.junit.Test;
 import se.sics.kompics.config.Conversions;
 import se.sics.kompics.simulator.SimulationScenario;
 import se.sics.kompics.simulator.run.LauncherComp;
+import stormy.converters.TAddressConverter;
 
 public class OpsTest {
 

@@ -11,7 +11,7 @@
 
     <logger name="Kompics" level="INFO"/>
     <logger name="se.sics.kompics.timer.java.JavaTimer" level="INFO"/>
-    <logger name="components" level="DEBUG"/>
+    <logger name="stormy" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
