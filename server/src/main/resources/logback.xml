@@ -8,18 +8,12 @@
         </encoder>
     </appender>
 
-    <!-- <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>akka.log</file>
-        <append>false</append>
-        <encoder>
-            <pattern>%date{MM/dd HH:mm:ss} %-5level[%thread] %logger{1} - %msg%n</pattern>
-        </encoder>
-    </appender> -->
 
+    <logger name="Kompics" level="INFO"/>
+    <logger name="se.sics.kompics.timer.java.JavaTimer" level="INFO"/>
+    <logger name="components" level="DEBUG"/>
 
-    <logger name="Kompics" level="TRACE"/>
-
-    <root level="TRACE">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
 
