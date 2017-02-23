@@ -6,3 +6,5 @@ Additionally, the LUT pickler turns off Scala Pickling's structure sharing due t
 
 The pickling library attempted to share TAddress objects in the LUT to save space, but when unpickling the library pulled out the TMessagee itself and the Boot payload rather than the duplicated TAddress objects.
 
+# Abortable Sequence Consensus
+In the implementation of ASC, we make the assumption that Kompics' Network links implement FIFOPerfectP2PLink, despite that not being entirely true. We should state this assumption in the final report.
