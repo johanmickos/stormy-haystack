@@ -1,7 +1,9 @@
 import bootstrap.{BootstrapClient, BootstrapServer, Bootstrapping}
 import com.typesafe.scalalogging.StrictLogging
+import components.epfd.EPFD
 import kv.KVService
-import overlay.{Routing, OverlayManager}
+import networking.NetAddress
+import overlay.{OverlayManager, Routing}
 import se.sics.kompics.Component
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
@@ -12,13 +14,19 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
     val network: PositivePort[Network] = requires[Network]
     val timer: PositivePort[Timer] = requires[Timer]
 
+    // Us
+    val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
+
+
     // Children
     val kv = create(classOf[KVService], Init.NONE)
     val overlay = create(classOf[OverlayManager], Init.NONE)
+    val epfd = create(classOf[EPFD], Init.NONE)
+    val bootType: String = cfg.getValue[String]("stormy.type")
 
     val boot: Component = {
         // TODO Make these static somewhere
-        cfg.getValue[String]("stormy.type") match {
+        bootType match {
             case "coordinator" =>
                 create(classOf[BootstrapServer], Init.NONE)
             case "server" =>
@@ -34,5 +42,9 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
 
     connect[Routing](overlay -> kv)
     connect[Network](network -> kv)
+
+    connect[Routing](overlay -> epfd)
+    connect[Network](network -> epfd)
+    connect[Timer](timer -> epfd)
 
 }

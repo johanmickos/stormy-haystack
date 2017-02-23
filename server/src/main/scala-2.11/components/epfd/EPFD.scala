@@ -1,29 +1,27 @@
 package components.epfd
 
 import com.typesafe.scalalogging.StrictLogging
-import components.Ports.{PL_Deliver, PL_Send, PerfectLink}
-import networking.NetAddress
+import networking.{NetAddress, NetMessage}
+import overlay.{OverlayUpdate, Routing}
 import se.sics.kompics.Start
+import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
 import se.sics.kompics.timer.{ScheduleTimeout, Timer}
 
-class EPFD(epfdInit: Init[EPFD]) extends ComponentDefinition with StrictLogging {
+class EPFD extends ComponentDefinition with StrictLogging {
 
     val timer = requires[Timer]
-    val pLink = requires[PerfectLink]
+    val network = requires[Network]
+    val routing = requires[Routing]
     val epfd = provides[EventuallyPerfectFailureDetector]
 
-    // TODO
-    //configuration parameters
-    val (self: NetAddress, topology: Set[NetAddress]) = epfdInit match {
-        case Init(s: NetAddress, t: Set[NetAddress] @unchecked) => (s, t)
-    }
+    val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
+    val bootType: String = cfg.getValue[String]("stormy.type")
+    var topology: Set[NetAddress] = Set()
 
-    //    val topology = cfg.getValue[List[TAddress]]("components.epfd.simulation.topology")
-    val delta = cfg.getValue[Long]("components.epfd.simulation.delay")
-
-    var period = cfg.getValue[Long]("components.epfd.simulation.delay")
-    var alive = Set(cfg.getValue[List[NetAddress]]("components.epfd.simulation.topology"): _*)
+    var delta = cfg.getValue[Long]("stormy.components.epfd.delta")
+    var period = cfg.getValue[Long]("stormy.components.epfd.delay")
+    var alive: Set[NetAddress] = Set() ++ topology
     var suspected = Set[NetAddress]()
     var seqnum = 0
 
@@ -35,7 +33,24 @@ class EPFD(epfdInit: Init[EPFD]) extends ComponentDefinition with StrictLogging 
 
     ctrl uponEvent {
         case _: Start => handle {
-            startTimer(period)
+            if (bootType.toLowerCase().equals("coordinator")) {
+                startTimer(period)
+            }
+            logger.info("Starting EPFD")
+        }
+    }
+
+    routing uponEvent {
+        case OverlayUpdate(t: Iterable[NetAddress]) => handle {
+            logger.debug(s"Received topology update: $t\n Resetting...")
+            topology = t.toSet
+            alive = Set() ++ topology
+            suspected = Set[NetAddress]()
+            seqnum = 0 // TODO is this safe?
+            period = cfg.getValue[Long]("stormy.components.epfd.delay")
+        }
+        case whatever => handle {
+            logger.info(s"Received unknown routing event: $whatever")
         }
     }
 
@@ -55,18 +70,21 @@ class EPFD(epfdInit: Init[EPFD]) extends ComponentDefinition with StrictLogging 
                     logger.debug(s"Restoring $p")
                     trigger(Restore(p) -> epfd)
                 }
-                trigger(PL_Send(p, HeartbeatRequest(seqnum)) -> pLink)
+                trigger(NetMessage(self, p, HeartbeatRequest(seqnum)) -> network)
             }
             alive = Set[NetAddress]()
             startTimer(period)
         }
+        case whatever => handle {
+            logger.warn(s"Unknown timer event: $whatever")
+        }
     }
 
-    pLink uponEvent {
-        case PL_Deliver(src, HeartbeatRequest(seq)) => handle {
-            trigger(PL_Send(src, HeartbeatReply(seq)) -> pLink)
+    network uponEvent {
+        case NetMessage(src, `self`, HeartbeatRequest(seq)) => handle {
+            trigger(NetMessage(self, src, HeartbeatReply(seq)) -> network)
         }
-        case PL_Deliver(src, HeartbeatReply(seq)) => handle {
+        case NetMessage(src, `self`, HeartbeatReply(seq)) => handle {
             if (seq == seqnum || suspected.contains(src)) {
                 alive = alive + src
             }

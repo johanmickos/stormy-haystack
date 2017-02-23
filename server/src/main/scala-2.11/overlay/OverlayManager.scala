@@ -2,6 +2,7 @@ package overlay
 
 import bootstrap.{Booted, Bootstrapping, GetInitialAssignments, InitialAssignments}
 import com.typesafe.scalalogging.StrictLogging
+import components.Ports.EventuallyPerfectFailureDetector
 import networking.{NetAddress, NetMessage}
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl.{ComponentDefinition, PositivePort, _}
@@ -15,6 +16,7 @@ class OverlayManager extends ComponentDefinition with StrictLogging {
     val network: PositivePort[Network] = requires[Network]
     val timer: PositivePort[Timer] = requires[Timer]
     val bootstrap: PositivePort[Bootstrapping] = requires[Bootstrapping]
+    val epfd: PositivePort[EventuallyPerfectFailureDetector] = requires[EventuallyPerfectFailureDetector]
 
     val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
     val replicationFactor: Int = cfg.getValue[Int]("stormy.replicationFactor")
@@ -36,6 +38,7 @@ class OverlayManager extends ComponentDefinition with StrictLogging {
             logger.info("Got node assignment. Overlay ready")
             logger.debug(s"${update.getNodes}")
             lut = Some(update)
+            trigger(OverlayUpdate(update.getNodes) -> routing)
         }
     }
 
@@ -74,3 +77,4 @@ class OverlayManager extends ComponentDefinition with StrictLogging {
     }
 
 }
+

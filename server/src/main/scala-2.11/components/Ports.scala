@@ -1,6 +1,7 @@
 package components
 
 import networking.NetAddress
+import overlay.OverlayUpdate
 import se.sics.kompics.KompicsEvent
 import se.sics.kompics.sl._
 
@@ -22,6 +23,7 @@ object Ports {
     class EventuallyPerfectFailureDetector extends Port {
         indication[Suspect]
         indication[Restore]
+        request[OverlayUpdate]
     }
 
     case class BEB_Deliver(src: NetAddress, payload: KompicsEvent) extends KompicsEvent
