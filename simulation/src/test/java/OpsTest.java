@@ -54,4 +54,12 @@ public class OpsTest {
         }
     }
 
+    @Test
+    public void epfdSuspectTest() {
+        long seed = 123;
+        SimulationScenario.setSeed(seed);
+        SimulationScenario killPongersScenario = ScenarioGen.testEPFD_Properties();
+        killPongersScenario.simulate(LauncherComp.class);
+    }
+
 }

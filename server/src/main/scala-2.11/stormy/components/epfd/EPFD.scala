@@ -69,11 +69,11 @@ class EPFD(init: Init[EPFD]) extends ComponentDefinition with StrictLogging {
             for (p <- topology) {
                 if (!alive.contains(p) && !suspected.contains(p)) {
                     suspected = suspected + p
-                    logger.debug(s"Suspecting $p")
+                    logger.info(s"Suspecting $p")
                     trigger(Suspect(p) -> epfd)
                 } else if (alive.contains(p) && suspected.contains(p)) {
                     suspected = suspected - p
-                    logger.debug(s"Restoring $p")
+                    logger.info(s"Restoring $p")
                     trigger(Restore(p) -> epfd)
                 }
                 trigger(NetMessage(self, p, HeartbeatRequest(seqnum)) -> network)

@@ -22,6 +22,9 @@
  * THE SOFTWARE.
  */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import se.sics.kompics.Init;
 import se.sics.kompics.network.Address;
 import se.sics.kompics.simulator.SimulationScenario;
@@ -30,17 +33,14 @@ import se.sics.kompics.simulator.adaptor.distributions.extra.BasicIntSequentialD
 import se.sics.kompics.simulator.events.system.KillNodeEvent;
 import se.sics.kompics.simulator.events.system.StartNodeEvent;
 import stormy.ParentComponent;
-import stormy.components.epfd.EPFD;
 import stormy.networking.NetAddress;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Lars Kroll <lkroll@kth.se>
- */
 public abstract class ScenarioGen {
+    private final static Logger logger = LoggerFactory.getLogger(ScenarioGen.class);
 
     private static final Operation1 startServerOp = new Operation1<StartNodeEvent, Integer>() {
 
@@ -172,10 +172,11 @@ public abstract class ScenarioGen {
     static Operation1 killNode = new Operation1<KillNodeEvent, Integer>() {
         @Override
         public KillNodeEvent generate(final Integer self) {
+            logger.info("Generating KillNodeEvent");
             return new KillNodeEvent() {
-                NetAddress selfAdr;
+                final NetAddress selfAdr;
                 {
-                    selfAdr = new NetAddress(new InetSocketAddress("192.193.0." + self, 10000));
+                    selfAdr = new NetAddress(new InetSocketAddress("192.168.0." + self, 45678));
                 }
 
                 @Override
@@ -195,21 +196,31 @@ public abstract class ScenarioGen {
     public static SimulationScenario testEPFD_Properties() {
         SimulationScenario testEPFD = new SimulationScenario() {
             {
-                StochasticProcess killNode1 = new StochasticProcess() {
+
+                SimulationScenario.StochasticProcess startCluster = new SimulationScenario.StochasticProcess() {
                     {
-                        raise(1, killNode, new BasicIntSequentialDistribution(1));
+                        eventInterArrivalTime(constant(1000));
+                        raise(3, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
 
-                StochasticProcess killNode2 = new StochasticProcess() {
+                StochasticProcess killNode1 = new StochasticProcess() {
                     {
                         raise(1, killNode, new BasicIntSequentialDistribution(2));
                     }
                 };
 
-                killNode1.start();
+                StochasticProcess killNode2 = new StochasticProcess() {
+                    {
+                        raise(1, killNode, new BasicIntSequentialDistribution(3));
+                    }
+                };
+
+                startCluster.start();
+                killNode1.startAfterTerminationOf(50000, startCluster);
+
                 killNode2.startAfterTerminationOf(1000, killNode1);
-                terminateAfterTerminationOf(5000, killNode2);
+                terminateAfterTerminationOf(50000, killNode2);
             }
         };
 
