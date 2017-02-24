@@ -22,7 +22,7 @@ class EPFD(init: Init[EPFD]) extends ComponentDefinition with StrictLogging {
     val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
     val bootType: String = cfg.getValue[String]("stormy.type")
     var topology: Set[NetAddress] = init match {
-        case Init(nodes: Set[NetAddress]) => nodes
+        case Init(nodes: Set[NetAddress] @unchecked) => nodes
     }
 
     var delta = cfg.getValue[Long]("stormy.components.epfd.delta")

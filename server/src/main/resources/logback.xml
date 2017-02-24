@@ -9,7 +9,6 @@
     </appender>
 
 
-    <logger name="Kompics" level="INFO"/>
     <logger name="se.sics.kompics.timer.java.JavaTimer" level="INFO"/>
     <logger name="stormy" level="DEBUG"/>
 

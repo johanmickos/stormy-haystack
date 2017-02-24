@@ -25,8 +25,8 @@ class Console(service: ClientService) extends Runnable {
 
         override def help: String = "Closes the shell"
     }
-    val commandSet: Set[Command] = commands.values.toSet
     private val commands = new mutable.HashMap[String, Command]
+    val commandSet: Set[Command] = commands.values.toSet
     var longestCom: Int = 0
 
     commands.put("op", new Command() {
