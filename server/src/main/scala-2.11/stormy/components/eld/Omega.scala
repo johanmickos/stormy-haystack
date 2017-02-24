@@ -18,7 +18,7 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
         case Init(nodes: TreeMap[NetAddress, Int]@unchecked) => nodes
     }
     var suspected: Set[NetAddress] = Set()
-    var leader: Option[NetAddress] = None
+    var leader: Option[NetAddress] = Some(topology.head._1)
 
     def this() {
         this(Init(Set[NetAddress]()))
