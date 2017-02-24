@@ -8,7 +8,11 @@ import se.sics.kompics.timer.{ScheduleTimeout, Timer}
 import stormy.networking.{NetAddress, NetMessage}
 import stormy.overlay.{OverlayUpdate, Routing}
 
-class EPFD extends ComponentDefinition with StrictLogging {
+class EPFD(init: Init[EPFD]) extends ComponentDefinition with StrictLogging {
+
+    def this() {
+        this(Init(Set[NetAddress]()))
+    }
 
     val timer = requires[Timer]
     val network = requires[Network]
@@ -17,7 +21,9 @@ class EPFD extends ComponentDefinition with StrictLogging {
 
     val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
     val bootType: String = cfg.getValue[String]("stormy.type")
-    var topology: Set[NetAddress] = Set()
+    var topology: Set[NetAddress] = init match {
+        case Init(nodes: Set[NetAddress]) => nodes
+    }
 
     var delta = cfg.getValue[Long]("stormy.components.epfd.delta")
     var period = cfg.getValue[Long]("stormy.components.epfd.delay")
