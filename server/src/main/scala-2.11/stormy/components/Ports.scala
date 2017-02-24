@@ -16,16 +16,6 @@ object Ports {
         request[PL_Send]
     }
 
-    case class Suspect(src: NetAddress) extends KompicsEvent
-
-    case class Restore(src: NetAddress) extends KompicsEvent
-
-    class EventuallyPerfectFailureDetector extends Port {
-        indication[Suspect]
-        indication[Restore]
-        request[OverlayUpdate]
-    }
-
     case class BEB_Deliver(src: NetAddress, payload: KompicsEvent) extends KompicsEvent
 
     case class BEB_Broadcast(payload: KompicsEvent) extends KompicsEvent

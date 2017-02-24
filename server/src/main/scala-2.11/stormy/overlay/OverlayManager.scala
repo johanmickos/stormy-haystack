@@ -5,7 +5,7 @@ import se.sics.kompics.network.Network
 import se.sics.kompics.sl.{ComponentDefinition, PositivePort, _}
 import se.sics.kompics.timer.Timer
 import stormy.bootstrap.{Booted, Bootstrapping, GetInitialAssignments, InitialAssignments}
-import stormy.components.Ports.EventuallyPerfectFailureDetector
+import stormy.components.epfd.EventuallyPerfectFailureDetector
 import stormy.networking.{NetAddress, NetMessage}
 
 import scala.util.Random
