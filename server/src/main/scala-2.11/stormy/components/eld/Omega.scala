@@ -3,7 +3,8 @@ package stormy.components.eld
 import com.typesafe.scalalogging.StrictLogging
 import se.sics.kompics.Start
 import se.sics.kompics.sl._
-import stormy.components.epfd.{EventuallyPerfectFailureDetector, Restore, Suspect}
+import stormy.components.eld.ELDSpec.{EventualLeaderDetector, Trust}
+import stormy.components.epfd.EPDFSpec.{EventuallyPerfectFailureDetector, Restore, Suspect}
 import stormy.networking.NetAddress
 
 import scala.collection.immutable.TreeMap
@@ -18,7 +19,7 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
         case Init(nodes: TreeMap[NetAddress, Int]@unchecked) => nodes
     }
     var suspected: Set[NetAddress] = Set()
-    var leader: Option[NetAddress] = Some(topology.head._1)
+    var leader: Option[NetAddress] = None
 
     def this() {
         this(Init(Set[NetAddress]()))
@@ -27,6 +28,8 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
     ctrl uponEvent {
         case _: Start => handle {
             logger.info("Starting Omega")
+            leader = Some(topology.head._1)
+            trigger(Trust(leader.get) -> eld)
         }
     }
 

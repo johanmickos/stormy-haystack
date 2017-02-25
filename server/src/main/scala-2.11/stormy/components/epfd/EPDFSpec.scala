@@ -1,4 +1,4 @@
-package stormy.components
+package stormy.components.epfd
 
 import se.sics.kompics.KompicsEvent
 import se.sics.kompics.sl.Port
@@ -6,7 +6,8 @@ import se.sics.kompics.timer.{ScheduleTimeout, Timeout}
 import stormy.networking.NetAddress
 import stormy.overlay.OverlayUpdate
 
-package object epfd {
+object EPDFSpec {
+
     case class CheckTimeout(timeout: ScheduleTimeout) extends Timeout(timeout)
 
     case class Suspect(process: NetAddress) extends KompicsEvent

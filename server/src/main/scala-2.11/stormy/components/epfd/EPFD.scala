@@ -5,6 +5,7 @@ import se.sics.kompics.Start
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
 import se.sics.kompics.timer.{ScheduleTimeout, Timer}
+import stormy.components.epfd.EPDFSpec._
 import stormy.networking.{NetAddress, NetMessage}
 import stormy.overlay.{OverlayUpdate, Routing}
 

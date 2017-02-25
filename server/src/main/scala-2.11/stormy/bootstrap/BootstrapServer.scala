@@ -19,12 +19,15 @@ object State extends Enumeration {
 class BootstrapServer extends ComponentDefinition with StrictLogging {
 
     val boot: NegativePort[Bootstrapping] = provides[Bootstrapping]
+
+    var network: PositivePort[Network] = requires[Network]
+    var timer: PositivePort[Timer] = requires[Timer]
+
     val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
     val bootThreshold: Int = cfg.getValue[Int]("stormy.bootThreshold")
     private val active: collection.mutable.Set[NetAddress] = collection.mutable.Set()
     private val ready: collection.mutable.Set[NetAddress] = collection.mutable.Set()
-    var network: PositivePort[Network] = requires[Network]
-    var timer: PositivePort[Timer] = requires[Timer]
+
     private var state: State = State.Collecting
     private var timeoutId: Option[String] = None
     private var initialAssignment: Option[PartitionLookupTable] = None
