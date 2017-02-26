@@ -35,13 +35,16 @@ class KVService extends ComponentDefinition with StrictLogging {
             store(op.key) = op.value
             trigger(NetMessage(self, src, OperationResponse(op.id, Some(op.value), Ok, op)) -> network)
         }
-        case TOB_Deliver(src, op: CASOperation) => handle {
-            if (store.contains(op.key)) {
-                if (store(op.key).eq(op.refValue)) {
-                    store(op.key) = op.newValue
-                    trigger(NetMessage(self, src, OperationResponse(op.id, Some(op.newValue), Ok, op)) -> network)
+        case ctx@TOB_Deliver(src, op: CASOperation) => handle {
+            val key = op.key
+            val refValue = op.refValue
+            val newValue = op.newValue
+            if (store.contains(key)) {
+                if (store(key).equals(refValue)) {
+                    store(key) = newValue
+                    trigger(NetMessage(self, src, OperationResponse(op.id, Some(newValue), Ok, op)) -> network)
                 } else {
-                    trigger(NetMessage(self, src, OperationResponse(op.id, Some(op.newValue), CASFailed, op)) -> network)
+                    trigger(NetMessage(self, src, OperationResponse(op.id, Some(refValue), CASFailed, op)) -> network)
                 }
             } else {
                 trigger(NetMessage(self, src, OperationResponse(op.id, None, NotFound, op)) -> network)
