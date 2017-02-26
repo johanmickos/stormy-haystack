@@ -3,18 +3,18 @@ package client
 import kvstore.ClientService
 import se.sics.kompics.network.Network
 import se.sics.kompics.network.netty.{NettyInit, NettyNetwork}
+import se.sics.kompics.sl._
 import se.sics.kompics.timer.Timer
 import se.sics.kompics.timer.java.JavaTimer
-import se.sics.kompics.{Channel, Component, ComponentDefinition, Init}
 import stormy.networking.NetAddress
 
 class ParentComponent extends ComponentDefinition {
     val self: NetAddress = config.getValue("stormy.address", classOf[NetAddress])
-    val timer: Component = create(classOf[JavaTimer], Init.NONE)
-    val network: Component = create(classOf[NettyNetwork], new NettyInit(self))
-    val client: Component = create(classOf[ClientService], Init.NONE)
+    val timer = create(classOf[JavaTimer], Init.NONE)
+    val network = create(classOf[NettyNetwork], new NettyInit(self))
+    val client = create(classOf[ClientService], Init.NONE)
 
-    // TODO Remove java-like syntax
-    connect(timer.getPositive(classOf[Timer]), client.getNegative(classOf[Timer]), Channel.TWO_WAY)
-    connect(network.getPositive(classOf[Network]), client.getNegative(classOf[Network]), Channel.TWO_WAY)
+    connect[Timer](timer -> client)
+    connect[Network](network -> client)
+
 }

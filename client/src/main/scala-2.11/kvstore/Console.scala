@@ -29,27 +29,62 @@ class Console(service: ClientService) extends Runnable {
     val commandSet: Set[Command] = commands.values.toSet
     var longestCom: Int = 0
 
-    commands.put("op", new Command() {
+    commands.put("get", new Command() {
         override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
             if (cmdline.length == 2) {
-                val fr = worker.op(cmdline(1))
-                out.get.println("Operation sent! Awaiting response.")
+                val fr = worker.op(cmdline)
+//                out.get.println("Operation sent! Awaiting response.")
                 val resp: OperationResponse = fr.get()
-                out.get.println("Operation complete! Response was: " + resp.status)
+                out.get.println(s"[${resp.status}] ${resp.content.getOrElse("")}")
                 true
             } else {
                 false
             }
         }
 
-        override def usage: String = "op <key>"
+        override def usage: String = "get <key>"
 
-        override def help: String = "Just a test operation...replace with proper PUT|GET|CAS"
+        override def help: String = "Attempts to recover the value held at <key?"
     })
+    commands.put("put", new Command() {
+        override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
+            if (cmdline.length == 3) {
+                val fr = worker.op(cmdline)
+                val resp: OperationResponse = fr.get()
+                out.get.println(s"[${resp.status}] ${resp.content.getOrElse("")}")
+                true
+            } else {
+                false
+            }
+        }
+
+        override def usage: String = "put <key> <value>"
+
+        override def help: String = "Stores <value> at <key>"
+    })
+    commands.put("cas", new Command() {
+        override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
+            if (cmdline.length == 4) {
+                val fr = worker.op(cmdline)
+                val resp: OperationResponse = fr.get()
+                out.get.println(s"[${resp.status}] ${resp.content.getOrElse("")}")
+                true
+            } else {
+                false
+            }
+        }
+
+        override def usage: String = "cas <key> <refValue> <newValue>"
+
+        override def help: String = "Performs a compare-and-swap for <key>. If the value at <key> equals <refValue>, <newValue> is stored."
+    })
+
+
     var padTo = 0
 
     commands.put("exit", exitCommand)
     commands.put("quit", exitCommand)
+
     private var out: Option[PrintWriter] = None
     private var terminal: Terminal = _
     private var reader: LineReader = _
@@ -82,7 +117,7 @@ class Console(service: ClientService) extends Runnable {
             if (line.isDefined) {
                 line = Some(line.get.trim)
                 if (!line.get.isEmpty) {
-                    val cmdline = line.get.split(" ", 2)
+                    val cmdline = line.get.split(" ")
                     var cmd = cmdline(0)
                     var c = commands.get(cmd)
                     if (c == null) {
