@@ -66,9 +66,9 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
     routing uponEvent {
         case OverlayUpdate(lut: PartitionLookupTable) => handle {
             logger.debug(s"$self Received topology update: $lut. Resetting...")
-            // TODO XXX Should be within partition
+            val neighbors = lut.partitions.find(p => p._2.contains(self)).get._2
             rank = lut.ranks(self)
-            topology = lut.getNodes.toSet
+            topology = Set() ++ neighbors
             N = topology.size
         }
     }
