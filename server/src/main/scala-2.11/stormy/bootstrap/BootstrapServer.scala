@@ -40,7 +40,6 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
             spt.setTimeoutEvent(new BootstrapTimeout(spt))
             trigger(spt -> timer)
             timeoutId = Some(spt.getTimeoutEvent.getTimeoutId.toString)
-            active.add(self)
         }
     }
 
