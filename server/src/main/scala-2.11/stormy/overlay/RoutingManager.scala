@@ -10,6 +10,8 @@ import stormy.components.epfd.EPDFSpec.{EventuallyPerfectFailureDetector, Restor
 import stormy.kv.{Operation, OperationResponse}
 import stormy.networking.{NetAddress, NetMessage}
 
+import scala.util.Random
+
 
 class RoutingManager extends ComponentDefinition with StrictLogging {
     val routing: NegativePort[Routing] = provides[Routing]
@@ -26,6 +28,8 @@ class RoutingManager extends ComponentDefinition with StrictLogging {
     var suspected: Set[NetAddress] = Set()
 
     private var lut: Option[PartitionLookupTable] = None
+    private val rnd = new Random()
+
 
     bootstrap uponEvent {
         case GetInitialAssignments(nodes) => handle {
@@ -70,14 +74,11 @@ class RoutingManager extends ComponentDefinition with StrictLogging {
             logger.info(s"Received route message: ${payload.msg.toString}")
             // TODO Check that lut.get() doesn't return None
             val replicationGroup = lut.get.lookup(payload.key)
-            val randomLiveNode = replicationGroup.diff(suspected).head
+
+            val alive = replicationGroup.diff(suspected)
+            val randomLiveNode = alive.toVector(rnd.nextInt(alive.size))
             logger.debug(s"$self forwarding $payload to $randomLiveNode in $replicationGroup")
             trigger(NetMessage(source, randomLiveNode, BEB_Broadcast(payload.msg)) -> network)
-
-//            for (p <-replicationGroup) {
-//                 // BEB
-//                trigger(NetMessage(source, p, BEB_Broadcast(payload.msg)) -> network)
-//            }
         }
         case NetMessage(source, self, payload: Connect) => handle {
             lut match {
