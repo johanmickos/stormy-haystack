@@ -30,7 +30,7 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
     /**
       * Stores the current topology sorted according to the nodes' ranks
       */
-    var ranksTopology: TreeMap[Int, NetAddress] = TreeMap[Int, NetAddress](ranks.map(_.swap).toArray:_*)
+    var ranksTopology: TreeMap[Int, NetAddress] = TreeMap[Int, NetAddress](ranks.map(_.swap).toArray:_*)(implicitly[Ordering[Int]].reverse)
     var suspected: Set[NetAddress] = Set()
     var leader: Option[NetAddress] = None
     var neighbors: mutable.Set[NetAddress] = mutable.Set()
@@ -61,6 +61,7 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
             if (leader.isEmpty) {
                 leader = Some(ranksTopology.head._2)
                 logger.debug(s"Updated previously empty leader to $leader.get")
+                trigger(Trust(leader.get) -> eld)
             }
         }
     }
