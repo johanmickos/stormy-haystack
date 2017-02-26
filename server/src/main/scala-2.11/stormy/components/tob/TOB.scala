@@ -30,15 +30,11 @@ class TOB extends ComponentDefinition with StrictLogging {
     var unordered: Set[Operation] = Set()
 
     timer uponEvent {
-        case BroadcastTimeout(op: Operation, _) => handle {
+        case BroadcastTimeout(_) => handle {
+            // TODO Adjust timeout interval to account for increases/decreases in request volume
             logger.debug(s"$self received broadcast timeout. Sending all unordered messages $unordered")
             for (m <- unordered) {
                 trigger(NetMessage(self, leader, m) -> pLink)
-                val spt = new SchedulePeriodicTimeout(timeout, timeout)
-                spt.setTimeoutEvent(BroadcastTimeout(op, spt))
-                trigger(spt -> timer)
-                // TODO Kill all timeouts when shutting down
-                timeouts = timeouts + spt.getTimeoutEvent.getTimeoutId.toString
             }
         }
     }
@@ -49,7 +45,7 @@ class TOB extends ComponentDefinition with StrictLogging {
             unordered = unordered + op
 
             val spt = new SchedulePeriodicTimeout(timeout, timeout)
-            spt.setTimeoutEvent(BroadcastTimeout(op, spt))
+            spt.setTimeoutEvent(BroadcastTimeout(spt))
             trigger(spt -> timer)
             // TODO Kill all timeouts when shutting down
             timeouts = timeouts + spt.getTimeoutEvent.getTimeoutId.toString
@@ -83,7 +79,6 @@ class TOB extends ComponentDefinition with StrictLogging {
             logger.debug(s"$self AC_Decision made for $op")
 
             unordered = unordered - op
-            // TODO Kill timeout
             trigger(TOB_Deliver(self, op) -> tob)
         }
     }
@@ -93,4 +88,4 @@ class TOB extends ComponentDefinition with StrictLogging {
     }
 }
 
-case class BroadcastTimeout(m: Operation, sbt: SchedulePeriodicTimeout) extends Timeout(sbt)
+case class BroadcastTimeout(sbt: SchedulePeriodicTimeout) extends Timeout(sbt)
