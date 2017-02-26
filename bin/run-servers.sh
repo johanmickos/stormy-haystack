@@ -35,7 +35,6 @@ PKILL_PATTERN="server.jar" # TODO Ensure this doesn't clash with other unrelated
 SCRIPT_LOC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 START=0
 N=2
-MAX_N=5
 ARTIFACT_DIR="../out/artifacts/node_jar"
 JAR_LOC="${ARTIFACT_DIR}/server.jar"
 LOG_DIR="../logs/tmp"
@@ -67,10 +66,6 @@ for i in "$@"; do
     case ${i} in
         -n=*|--num-nodes=*)
         N="${i#*=}"
-        if [ $N > $MAX_N ]; then
-            echo "ERROR: Entered number of nodes ${N} exceeds maximum of ${MAX_N}"
-            exit 1
-        fi
         shift
         ;;
         -h|--help)
