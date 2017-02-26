@@ -33,6 +33,9 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
     var ranksTopology: TreeMap[Int, NetAddress] = TreeMap[Int, NetAddress](ranks.map(_.swap).toArray:_*)
     var suspected: Set[NetAddress] = Set()
     var leader: Option[NetAddress] = None
+    var neighbors: mutable.Set[NetAddress] = mutable.Set()
+
+    val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
 
     ctrl uponEvent {
         case _: Start => handle {
@@ -46,7 +49,19 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
 
     routing uponEvent {
         case OverlayUpdate(t: PartitionLookupTable) => handle {
-            logger.debug(s"Received topology update: $t. Resetting...")
+            logger.debug(s"$self Received topology update: ${t.partitions}. Resetting...")
+            ranks = t.ranks
+            suspected = Set()
+            val lut = t
+            neighbors = lut.partitions.find(p => p._2.contains(self)).get._2
+            for (p <- neighbors) {
+                val neighborRank = ranks(p)
+                ranksTopology += (neighborRank -> p)
+            }
+            if (leader.isEmpty) {
+                leader = Some(ranksTopology.head._2)
+                logger.debug(s"Updated previously empty leader to $leader.get")
+            }
         }
     }
 
@@ -70,7 +85,7 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
 
         if (leader.isEmpty || leader.get != newLeader) {
             leader = Some(newLeader)
-            logger.info(s"New leader chosen: $newLeader")
+            logger.info(s"$self New leader chosen: $newLeader")
             trigger(Trust(leader.get) -> eld)
         }
     }
