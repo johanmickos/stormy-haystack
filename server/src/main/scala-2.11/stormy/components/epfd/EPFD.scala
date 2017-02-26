@@ -40,9 +40,7 @@ class EPFD(init: Init[EPFD]) extends ComponentDefinition with StrictLogging {
 
     ctrl uponEvent {
         case _: Start => handle {
-            if (bootType.toLowerCase().equals("coordinator")) {
-                startTimer(period)
-            }
+            startTimer(period)
             logger.info("Starting EPFD")
         }
     }
