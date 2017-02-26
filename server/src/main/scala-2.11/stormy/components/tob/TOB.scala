@@ -23,7 +23,7 @@ class TOB extends ComponentDefinition with StrictLogging {
     val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
     var leader: NetAddress = self
 
-    val timeout: Long = cfg.getValue[Long]("stormy.keepAlivePeriod") * 2
+    val timeout: Long = cfg.getValue[Long]("stormy.components.tob.broadcastTimeout")
     private var timeouts: Set[String] = Set()
 
 
