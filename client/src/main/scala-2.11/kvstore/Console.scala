@@ -26,14 +26,12 @@ class Console(service: ClientService) extends Runnable {
         override def help: String = "Closes the shell"
     }
     private val commands = new mutable.HashMap[String, Command]
-    val commandSet: Set[Command] = commands.values.toSet
     var longestCom: Int = 0
 
     commands.put("get", new Command() {
         override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
             if (cmdline.length == 2) {
                 val fr = worker.op(cmdline)
-//                out.get.println("Operation sent! Awaiting response.")
                 val resp: OperationResponse = fr.get()
                 out.get.println(s"[${resp.status}] ${resp.content.getOrElse("")}")
                 true
@@ -85,6 +83,9 @@ class Console(service: ClientService) extends Runnable {
     commands.put("exit", exitCommand)
     commands.put("quit", exitCommand)
 
+    val commandSet: Set[Command] = commands.values.toSet
+
+
     private var out: Option[PrintWriter] = None
     private var terminal: Terminal = _
     private var reader: LineReader = _
@@ -124,9 +125,11 @@ class Console(service: ClientService) extends Runnable {
                         cmd = cmd.toLowerCase
                         c = commands.get(cmd)
                     }
-                    if (c.isDefined && !c.get.execute(cmdline, service)) {
-                        out.get.print("Usage: ")
-                        out.get.println(c.get.usage)
+                    if (c.isDefined ) {
+                        if (!c.get.execute(cmdline, service)) {
+                            out.get.print("Usage: ")
+                            out.get.println(c.get.usage)
+                        }
                     }
                     else out.get.println("Unknown command: " + cmd + " (use 'help' to see available commands)")
                 }
@@ -143,42 +146,3 @@ class Console(service: ClientService) extends Runnable {
     }
 
 }
-
-/*
-public class Console implements Runnable {
-
-    @Override
-    public void run() {
-        try {
-                String[] cmdline = line.split(" ", 2);
-                String cmd = cmdline[0];
-                Command c = commands.get(cmd);
-                if (c == null) {
-                    cmd = cmd.toLowerCase();
-                    c = commands.get(cmd);
-                }
-                if (c != null) {
-                    if (!c.execute(cmdline, service)) {
-                        out.print("Usage: ");
-                        out.println(c.usage());
-                    }
-                } else {
-                    out.println("Unkown command: " + cmd + " (use 'help' to see available commands)");
-                }
-            }
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    public static abstract class Command {
-
-        public abstract boolean execute(String[] cmdline, ClientService worker);
-
-        public abstract String usage();
-
-        public abstract String help();
-    }
-}
-
- */
