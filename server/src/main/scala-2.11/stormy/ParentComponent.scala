@@ -42,6 +42,26 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
                 create(classOf[BootstrapClient], Init.NONE)
         }
     }
+    if (bootType.equals("server")) {
+
+        // KV Store
+        connect[Routing](overlay -> kv)
+        connect[Network](network -> kv)
+
+        // Leader elector
+        connect[Routing](overlay -> omega)
+        connect[EventuallyPerfectFailureDetector](epfd -> omega)
+
+        // Abortable consensus
+        connect[Network](network -> asc)
+
+        // Total order broadcast
+        connect[Timer](timer -> tob)
+        connect[Network](network -> tob)
+        connect[EventuallyPerfectFailureDetector](epfd -> tob)
+        connect[EventualLeaderDetector](omega -> tob)
+        connect[AbortableConsensus](asc -> tob)
+    }
 
     // Bootstrap
     connect[Network](network -> boot)
@@ -51,27 +71,11 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
     connect[Bootstrapping](boot -> overlay)
     connect[Network](network -> overlay)
 
-    // KV Store
-    connect[Routing](overlay -> kv)
-    connect[Network](network -> kv)
 
     // Failure detector
     connect[Routing](overlay -> epfd)
     connect[Network](network -> epfd)
     connect[Timer](timer -> epfd)
 
-    // Leader elector
-    connect[Routing](overlay -> omega)
-    connect[EventuallyPerfectFailureDetector](epfd -> omega)
-
-    // Abortable consensus
-    connect[Network](network -> asc)
-
-    // Total order broadcast
-    connect[Timer](timer -> tob)
-    connect[Network](network -> tob)
-    connect[EventuallyPerfectFailureDetector](epfd -> tob)
-    connect[EventualLeaderDetector](omega -> tob)
-    connect[AbortableConsensus](asc -> tob)
 
 }
