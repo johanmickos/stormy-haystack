@@ -11,8 +11,10 @@ import scala.pickling.Defaults._
 import scala.pickling._
 import scala.pickling.json._
 
+import scala.pickling.shareNothing._
+
 // Custom Serialization for TAddress (the case class itself is fine, but the InetSocketAddress is problematic)
-object TAddressPickler extends Pickler[NetAddress] with Unpickler[NetAddress] with pickler.PrimitivePicklers with pickler.PrimitiveArrayPicklers {
+object NetAddressPickler extends Pickler[NetAddress] with Unpickler[NetAddress] with pickler.PrimitivePicklers with pickler.PrimitiveArrayPicklers {
 
     import java.net.{InetAddress, InetSocketAddress}
 
@@ -77,12 +79,18 @@ object PickleSerializer extends Serializer {
     override def identifier(): Int = 100
 
     // register our custom picklers for use with reflection picklers
-    implicit val addressPickler = TAddressPickler
+    implicit val addressPickler = NetAddressPickler
     scala.pickling.runtime.GlobalRegistry.picklerMap += (addressPickler.tag.key -> (x => addressPickler))
     scala.pickling.runtime.GlobalRegistry.unpicklerMap += (addressPickler.tag.key -> addressPickler)
     implicit val transportPickler = TransportPickler
     scala.pickling.runtime.GlobalRegistry.picklerMap += (transportPickler.tag.key -> (x => transportPickler))
     scala.pickling.runtime.GlobalRegistry.unpicklerMap += (transportPickler.tag.key -> transportPickler)
+
+    // Register custom pickler for LUT
+    implicit val nrpPickler = NodeRankPairPickler
+    scala.pickling.runtime.GlobalRegistry.picklerMap += (nrpPickler.tag.key -> (x => nrpPickler))
+    scala.pickling.runtime.GlobalRegistry.unpicklerMap += (nrpPickler.tag.key -> nrpPickler)
+
 
     // Register custom pickler for LUT
     implicit val lutPickler = LutPickler

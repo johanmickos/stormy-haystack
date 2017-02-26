@@ -39,6 +39,7 @@ import stormy.overlay.RouteMessage;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 /**
  * @author Lars Kroll <lkroll@kth.se>
@@ -61,7 +62,7 @@ public class ScenarioClient extends ComponentDefinition {
         public void handle(Start event) {
             int messages = res.get("messages", Integer.class);
             for (int i = 0; i < messages; i++) {
-                Operation op = new GetOperation("test" + i, Operation.genId(), self);
+                Operation op = new GetOperation("test" + i, UUID.randomUUID().toString(), self);
                 RouteMessage rm = new RouteMessage(op.key(), op); // don't know which partition is responsible, so ask the bootstrap server to forward it
                 trigger(new NetMessage<>(self, server, rm), net);
                 pending.put(op.id(), op.key());

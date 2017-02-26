@@ -31,7 +31,6 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
 
     private var N: Int = topology.size
 
-    // TODO We could abstract away logical clock into own type
     private var t: Int = 0
 
     private var prepts: Int = 0
@@ -44,11 +43,11 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
     private var pl: Int = 0
     private var proposedValues: mutable.Seq[Any] = mutable.Seq()
 
-    // TODO Determine if Any type needs to change
     private var readList: mutable.HashMap[NetAddress, Any] = mutable.HashMap()
 
     private var accepted: mutable.HashMap[NetAddress, Int] = mutable.HashMap()
     private var decided: mutable.HashMap[NetAddress, Int] = mutable.HashMap()
+
 
     ctrl uponEvent {
         case _: Start => handle {

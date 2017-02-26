@@ -1,5 +1,7 @@
 package kvstore
 
+import java.util.UUID
+
 import com.google.common.util.concurrent.SettableFuture
 import com.typesafe.scalalogging.StrictLogging
 import se.sics.kompics.network.Network
@@ -33,7 +35,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
     }
 
     loopbck uponEvent {
-        case ctx@OpWithFuture(op) => handle {
+        case ctx@OpWithFuture(op: Operation) => handle {
             val msg: RouteMessage = RouteMessage(op.key, op) // don't know which partition is responsible, so ask the bootstrap server to forward it
             trigger(NetMessage(self, coordinator, msg) -> network)
             pending.put(op.id, ctx.sf)
@@ -77,7 +79,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
     }
 
     private[kvstore] def op(key: String) = {
-        val op = GetOperation(key, Operation.genId(), self)
+        val op = GetOperation(key, UUID.randomUUID().toString, self)
         val owf = OpWithFuture(op)
         trigger(owf, onSelf)
         owf.sf

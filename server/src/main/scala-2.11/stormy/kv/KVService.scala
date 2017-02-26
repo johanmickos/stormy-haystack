@@ -47,10 +47,6 @@ class KVService extends ComponentDefinition with StrictLogging {
                 trigger(NetMessage(self, src, OperationResponse(op.id, None, NotFound, op)) -> network)
             }
         }
-        case TOB_Deliver(src, op: Operation) => handle {
-            logger.info(s"$self Got TOB_Deliver $op")
-            trigger(NetMessage(self, src, OperationResponse(op.id, None, NotImplemented, op)) -> network)
-        }
     }
 
     private def getStatus(value: Option[String]): Code = {
