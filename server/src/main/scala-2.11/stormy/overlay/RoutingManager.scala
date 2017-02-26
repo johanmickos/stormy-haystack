@@ -2,24 +2,28 @@ package stormy.overlay
 
 import com.typesafe.scalalogging.StrictLogging
 import se.sics.kompics.network.Network
-import se.sics.kompics.sl.{ComponentDefinition, PositivePort, _}
+import se.sics.kompics.sl.{ComponentDefinition, _}
 import se.sics.kompics.timer.Timer
 import stormy.bootstrap.{Booted, Bootstrapping, GetInitialAssignments, InitialAssignments}
-import stormy.components.epfd.EPDFSpec.EventuallyPerfectFailureDetector
+import stormy.components.Ports.{BEB_Broadcast, BestEffortBroadcast}
+import stormy.components.epfd.EPDFSpec.{EventuallyPerfectFailureDetector, Restore, Suspect}
+import stormy.kv.{Operation, OperationResponse}
 import stormy.networking.{NetAddress, NetMessage}
 
-import scala.util.Random
 
-class OverlayManager extends ComponentDefinition with StrictLogging {
+class RoutingManager extends ComponentDefinition with StrictLogging {
     val routing: NegativePort[Routing] = provides[Routing]
 
-    val network: PositivePort[Network] = requires[Network]
-    val timer: PositivePort[Timer] = requires[Timer]
-    val bootstrap: PositivePort[Bootstrapping] = requires[Bootstrapping]
-    val epfd: PositivePort[EventuallyPerfectFailureDetector] = requires[EventuallyPerfectFailureDetector]
+    val network = requires[Network]
+    val timer = requires[Timer]
+    val bootstrap = requires[Bootstrapping]
+    val epfd = requires[EventuallyPerfectFailureDetector]
+    val beb = requires[BestEffortBroadcast]
 
     val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
     val replicationFactor: Int = cfg.getValue[Int]("stormy.replicationFactor")
+
+    var suspected: Set[NetAddress] = Set()
 
     private var lut: Option[PartitionLookupTable] = None
 
@@ -42,16 +46,38 @@ class OverlayManager extends ComponentDefinition with StrictLogging {
         }
     }
 
+    epfd uponEvent {
+        case Suspect(node: NetAddress) => handle {
+            suspected = suspected + node
+        }
+        case Restore(node: NetAddress) => handle {
+            suspected = suspected - node
+        }
+    }
+
     network uponEvent {
+        // Below catches BEB_Broadcast to prevent having to have a
+        // BEB component for each replication group
+        case ctx@NetMessage(source, self, opResponse: OperationResponse) => handle {
+            logger.debug("Received response from cluster. Verifying majority vote.")
+            // TODO
+            trigger(NetMessage(source, opResponse.operation.client, opResponse) -> network)
+        }
+        case ctx@NetMessage(source, self, BEB_Broadcast(op: Operation)) => handle {
+            trigger(op -> routing)
+        }
         case ctx@NetMessage(source, self, payload: RouteMessage) => handle {
             logger.info(s"Received route message: ${payload.msg.toString}")
             // TODO Check that lut.get() doesn't return None
-            val partitions = lut.get.lookup(payload.key)
-            // TODO Broadcast message to its replication group
-            val rnd = new Random()
-            val randomTarget: NetAddress = partitions.toVector(rnd.nextInt(partitions.size))
-            logger.info(s"Forwarding message to random target ${randomTarget.getIp()}:${randomTarget.getPort}")
-            trigger(NetMessage(source, randomTarget, payload.msg) -> network)
+            val replicationGroup = lut.get.lookup(payload.key)
+            val randomLiveNode = replicationGroup.diff(suspected).head
+            logger.debug(s"$self forwarding $payload to $randomLiveNode in $replicationGroup")
+            trigger(NetMessage(source, randomLiveNode, BEB_Broadcast(payload.msg)) -> network)
+
+//            for (p <-replicationGroup) {
+//                 // BEB
+//                trigger(NetMessage(source, p, BEB_Broadcast(payload.msg)) -> network)
+//            }
         }
         case NetMessage(source, self, payload: Connect) => handle {
             lut match {

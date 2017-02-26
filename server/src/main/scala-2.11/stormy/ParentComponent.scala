@@ -13,9 +13,10 @@ import stormy.components.eld.Omega
 import stormy.components.epfd.EPDFSpec.EventuallyPerfectFailureDetector
 import stormy.components.epfd.EPFD
 import stormy.components.tob.TOB
+import stormy.components.tob.TOBSpec.TotalOrderBroadcast
 import stormy.kv.KVService
 import stormy.networking.NetAddress
-import stormy.overlay.{OverlayManager, Routing}
+import stormy.overlay.{Routing, RoutingManager}
 
 class ParentComponent extends ComponentDefinition with StrictLogging {
 
@@ -27,7 +28,7 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
 
     // Components
     val kv = create(classOf[KVService], Init.NONE)
-    val overlay = create(classOf[OverlayManager], Init.NONE)
+    val overlay = create(classOf[RoutingManager], Init.NONE)
     val epfd = create(classOf[EPFD], Init.NONE)
     val omega = create(classOf[Omega], Init.NONE)
     val asc = create(classOf[ASC], Init.NONE)
@@ -42,11 +43,13 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
                 create(classOf[BootstrapClient], Init.NONE)
         }
     }
+
     if (bootType.equals("server")) {
 
         // KV Store
         connect[Routing](overlay -> kv)
         connect[Network](network -> kv)
+        connect[TotalOrderBroadcast](tob -> kv)
 
         // Leader elector
         connect[Routing](overlay -> omega)
@@ -54,6 +57,7 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
 
         // Abortable consensus
         connect[Network](network -> asc)
+        connect[Routing](overlay -> asc)
 
         // Total order broadcast
         connect[Timer](timer -> tob)
@@ -61,6 +65,7 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
         connect[EventuallyPerfectFailureDetector](epfd -> tob)
         connect[EventualLeaderDetector](omega -> tob)
         connect[AbortableConsensus](asc -> tob)
+
     }
 
     // Bootstrap
@@ -76,6 +81,5 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
     connect[Routing](overlay -> epfd)
     connect[Network](network -> epfd)
     connect[Timer](timer -> epfd)
-
 
 }
