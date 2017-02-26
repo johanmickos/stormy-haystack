@@ -8,12 +8,13 @@ import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
 import se.sics.kompics.timer.{SchedulePeriodicTimeout, Timeout, Timer}
 import se.sics.kompics.{Kompics, KompicsEvent, Start}
-import stormy.kv.{GetOperation, Operation, OperationResponse}
+import stormy.kv._
 import stormy.networking.{NetAddress, NetMessage}
 import stormy.overlay.{Ack, Connect, RouteMessage}
 
 
 class ClientService extends ComponentDefinition with StrictLogging {
+
     val self: NetAddress = config.getValue("stormy.address", classOf[NetAddress])
     val coordinator: NetAddress = config.getValue("stormy.coordinatorAddress", classOf[NetAddress])
     private val pending = new java.util.TreeMap[String, SettableFuture[OperationResponse]]()
@@ -56,7 +57,6 @@ class ClientService extends ComponentDefinition with StrictLogging {
             sf match {
                 case Some(value) =>
                     value.set(response)
-                // TODO Why do we set this? Do we have a ref. to it anywhere else?
                 case None => logger.warn(s"Operation ID ${response.id} was not pending! Ignoring response.")
             }
         }
@@ -84,6 +84,26 @@ class ClientService extends ComponentDefinition with StrictLogging {
         trigger(owf, onSelf)
         owf.sf
     }
+    private[kvstore] def op(cmdline: Array[String]) = {
+        val key = cmdline(1)
+        var op: Option[Operation] = None
+        cmdline(0).toLowerCase match {
+            case "put" =>
+                val value = cmdline(2)
+                op = Some(PutOperation(key, value, UUID.randomUUID().toString, self))
+            case "get" =>
+                op = Some(GetOperation(key, UUID.randomUUID().toString, self))
+            case "cas" =>
+                val refValue = cmdline(2)
+                val newValue = cmdline(3)
+                op = Some(CASOperation(key, refValue, newValue, UUID.randomUUID().toString, self))
+
+        }
+        val owf = OpWithFuture(op.get)
+        trigger(owf, onSelf)
+        owf.sf
+    }
+
 
 }
 
