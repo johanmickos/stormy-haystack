@@ -7,6 +7,7 @@ import se.sics.kompics.sl._
 import stormy.components.Ports._
 import stormy.components.consensus.ASCMessages._
 import stormy.networking.{NetAddress, NetMessage}
+import stormy.overlay.{OverlayUpdate, PartitionLookupTable, Routing}
 
 import scala.collection.mutable
 
@@ -20,14 +21,15 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
     val asc = provides[AbortableConsensus]
 
     val fpl = requires[Network]
+    val routing = requires[Routing]
 
     val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
     // TODO Determine what rank is (from book)
-    private val (rank: Int, topology: Set[NetAddress]) = init match {
+    private var (rank: Int, topology: Set[NetAddress]) = init match {
         case Init(r: Int, t: Set[NetAddress]@unchecked) => (r, t)
     }
 
-    private val N: Int = topology.size
+    private var N: Int = topology.size
 
     // TODO We could abstract away logical clock into own type
     private var t: Int = 0
@@ -60,6 +62,16 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
 
     def suffix(av: mutable.Seq[Any], l: Int): mutable.Seq[Any] = {
         av.drop(l)
+    }
+
+    routing uponEvent {
+        case OverlayUpdate(lut: PartitionLookupTable) => handle {
+            logger.debug(s"$self Received topology update: $lut. Resetting...")
+            // TODO XXX Should be within partition
+            rank = lut.ranks(self)
+            topology = lut.getNodes.toSet
+            N = topology.size
+        }
     }
 
     asc uponEvent {
