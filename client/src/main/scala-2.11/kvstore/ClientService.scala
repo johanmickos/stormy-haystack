@@ -6,7 +6,7 @@ import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
 import se.sics.kompics.timer.{SchedulePeriodicTimeout, Timeout, Timer}
 import se.sics.kompics.{Kompics, KompicsEvent, Start}
-import stormy.kv.{Operation, OperationResponse}
+import stormy.kv.{GetOperation, Operation, OperationResponse}
 import stormy.networking.{NetAddress, NetMessage}
 import stormy.overlay.{Ack, Connect, RouteMessage}
 
@@ -49,7 +49,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
             th.start()
         }
         case NetMessage(source, self, response: OperationResponse) => handle {
-            logger.debug(s"Received respoonse $response")
+            logger.debug(s"Received response $response")
             val sf: Option[SettableFuture[OperationResponse]] = Some(pending.remove(response.id))
             sf match {
                 case Some(value) =>
@@ -77,8 +77,8 @@ class ClientService extends ComponentDefinition with StrictLogging {
     }
 
     private[kvstore] def op(key: String) = {
-        val op = new Operation(key, Operation.genId(), self)
-        val owf = new OpWithFuture(op)
+        val op = GetOperation(key, Operation.genId(), self)
+        val owf = OpWithFuture(op)
         trigger(owf, onSelf)
         owf.sf
     }

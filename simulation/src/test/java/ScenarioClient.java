@@ -30,6 +30,7 @@ import se.sics.kompics.Positive;
 import se.sics.kompics.Start;
 import se.sics.kompics.network.Network;
 import se.sics.kompics.timer.Timer;
+import stormy.kv.GetOperation;
 import stormy.kv.Operation;
 import stormy.kv.OperationResponse;
 import stormy.networking.NetAddress;
@@ -60,7 +61,7 @@ public class ScenarioClient extends ComponentDefinition {
         public void handle(Start event) {
             int messages = res.get("messages", Integer.class);
             for (int i = 0; i < messages; i++) {
-                Operation op = new Operation("test" + i, Operation.genId(), self);
+                Operation op = new GetOperation("test" + i, Operation.genId(), self);
                 RouteMessage rm = new RouteMessage(op.key(), op); // don't know which partition is responsible, so ask the bootstrap server to forward it
                 trigger(new NetMessage<>(self, server, rm), net);
                 pending.put(op.id(), op.key());
