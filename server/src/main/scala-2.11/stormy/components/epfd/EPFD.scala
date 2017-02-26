@@ -12,7 +12,7 @@ import stormy.overlay.{OverlayUpdate, Routing}
 class EPFD(init: Init[EPFD]) extends ComponentDefinition with StrictLogging {
 
     def this() {
-        this(Init(Set[NetAddress]()))
+        this(Init[EPFD](Set[NetAddress]()))
     }
 
     val timer = requires[Timer]
@@ -56,9 +56,6 @@ class EPFD(init: Init[EPFD]) extends ComponentDefinition with StrictLogging {
             seqnum = 0 // TODO is this safe?
             period = cfg.getValue[Long]("stormy.components.epfd.delay")
         }
-        case whatever => handle {
-            logger.info(s"Received unknown routing event: $whatever")
-        }
     }
 
     timer uponEvent {
@@ -81,9 +78,6 @@ class EPFD(init: Init[EPFD]) extends ComponentDefinition with StrictLogging {
             }
             alive = Set[NetAddress]()
             startTimer(period)
-        }
-        case whatever => handle {
-            logger.warn(s"Unknown timer event: $whatever")
         }
     }
 

@@ -6,13 +6,21 @@ import se.sics.kompics.sl._
 import stormy.components.eld.ELDSpec.{EventualLeaderDetector, Trust}
 import stormy.components.epfd.EPDFSpec.{EventuallyPerfectFailureDetector, Restore, Suspect}
 import stormy.networking.NetAddress
+import stormy.overlay.{OverlayUpdate, Routing}
 
 import scala.collection.immutable.TreeMap
 
 class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
 
+    def this() {
+        this(Init[Omega](TreeMap[NetAddress, Int]()))
+    }
+
+
     val eld = provides[EventualLeaderDetector]
+
     val epfd = requires[EventuallyPerfectFailureDetector]
+    val routing = requires[Routing]
 
     // TODO Handle changes in topology
     var topology: TreeMap[NetAddress, Int] = init match {
@@ -21,15 +29,19 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
     var suspected: Set[NetAddress] = Set()
     var leader: Option[NetAddress] = None
 
-    def this() {
-        this(Init(Set[NetAddress]()))
-    }
-
     ctrl uponEvent {
         case _: Start => handle {
             logger.info("Starting Omega")
-            leader = Some(topology.head._1)
-            trigger(Trust(leader.get) -> eld)
+            if (topology.nonEmpty) {
+                leader = Some(topology.head._1)
+                trigger(Trust(leader.get) -> eld)
+            }
+        }
+    }
+
+    routing uponEvent {
+        case OverlayUpdate(t: Iterable[NetAddress]) => handle {
+            logger.debug(s"Received topology update: $t. Resetting...")
         }
     }
 

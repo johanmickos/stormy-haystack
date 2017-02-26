@@ -13,13 +13,18 @@ import scala.collection.mutable
 // Implements AbortableSequenceConsensus
 class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
 
+    def this() {
+        this(Init[ASC](-1, Set[NetAddress]()))
+    }
+
     val asc = provides[AbortableConsensus]
+
     val fpl = requires[Network]
 
     val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
     // TODO Determine what rank is (from book)
-    private val (rank: Int, topology: mutable.Set[NetAddress]) = init match {
-        case Init(r: Int, t: mutable.Set[NetAddress]@unchecked) => (r, t)
+    private val (rank: Int, topology: Set[NetAddress]) = init match {
+        case Init(r: Int, t: Set[NetAddress]@unchecked) => (r, t)
     }
 
     private val N: Int = topology.size
