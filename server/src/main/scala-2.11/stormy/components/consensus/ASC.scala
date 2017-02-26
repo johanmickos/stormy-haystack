@@ -59,7 +59,7 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
     }
 
     def suffix(av: mutable.Seq[Any], l: Int): mutable.Seq[Any] = {
-        av.takeRight(l)
+        av.drop(l)
     }
 
     asc uponEvent {
