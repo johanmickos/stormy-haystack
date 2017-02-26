@@ -6,14 +6,15 @@ import se.sics.kompics.sl._
 import stormy.components.eld.ELDSpec.{EventualLeaderDetector, Trust}
 import stormy.components.epfd.EPDFSpec.{EventuallyPerfectFailureDetector, Restore, Suspect}
 import stormy.networking.NetAddress
-import stormy.overlay.{OverlayUpdate, Routing}
+import stormy.overlay.{OverlayUpdate, PartitionLookupTable, Routing}
 
 import scala.collection.immutable.TreeMap
+import scala.collection.mutable
 
 class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
 
     def this() {
-        this(Init[Omega](TreeMap[NetAddress, Int]()))
+        this(Init[Omega](mutable.HashMap[NetAddress, Int]()))
     }
 
 
@@ -22,25 +23,29 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
     val epfd = requires[EventuallyPerfectFailureDetector]
     val routing = requires[Routing]
 
-    // TODO Handle changes in topology
-    var topology: TreeMap[NetAddress, Int] = init match {
-        case Init(nodes: TreeMap[NetAddress, Int]@unchecked) => nodes
+
+    var ranks: mutable.HashMap[NetAddress, Int] = init match {
+        case Init(nodes: mutable.HashMap[NetAddress, Int]@unchecked) => nodes
     }
+    /**
+      * Stores the current topology sorted according to the nodes' ranks
+      */
+    var ranksTopology: TreeMap[Int, NetAddress] = TreeMap[Int, NetAddress](ranks.map(_.swap).toArray:_*)
     var suspected: Set[NetAddress] = Set()
     var leader: Option[NetAddress] = None
 
     ctrl uponEvent {
         case _: Start => handle {
             logger.info("Starting Omega")
-            if (topology.nonEmpty) {
-                leader = Some(topology.head._1)
+            if (ranksTopology.nonEmpty) {
+                leader = Some(ranksTopology.head._2)
                 trigger(Trust(leader.get) -> eld)
             }
         }
     }
 
     routing uponEvent {
-        case OverlayUpdate(t: Iterable[NetAddress]) => handle {
+        case OverlayUpdate(t: PartitionLookupTable) => handle {
             logger.debug(s"Received topology update: $t. Resetting...")
         }
     }
@@ -59,7 +64,10 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
     }
 
     private def leaderCheck(): Unit = {
-        val newLeader: NetAddress = (topology -- suspected).head._1
+        val newLeader = ranksTopology.filter( rankNodePair =>
+            !suspected.contains(rankNodePair._2)
+        ).head._2
+
         if (leader.isEmpty || leader.get != newLeader) {
             leader = Some(newLeader)
             logger.info(s"New leader chosen: $newLeader")

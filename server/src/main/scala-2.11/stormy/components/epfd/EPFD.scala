@@ -7,7 +7,7 @@ import se.sics.kompics.sl._
 import se.sics.kompics.timer.{ScheduleTimeout, Timer}
 import stormy.components.epfd.EPDFSpec._
 import stormy.networking.{NetAddress, NetMessage}
-import stormy.overlay.{OverlayUpdate, Routing}
+import stormy.overlay.{OverlayUpdate, PartitionLookupTable, Routing}
 
 class EPFD(init: Init[EPFD]) extends ComponentDefinition with StrictLogging {
 
@@ -48,9 +48,9 @@ class EPFD(init: Init[EPFD]) extends ComponentDefinition with StrictLogging {
     }
 
     routing uponEvent {
-        case OverlayUpdate(t: Iterable[NetAddress]) => handle {
-            logger.debug(s"Received topology update: $t. Resetting...")
-            topology = t.toSet
+        case OverlayUpdate(lut: PartitionLookupTable) => handle {
+            logger.debug(s"Received topology update: $lut. Resetting...")
+            topology = lut.getNodes.toSet
             alive = Set() ++ topology
             suspected = Set[NetAddress]()
             seqnum = 0 // TODO is this safe?

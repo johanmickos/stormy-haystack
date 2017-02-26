@@ -9,7 +9,7 @@ class Routing extends Port {
     indication[OverlayUpdate]
 }
 
-case class OverlayUpdate(topology: Iterable[NetAddress]) extends KompicsEvent
+case class OverlayUpdate(lut: PartitionLookupTable) extends KompicsEvent
 
 case class RouteMessage(key: String, msg: KompicsEvent) extends KompicsEvent
 

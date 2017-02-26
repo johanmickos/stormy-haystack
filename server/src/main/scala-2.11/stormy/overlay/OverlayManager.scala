@@ -38,7 +38,7 @@ class OverlayManager extends ComponentDefinition with StrictLogging {
             logger.info("Got node assignment. Overlay ready")
             logger.debug(s"${update.getNodes}")
             lut = Some(update)
-            trigger(OverlayUpdate(update.getNodes) -> routing)
+            trigger(OverlayUpdate(update) -> routing)
         }
     }
 
