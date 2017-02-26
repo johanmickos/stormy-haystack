@@ -146,7 +146,7 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
                     for (v <- proposedValues if !pv.contains(v)) {
                         pv = pv :+ v
                     }
-                    for (p <- topology if Some(readList(p)).isDefined) {
+                    for (p <- topology if readList.contains(p)) {
                         val lPrime = decided(p)
                         trigger(NetMessage(self, p, AcceptMessage(pts, suffix(pv, lPrime), lPrime, t)) -> fpl)
                     }
@@ -177,7 +177,7 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
                 accepted(source) = l
                 // TODO Is there a cleaner way to express this if-statement?
                 // if pl < l ∧ #({p ∈ Π | accepted[p] ≥ l}) > bN/2c then
-                val acceptors = for (p <- topology if accepted(p) >= l) yield p
+                val acceptors = for (p <- topology if accepted.contains(p) && accepted(p) >= l) yield p
                 if ((pl < l) && (acceptors.size > (N / 2).floor)) {
                     pl = l
                     for (p <- topology if Some(readList(p)).isDefined) {
