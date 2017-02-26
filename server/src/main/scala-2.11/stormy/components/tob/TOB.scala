@@ -31,6 +31,7 @@ class TOB extends ComponentDefinition with StrictLogging {
 
     timer uponEvent {
         case BroadcastTimeout(op: Operation, _) => handle {
+            logger.debug(s"$self received broadcast timeout. Sending all unordered messages $unordered")
             for (m <- unordered) {
                 trigger(NetMessage(self, leader, m) -> pLink)
                 val spt = new SchedulePeriodicTimeout(timeout, timeout)
@@ -43,6 +44,8 @@ class TOB extends ComponentDefinition with StrictLogging {
     }
     tob uponEvent {
         case TOB_Broadcast(op: Operation) => handle {
+            logger.debug(s"$self TOB_Broadcast for $op")
+
             unordered = unordered + op
 
             val spt = new SchedulePeriodicTimeout(timeout, timeout)
@@ -57,6 +60,8 @@ class TOB extends ComponentDefinition with StrictLogging {
     pLink uponEvent {
         case NetMessage(source, self, op: Operation) => handle {
             if (trusted()) {
+                logger.debug(s"$self Triggering AC_Propose for $op")
+
                 trigger(AC_Propose(op) -> asc)
             }
         }
@@ -64,6 +69,8 @@ class TOB extends ComponentDefinition with StrictLogging {
 
     omega uponEvent {
         case Trust(node: NetAddress) => handle {
+            logger.debug(s"$self Updating leader to $node")
+
             leader  = node
         }
     }
@@ -73,6 +80,8 @@ class TOB extends ComponentDefinition with StrictLogging {
             // Pass
         }
         case AC_Decide(op: Operation) => handle {
+            logger.debug(s"$self AC_Decision made for $op")
+
             unordered = unordered - op
             // TODO Kill timeout
             trigger(TOB_Deliver(self, op) -> tob)
