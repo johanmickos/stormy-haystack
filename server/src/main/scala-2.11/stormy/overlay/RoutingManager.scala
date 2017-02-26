@@ -60,13 +60,13 @@ class RoutingManager extends ComponentDefinition with StrictLogging {
     }
 
     network uponEvent {
-        // Below catches BEB_Broadcast to prevent having to have a
-        // BEB component for each replication group
         case ctx@NetMessage(source, self, opResponse: OperationResponse) => handle {
             logger.debug("Received response from cluster. Verifying majority vote.")
             // TODO
             trigger(NetMessage(source, opResponse.operation.client, opResponse) -> network)
         }
+        // Below catches BEB_Broadcast to prevent having to have a
+        // BEB component for each replication group
         case ctx@NetMessage(source, self, BEB_Broadcast(op: Operation)) => handle {
             trigger(op -> routing)
         }

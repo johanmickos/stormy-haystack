@@ -17,7 +17,7 @@ class KVService extends ComponentDefinition with StrictLogging {
 
     routing uponEvent {
         case op: Operation => handle {
-            logger.info("Received routed operation!")
+            logger.info(s"$self Received routed operation!")
             trigger(TOB_Broadcast(op) -> tob)
         }
     }
