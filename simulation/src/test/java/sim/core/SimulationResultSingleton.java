@@ -1,4 +1,4 @@
-/*
+package sim.core;/*
  * The MIT License
  *
  * Copyright 2017 Lars Kroll <lkroll@kth.se>.

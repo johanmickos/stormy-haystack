@@ -1,7 +1,9 @@
-import se.sics.kompics.ComponentDefinition;
 import se.sics.kompics.config.Conversions;
 import se.sics.kompics.simulator.SimulationScenario;
 import se.sics.kompics.simulator.run.LauncherComp;
+import sim.core.ScenarioGen;
+import sim.core.SimulationResultMap;
+import sim.core.SimulationResultSingleton;
 import stormy.converters.TAddressConverter;
 
 /**

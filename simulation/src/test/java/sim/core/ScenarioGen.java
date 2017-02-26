@@ -1,4 +1,4 @@
-/*
+package sim.core;/*
  * The MIT License
  *
  * Copyright 2017 Lars Kroll <lkroll@kth.se>.
@@ -32,6 +32,8 @@ import se.sics.kompics.simulator.adaptor.Operation1;
 import se.sics.kompics.simulator.adaptor.distributions.extra.BasicIntSequentialDistribution;
 import se.sics.kompics.simulator.events.system.KillNodeEvent;
 import se.sics.kompics.simulator.events.system.StartNodeEvent;
+import sim.wrapper.EldParent;
+import sim.wrapper.EpfdParent;
 import stormy.ParentComponent;
 import stormy.networking.NetAddress;
 
@@ -168,6 +170,41 @@ public abstract class ScenarioGen {
         };
     }
 
+    static Operation1 epfdGroupNode = new Operation1<StartNodeEvent, Integer>() {
+        @Override
+        public StartNodeEvent generate(final Integer self) {
+            logger.info("Generating StartEpfdNodeEvent");
+            return new StartNodeEvent() {
+                NetAddress selfAdr;
+                int port = self + 10000;
+
+                {
+                    selfAdr = new NetAddress(new InetSocketAddress("192.168.0." + self, 45678));
+                }
+
+                @Override
+                public Address getNodeAddress() {
+                    return selfAdr;
+                }
+
+                @Override
+                public Class getComponentDefinition() {
+                    return EpfdParent.class;
+                }
+
+                @Override
+                public Init getComponentInit() {
+                    return Init.NONE;
+                }
+
+                @Override
+                public String toString() {
+                    return "Start EPFD <" + selfAdr.toString() + ">";
+                }
+            };
+        }
+    };
+
 
     static Operation1 killNode = new Operation1<KillNodeEvent, Integer>() {
         @Override
@@ -175,6 +212,7 @@ public abstract class ScenarioGen {
             logger.info("Generating KillNodeEvent");
             return new KillNodeEvent() {
                 final NetAddress selfAdr;
+
                 {
                     selfAdr = new NetAddress(new InetSocketAddress("192.168.0." + self, 45678));
                 }
@@ -186,21 +224,59 @@ public abstract class ScenarioGen {
 
                 @Override
                 public String toString() {
-                    return "Kill node in EPFD<" + selfAdr.toString() + ">";
+                    return "Kill node <" + selfAdr.toString() + ">";
                 }
             };
         }
     };
 
+    static Operation1 eldGroupNode = new Operation1<StartNodeEvent, Integer>() {
+        @Override
+        public StartNodeEvent generate(final Integer self) {
+            logger.info("Generating StartEpfdNodeEvent");
+            return new StartNodeEvent() {
+                NetAddress selfAdr;
 
+                {
+                    selfAdr = new NetAddress(new InetSocketAddress("192.168.0." + self, 45678));
+                }
+
+                @Override
+                public Address getNodeAddress() {
+                    return selfAdr;
+                }
+
+                @Override
+                public Class getComponentDefinition() {
+                    return EldParent.class;
+                }
+
+                @Override
+                public Init getComponentInit() {
+                    return Init.NONE;
+                }
+
+                @Override
+                public String toString() {
+                    return "Start ELD <" + selfAdr.toString() + ">";
+                }
+            };
+        }
+    };
+
+    /**
+     * Simulation Scenario to test eventually perfect failure detector properties
+     * 1.	EPFD1: Strong completeness: Every crashed process is eventually detected by all correct processes
+     * 2.	EPFD2: Eventual strong accuracy: Eventually, no correct process is suspected by any correct process.
+     */
     public static SimulationScenario testEPFD_Properties() {
         SimulationScenario testEPFD = new SimulationScenario() {
             {
 
-                SimulationScenario.StochasticProcess startCluster = new SimulationScenario.StochasticProcess() {
+                SimulationScenario.StochasticProcess startEPFD = new SimulationScenario.StochasticProcess() {
                     {
-                        eventInterArrivalTime(constant(1000));
-                        raise(3, startServerOp, new BasicIntSequentialDistribution(1));
+                        eventInterArrivalTime(constant(500));
+                        raise(5, epfdGroupNode, new BasicIntSequentialDistribution(1));
                     }
                 };
 
@@ -216,14 +292,70 @@ public abstract class ScenarioGen {
                     }
                 };
 
-                startCluster.start();
-                killNode1.startAfterTerminationOf(50000, startCluster);
-
+                startEPFD.start();
+                killNode1.startAfterTerminationOf(5000, startEPFD);
                 killNode2.startAfterTerminationOf(1000, killNode1);
-                terminateAfterTerminationOf(50000, killNode2);
+                terminateAfterTerminationOf(50000, startEPFD);
             }
         };
 
         return testEPFD;
+    }
+
+
+    /**
+     * Simulation Scenario to test eventual leader detector properties
+     * 1. ELD1: eventual completeness: Eventually every correct node trusts some correct node.
+     * 2. ELD2: eventual agreement: Eventually no two correct nodes trust different correct node.
+     */
+    public static SimulationScenario testELD_Properties() {
+        SimulationScenario testLeaderElection = new SimulationScenario() {
+            {
+                StochasticProcess nodeGroupProcess = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(0));
+                        raise(5, eldGroupNode, new BasicIntSequentialDistribution(1));
+                    }
+                };
+
+                //Kill node in even group with ip ending with 2
+                StochasticProcess killNode2 = new StochasticProcess() {
+                    {
+                        raise(1, killNode, new BasicIntSequentialDistribution(2));
+                    }
+                };
+
+
+                //Restart node in even group with ip ending with 2
+                StochasticProcess restartNode2 = new StochasticProcess() {
+                    {
+                        raise(1, eldGroupNode, new BasicIntSequentialDistribution(2));
+                    }
+                };
+
+                StochasticProcess killNode1 = new StochasticProcess() {
+                    {
+                        raise(1, killNode, new BasicIntSequentialDistribution(1));
+                    }
+                };
+
+
+                //Restart node in even group with ip ending with 2
+                StochasticProcess restartNode1 = new StochasticProcess() {
+                    {
+                        raise(1, eldGroupNode, new BasicIntSequentialDistribution(1));
+                    }
+                };
+
+                nodeGroupProcess.start();
+                killNode1.startAfterTerminationOf(1000, nodeGroupProcess);
+                killNode2.startAfterTerminationOf(1000, killNode1);
+                restartNode2.startAfterTerminationOf(1000, killNode2);
+                restartNode1.startAfterTerminationOf(1000, restartNode2);
+                terminateAfterTerminationOf(1000, restartNode1);
+            }
+        };
+
+        return testLeaderElection;
     }
 }

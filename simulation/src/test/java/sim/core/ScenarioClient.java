@@ -1,4 +1,4 @@
-/*
+package sim.core;/*
  * The MIT License
  *
  * Copyright 2017 Lars Kroll <lkroll@kth.se>.
@@ -48,6 +48,7 @@ public class ScenarioClient extends ComponentDefinition {
 
     final static Logger LOG = LoggerFactory.getLogger(ScenarioClient.class);
     //******* Ports ******
+
     protected final Positive<Network> net = requires(Network.class);
     protected final Positive<Timer> timer = requires(Timer.class);
     //******* Fields ******
@@ -55,7 +56,9 @@ public class ScenarioClient extends ComponentDefinition {
     private final NetAddress server = config().getValue("stormy.coordinatorAddress", NetAddress.class);
     private final SimulationResultMap res = SimulationResultSingleton.getInstance();
     private final Map<String, String> pending = new TreeMap<>();
+
     //******* Handlers ******
+
     protected final Handler<Start> startHandler = new Handler<Start>() {
 
         @Override
@@ -71,6 +74,7 @@ public class ScenarioClient extends ComponentDefinition {
             }
         }
     };
+
     protected final Handler<NetMessage> handler = new Handler<NetMessage>() {
         @Override
         public void handle(NetMessage event) {
