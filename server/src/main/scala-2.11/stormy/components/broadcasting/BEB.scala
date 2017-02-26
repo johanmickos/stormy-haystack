@@ -4,9 +4,10 @@ import se.sics.kompics.sl._
 import stormy.components.Ports._
 import stormy.networking.NetAddress
 
-class BasicEffortBroadcast(init: Init[BasicEffortBroadcast]) extends ComponentDefinition {
+class BEB(init: Init[BEB]) extends ComponentDefinition {
 
     val pLink = requires[PerfectLink]
+
     val beb = provides[BestEffortBroadcast]
 
     val (self, topology) = init match {
