@@ -80,12 +80,14 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
     }
 
     private def leaderCheck(): Unit = {
-        val newLeader = ranksTopology.filter( rankNodePair =>
+        val newLeader: Option[NetAddress] = Some(ranksTopology.filter( rankNodePair =>
             !suspected.contains(rankNodePair._2)
-        ).head._2
-
-        if (leader.isEmpty || leader.get != newLeader) {
-            leader = Some(newLeader)
+        ).head._2)
+        if (newLeader.isEmpty) {
+            logger.warn("No new leader available!")
+            leader = Some(self)
+        } else if (leader.isEmpty || leader.get != newLeader.get) {
+            leader = newLeader
             logger.info(s"$self New leader chosen: $newLeader")
             trigger(Trust(leader.get) -> eld)
         }
