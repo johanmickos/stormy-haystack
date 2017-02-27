@@ -6,6 +6,7 @@ import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
 import stormy.components.Ports._
 import stormy.components.consensus.ASCMessages._
+import stormy.components.epfd.EPDFSpec.{EventuallyPerfectFailureDetector, Suspect}
 import stormy.networking.{NetAddress, NetMessage}
 import stormy.overlay.{OverlayUpdate, PartitionLookupTable, Routing}
 
@@ -22,6 +23,7 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
 
     val fpl = requires[Network]
     val routing = requires[Routing]
+    val epfd = requires[EventuallyPerfectFailureDetector]
 
     val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
     // TODO Determine what rank is (from book)
@@ -197,6 +199,18 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
                     al = al + 1
                 }
             }
+        }
+    }
+
+    epfd uponEvent {
+        case Suspect(node) => handle {
+            // TODO Fix this when implementing reconfiguration
+            topology = topology - node
+            readList.remove(node)
+            accepted.remove(node)
+            decided.remove(node)
+            N = topology.size
+            logger.info(s"$self removing $node from topology")
         }
     }
 }

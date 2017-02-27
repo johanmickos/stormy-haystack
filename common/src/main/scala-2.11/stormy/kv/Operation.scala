@@ -9,6 +9,7 @@ sealed trait Code
 case object NotImplemented extends Code
 case object NotFound extends Code
 case object CASFailed extends Code
+case object FailedPartition extends Code
 case object Ok extends Code
 
 

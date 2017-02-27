@@ -47,8 +47,8 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
     if (bootType.equals("server")) {
 
         // KV Store
-        connect[Routing](overlay -> kv)
         connect[Network](network -> kv)
+        connect[Routing](overlay -> kv)
         connect[TotalOrderBroadcast](tob -> kv)
 
         // Leader elector
@@ -58,6 +58,7 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
         // Abortable consensus
         connect[Network](network -> asc)
         connect[Routing](overlay -> asc)
+        connect[EventuallyPerfectFailureDetector](epfd -> asc)
 
         // Total order broadcast
         connect[Timer](timer -> tob)
@@ -75,6 +76,7 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
     // Overlay
     connect[Bootstrapping](boot -> overlay)
     connect[Network](network -> overlay)
+    connect[EventuallyPerfectFailureDetector](epfd -> overlay)
 
 
     // Failure detector

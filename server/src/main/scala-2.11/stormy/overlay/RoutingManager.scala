@@ -7,7 +7,7 @@ import se.sics.kompics.timer.Timer
 import stormy.bootstrap.{Booted, Bootstrapping, GetInitialAssignments, InitialAssignments}
 import stormy.components.Ports.{BEB_Broadcast, BestEffortBroadcast}
 import stormy.components.epfd.EPDFSpec.{EventuallyPerfectFailureDetector, Restore, Suspect}
-import stormy.kv.{Operation, OperationResponse, WrappedOperation}
+import stormy.kv._
 import stormy.networking.{NetAddress, NetMessage}
 
 import scala.util.Random
@@ -70,15 +70,20 @@ class RoutingManager extends ComponentDefinition with StrictLogging {
         case ctx@NetMessage(source, self, BEB_Broadcast(op: WrappedOperation)) => handle {
             trigger(op -> routing)
         }
-        case ctx@NetMessage(source, self, payload: RouteMessage) => handle {
+        case ctx@NetMessage(source, self, payload@RouteMessage(key, op: Operation)) => handle {
             logger.info(s"Received route message: ${payload.msg.toString}")
             // TODO Check that lut.get() doesn't return None
             val replicationGroup = lut.get.lookup(payload.key)
 
             val alive = replicationGroup.diff(suspected)
-            val randomLiveNode = alive.toVector(rnd.nextInt(alive.size))
-            logger.debug(s"$self forwarding $payload to $randomLiveNode in $replicationGroup")
-            trigger(NetMessage(self, randomLiveNode, BEB_Broadcast(WrappedOperation(self, payload.msg))) -> network)
+            if (alive.isEmpty) {
+                logger.warn("Dead partition!")
+                trigger(NetMessage(self, source, OperationResponse(op.id, None, FailedPartition, op)) -> network)
+            } else {
+                val randomLiveNode = alive.toVector(rnd.nextInt(alive.size))
+                logger.debug(s"$self forwarding $payload to $randomLiveNode in $replicationGroup")
+                trigger(NetMessage(self, randomLiveNode, BEB_Broadcast(WrappedOperation(self, payload.msg))) -> network)
+            }
         }
         case NetMessage(source, self, payload: Connect) => handle {
             lut match {
