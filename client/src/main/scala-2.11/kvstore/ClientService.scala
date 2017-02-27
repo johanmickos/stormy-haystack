@@ -55,9 +55,10 @@ class ClientService extends ComponentDefinition with StrictLogging {
             logger.debug(s"Received response $response")
             val sf: Option[SettableFuture[OperationResponse]] = Some(pending.remove(response.id))
             sf match {
-                case Some(value) =>
-                    value.set(response)
-                case None => logger.warn(s"Operation ID ${response.id} was not pending! Ignoring response.")
+                // TODO Confirm majority in coordinator's Router to avoid these checks
+                case None =>        // Ignore
+                case Some(null) =>  // Ignore
+                case Some(value) => value.set(response)
             }
         }
     }
