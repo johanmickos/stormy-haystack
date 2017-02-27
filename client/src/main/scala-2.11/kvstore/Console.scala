@@ -28,6 +28,22 @@ class Console(service: ClientService) extends Runnable {
     private val commands = new mutable.HashMap[String, Command]
     var longestCom: Int = 0
 
+    commands.put("status", new Command() {
+        override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
+            if (cmdline.length == 2) {
+                val fr = worker.op(cmdline)
+                val resp: OperationResponse = fr.get()
+                out.get.println(s"[${resp.status}] ${resp.content.getOrElse("")}")
+                true
+            } else {
+                false
+            }
+        }
+
+        override def usage: String = "status <key>"
+
+        override def help: String = "Requests the partition table status and key location information."
+    })
     commands.put("get", new Command() {
         override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
             if (cmdline.length == 2) {
@@ -42,7 +58,7 @@ class Console(service: ClientService) extends Runnable {
 
         override def usage: String = "get <key>"
 
-        override def help: String = "Attempts to recover the value held at <key?"
+        override def help: String = "Attempts to recover the value held at <key>"
     })
     commands.put("put", new Command() {
         override def execute(cmdline: Array[String], worker: ClientService): Boolean = {

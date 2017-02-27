@@ -70,6 +70,14 @@ class RoutingManager extends ComponentDefinition with StrictLogging {
         case ctx@NetMessage(source, self, BEB_Broadcast(op: WrappedOperation)) => handle {
             trigger(op -> routing)
         }
+        case ctx@NetMessage(source, self, RouteMessage(key, op: StatusRequest)) => handle {
+            val replicationGroup = lut.get.lookup(op.key)
+            val sb: StringBuilder = new StringBuilder()
+            sb.append("Status update for ").append(self).append(":\n")
+            sb.append(lut.toString).append("\n\n")
+            sb.append("Key ").append(op.key).append(" hashes to partition: ").append(replicationGroup)
+            trigger(NetMessage(self, source, OperationResponse(op.id, Some(sb.toString()), Ok, op)) -> network)
+        }
         case ctx@NetMessage(source, self, payload@RouteMessage(key, op: Operation)) => handle {
             logger.info(s"Received route message: ${payload.msg.toString}")
             // TODO Check that lut.get() doesn't return None

@@ -89,6 +89,8 @@ class ClientService extends ComponentDefinition with StrictLogging {
         val key = cmdline(1)
         var op: Option[Operation] = None
         cmdline(0).toLowerCase match {
+            case "status" =>
+                op = Some(StatusRequest(key, UUID.randomUUID().toString, self))
             case "put" =>
                 val value = cmdline(2)
                 op = Some(PutOperation(key, value, UUID.randomUUID().toString, self))

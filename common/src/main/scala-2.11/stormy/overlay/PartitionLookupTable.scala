@@ -38,11 +38,13 @@ class PartitionLookupTable(val replicationFactor: Int) {
 
     override def toString = {
         val sb: StringBuilder = new StringBuilder()
-        sb.append("PartitionLookupTable(\n")
+        sb.append("PartitionLookupTable (\n")
         partitions.keySet.toIterator.foreach { key =>
             sb.append(key)
             sb.append(" -> ")
-            sb.append(partitions(key))
+            for (node <- partitions(key)) {
+                sb.append(node.getIp.toString).append(":").append(node.getPort).append("[").append(ranks(node)).append("]")
+            }
             sb.append("\n")
         }
         sb.append(")")
