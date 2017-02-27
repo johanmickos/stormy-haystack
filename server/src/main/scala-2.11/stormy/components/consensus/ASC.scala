@@ -35,13 +35,13 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
 
     private var prepts: Int = 0
     private var ats: Int = 0
-    private var av: mutable.Seq[Any] = mutable.Seq()
+    private var av: List[Any] = List()
     private var al: Int = 0
 
     private var pts: Int = 0
-    private var pv: mutable.Seq[Any] = mutable.Seq()
+    private var pv: List[Any] = List()
     private var pl: Int = 0
-    private var proposedValues: mutable.Seq[Any] = mutable.Seq()
+    private var proposedValues: List[Any] = List()
 
     private var readList: mutable.HashMap[NetAddress, Any] = mutable.HashMap()
 
@@ -55,11 +55,11 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
         }
     }
 
-    def prefix(av: mutable.Seq[Any], al: Int): mutable.Seq[Any] = {
+    def prefix(av: List[Any], al: Int): List[Any] = {
         av.take(al)
     }
 
-    def suffix(av: mutable.Seq[Any], l: Int): mutable.Seq[Any] = {
+    def suffix(av: List[Any], l: Int): List[Any] = {
         av.drop(l)
     }
 
@@ -83,7 +83,7 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
                 pts = t * N + rank
                 pv = prefix(av, al)
                 pl = 0
-                proposedValues = mutable.Seq(v)
+                proposedValues = List(v)
                 readList = mutable.HashMap()
                 accepted = mutable.HashMap()
                 decided = mutable.HashMap()
@@ -95,7 +95,7 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
             } else if (!pv.contains(v)) {
                 pv = pv :+ v
                 for (p <- topology) {
-                    trigger(NetMessage(self, p, AcceptMessage(pts, Seq(v), pv.size - 1, t)) -> fpl)
+                    trigger(NetMessage(self, p, AcceptMessage(pts, List(v), pv.size - 1, t)) -> fpl)
                 }
             }
         }
@@ -111,7 +111,9 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
                 trigger(NetMessage(self, source, NackMessage(ts, t)) -> fpl)
             } else {
                 prepts = ts
-                trigger(NetMessage(self, source, PrepareAckMessage(ts, ats, suffix(av, l), al, t)) -> fpl)
+                val sfx: List[Any] = suffix(av, l)
+                logger.debug(s"Sending PrepareAckMessage with suffix $sfx")
+                trigger(NetMessage(self, source, PrepareAckMessage(ts, ats, sfx, al, t)) -> fpl)
             }
         }
         case NetMessage(_, `self`, NackMessage(ptsPrime, tPrime)) => handle {
@@ -132,10 +134,10 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
                 readList(source) = (ts, vsuffix)
                 decided(source) = l
                 if (readList.size == ((N / 2).floor + 1)) {
-                    var (tsprime: Int, vsuffixPrime: mutable.Seq[Any]) = (0, mutable.Seq[Any]())
+                    var (tsprime: Int, vsuffixPrime: List[Any]) = (0, List[Any]())
                     // TODO Is there a cleaner way to express the if-statement below?
                     // TODO Right now it's just copy-pasta from the PDF
-                    for ((tsPrimePrime: Int, vsuffixPrimePrime: mutable.Seq[Any]@unchecked) <- readList.values) {
+                    for ((tsPrimePrime: Int, vsuffixPrimePrime: List[Any]@unchecked) <- readList.values) {
                         if ((tsprime < tsPrimePrime) || (tsprime == tsPrimePrime && vsuffixPrime.size < vsuffixPrimePrime.size)) {
                             tsprime = tsPrimePrime
                             vsuffixPrime = vsuffixPrimePrime
@@ -147,7 +149,9 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
                     }
                     for (p <- topology if readList.contains(p)) {
                         val lPrime = decided(p)
-                        trigger(NetMessage(self, p, AcceptMessage(pts, suffix(pv, lPrime), lPrime, t)) -> fpl)
+                        val sfx = suffix(pv, lPrime)
+                        logger.debug(s"Sending AcceptMessage with suffix $sfx")
+                        trigger(NetMessage(self, p, AcceptMessage(pts, sfx, lPrime, t)) -> fpl)
                     }
                 } else if (readList.size > ((N / 2).floor + 1)) {
                     trigger(NetMessage(self, source, AcceptMessage(pts, suffix(pv, l), l, t)) -> fpl)
@@ -196,6 +200,7 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
         }
     }
 }
+
 
 
 
