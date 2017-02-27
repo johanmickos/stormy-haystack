@@ -45,7 +45,6 @@ object LutPickler extends Pickler[PartitionLookupTable]
             fieldBuilder.hintTag(FastTypeTag[Array[NodeRankPair]])
             fieldBuilder.beginEntry(coll)
             fieldBuilder.beginCollection(coll.length)
-
             for (el <- coll) {
                 fieldBuilder.hintTag(NodeRankPairPickler.tag)
                 fieldBuilder.putElement( pb => {

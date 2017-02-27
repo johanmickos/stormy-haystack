@@ -15,8 +15,7 @@ class PartitionLookupTable(val replicationFactor: Int) {
         for ((node, i) <- nodes.zipWithIndex) {
             val partition: Int = i % numPartitions
             partitions.addBinding(partition, node)
-            val rank = i % replicationFactor + 1
-            ranks(node) = rank
+            ranks(node) = math.abs(node.hashCode())
         }
     }
 

@@ -52,10 +52,15 @@ class RoutingManager extends ComponentDefinition with StrictLogging {
 
     epfd uponEvent {
         case Suspect(node: NetAddress) => handle {
+            logger.info(s"Suspecting ${node}")
             suspected = suspected + node
         }
         case Restore(node: NetAddress) => handle {
+            logger.info(s"Restoring ${node}")
             suspected = suspected - node
+        }
+        case unknown => handle {
+            logger.info(s"Received unknown event $unknown")
         }
     }
 
@@ -75,6 +80,7 @@ class RoutingManager extends ComponentDefinition with StrictLogging {
             val sb: StringBuilder = new StringBuilder()
             sb.append("Status update for ").append(self).append(":\n")
             sb.append(lut.toString).append("\n\n")
+            sb.append("Suspected nodes: ").append(suspected).append("\n\n")
             sb.append("Key ").append(op.key).append(" hashes to partition: ").append(replicationGroup)
             trigger(NetMessage(self, source, OperationResponse(op.id, Some(sb.toString()), Ok, op)) -> network)
         }
