@@ -8,7 +8,7 @@ import stormy.components.Ports.{AC_Abort, AC_Decide, AC_Propose, AbortableConsen
 import stormy.components.eld.ELDSpec.{EventualLeaderDetector, Trust}
 import stormy.components.epfd.EPDFSpec.EventuallyPerfectFailureDetector
 import stormy.components.tob.TOBSpec.{TOB_Broadcast, TOB_Deliver, TotalOrderBroadcast}
-import stormy.kv.Operation
+import stormy.kv.{Operation, WrappedOperation}
 import stormy.networking.{NetAddress, NetMessage}
 
 class TOB extends ComponentDefinition with StrictLogging {
@@ -27,7 +27,7 @@ class TOB extends ComponentDefinition with StrictLogging {
     private var timeouts: Set[String] = Set()
 
 
-    var unordered: Set[Operation] = Set()
+    var unordered: Set[WrappedOperation] = Set()
 
     timer uponEvent {
         case BroadcastTimeout(_) => handle {
@@ -39,7 +39,7 @@ class TOB extends ComponentDefinition with StrictLogging {
         }
     }
     tob uponEvent {
-        case TOB_Broadcast(op: Operation) => handle {
+        case TOB_Broadcast(op: WrappedOperation) => handle {
             logger.debug(s"$self TOB_Broadcast for $op")
 
             unordered = unordered + op
@@ -54,7 +54,7 @@ class TOB extends ComponentDefinition with StrictLogging {
     }
 
     pLink uponEvent {
-        case NetMessage(source, self, op: Operation) => handle {
+        case NetMessage(source, self, op: WrappedOperation) => handle {
             if (trusted()) {
                 logger.debug(s"$self Triggering AC_Propose for $op")
 
@@ -75,7 +75,7 @@ class TOB extends ComponentDefinition with StrictLogging {
         case AC_Abort => handle {
             // Pass
         }
-        case AC_Decide(op: Operation) => handle {
+        case AC_Decide(op: WrappedOperation) => handle {
             logger.debug(s"$self AC_Decision made for $op")
 
             unordered = unordered - op

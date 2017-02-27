@@ -7,7 +7,7 @@ import se.sics.kompics.timer.Timer
 import stormy.bootstrap.{Booted, Bootstrapping, GetInitialAssignments, InitialAssignments}
 import stormy.components.Ports.{BEB_Broadcast, BestEffortBroadcast}
 import stormy.components.epfd.EPDFSpec.{EventuallyPerfectFailureDetector, Restore, Suspect}
-import stormy.kv.{Operation, OperationResponse}
+import stormy.kv.{Operation, OperationResponse, WrappedOperation}
 import stormy.networking.{NetAddress, NetMessage}
 
 import scala.util.Random
@@ -67,7 +67,7 @@ class RoutingManager extends ComponentDefinition with StrictLogging {
         }
         // Below catches BEB_Broadcast to prevent having to have a
         // BEB component for each replication group
-        case ctx@NetMessage(source, self, BEB_Broadcast(op: Operation)) => handle {
+        case ctx@NetMessage(source, self, BEB_Broadcast(op: WrappedOperation)) => handle {
             trigger(op -> routing)
         }
         case ctx@NetMessage(source, self, payload: RouteMessage) => handle {
@@ -78,7 +78,7 @@ class RoutingManager extends ComponentDefinition with StrictLogging {
             val alive = replicationGroup.diff(suspected)
             val randomLiveNode = alive.toVector(rnd.nextInt(alive.size))
             logger.debug(s"$self forwarding $payload to $randomLiveNode in $replicationGroup")
-            trigger(NetMessage(source, randomLiveNode, BEB_Broadcast(payload.msg)) -> network)
+            trigger(NetMessage(self, randomLiveNode, BEB_Broadcast(WrappedOperation(self, payload.msg))) -> network)
         }
         case NetMessage(source, self, payload: Connect) => handle {
             lut match {

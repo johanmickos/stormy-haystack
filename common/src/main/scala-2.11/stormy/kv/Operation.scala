@@ -24,5 +24,7 @@ final case class GetOperation(key: String, id: String, client: NetAddress) exten
 final case class PutOperation(key: String, value: String, id: String, client: NetAddress) extends Operation
 final case class CASOperation(key: String, refValue: String, newValue: String, id: String, client: NetAddress) extends Operation
 
+final case class WrappedOperation(source: NetAddress, op: KompicsEvent) extends KompicsEvent
+
 case class OperationResponse(id: String, content: Option[String], status: Code, operation: Operation) extends KompicsEvent
 
