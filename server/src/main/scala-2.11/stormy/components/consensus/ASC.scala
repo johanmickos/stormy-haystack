@@ -68,9 +68,9 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
     routing uponEvent {
         case OverlayUpdate(lut: PartitionLookupTable) => handle {
             logger.debug(s"$self Received topology update: $lut. Resetting...")
-            val neighbors = lut.partitions.find(p => p._2.contains(self)).get._2
+            val partition = lut.partitions.find(p => p._2.contains(self)).get._2
             rank = lut.ranks(self)
-            topology = Set() ++ neighbors
+            topology = Set() ++ partition
             N = topology.size
         }
     }
@@ -96,7 +96,8 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
                 proposedValues = proposedValues :+ v
             } else if (!pv.contains(v)) {
                 pv = pv :+ v
-                for (p <- topology) {
+                // TODO
+                for (p <- topology if readList.get(p).isDefined) {
                     trigger(NetMessage(self, p, AcceptMessage(pts, List(v), pv.size - 1, t)) -> fpl)
                 }
             }
@@ -149,7 +150,7 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
                     for (v <- proposedValues if !pv.contains(v)) {
                         pv = pv :+ v
                     }
-                    for (p <- topology if readList.contains(p)) {
+                    for (p <- topology if readList.contains(p)) { // SHOULD be readList.get(p).isDefined
                         val lPrime = decided(p)
                         val sfx = suffix(pv, lPrime)
                         logger.debug(s"Sending AcceptMessage with suffix $sfx")
