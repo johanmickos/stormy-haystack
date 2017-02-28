@@ -1,6 +1,7 @@
 package stormy.components.tob
 
 import com.typesafe.scalalogging.StrictLogging
+import se.sics.kompics.Start
 import se.sics.kompics.network.Network
 import se.sics.kompics.sl._
 import se.sics.kompics.timer.{SchedulePeriodicTimeout, Timeout, Timer}
@@ -29,6 +30,16 @@ class TOB extends ComponentDefinition with StrictLogging {
 
     var unordered: Set[WrappedOperation] = Set()
 
+    ctrl uponEvent {
+        case _: Start => handle {
+            val spt = new SchedulePeriodicTimeout(timeout, timeout)
+            spt.setTimeoutEvent(BroadcastTimeout(spt))
+            trigger(spt -> timer)
+            // TODO Kill all timeouts when shutting down
+            timeouts = timeouts + spt.getTimeoutEvent.getTimeoutId.toString
+        }
+    }
+
     timer uponEvent {
         case BroadcastTimeout(_) => handle {
             // TODO Adjust timeout interval to account for increases/decreases in request volume
@@ -41,14 +52,7 @@ class TOB extends ComponentDefinition with StrictLogging {
     tob uponEvent {
         case TOB_Broadcast(op: WrappedOperation) => handle {
             logger.debug(s"$self TOB_Broadcast for $op")
-
             unordered = unordered + op
-
-            val spt = new SchedulePeriodicTimeout(timeout, timeout)
-            spt.setTimeoutEvent(BroadcastTimeout(spt))
-            trigger(spt -> timer)
-            // TODO Kill all timeouts when shutting down
-            timeouts = timeouts + spt.getTimeoutEvent.getTimeoutId.toString
             trigger(NetMessage(self, leader, op) -> pLink)
         }
     }
