@@ -205,6 +205,7 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
     epfd uponEvent {
         case Suspect(node) => handle {
             // TODO Fix this when implementing reconfiguration
+            t = t + 1
             topology = topology - node
             readList.remove(node)
             accepted.remove(node)
