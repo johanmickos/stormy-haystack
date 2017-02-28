@@ -1,0 +1,12 @@
+# Reviewed by Cosar Ghandeharioon
+- Overall good
+- Questions:
+
+1. P4: Bootstrapping -- wht kind of partition?
+    - Key is hashed, nondes assigned to partitions
+2. Operation routing
+    - Key is hashed, mapped to partition
+3. MEssages have src, destination
+4. Under-replicated
+
+5. Single 

@@ -8,3 +8,26 @@ The pickling library attempted to share TAddress objects in the LUT to save spac
 
 # Abortable Sequence Consensus
 In the implementation of ASC, we make the assumption that Kompics' Network links implement FIFOPerfectP2PLink, despite that not being entirely true. We should state this assumption in the final report.
+
+# Reconfiguration
+- Stop-Signal command from coordinator upon failure detection
+    - Include new configuration (i.e. LUT) in message
+    - Similar to OverlayUpdate, but we need to ensure we have consensus of _when_ the SS message is delivered
+- Recognize SS at leader of ASC
+- Upon AC_Decide(StopSignal), treat _ALL INCOMING COMMANDS AS NOOP_
+- Gossip RSM with new node
+- Maybe wrap everything in RRSM component?
+    - How will coordinator know reconfiguration is completed?
+        - Does he need to? Client's requests will simply timeout (or even better, get responses from nodes/coordinator), an acceptable sacrifice for strong consistency
+    - Drawback:  The Stop-Sign method does not allow any command’s output to be generated before every lower-numbered command has been chosen, since one of those commands could turn out to be stop.
+    - Could then force NOOPS until we have a guaranteed sequence of command outputs (also NOOP)
+    - How to orchestrate everything? How to ensure that all nodes stop at same time?
+        - Freze ASC upon first instance of STOP
+        - On TOB_Deliver(STOP), we know that all nodes should be frozen
+        - Extract new configuration from SS
+            - Then need to UPDATE TOPOLOGY everywhere
+                - EPFD, ELD, ASC, ...
+        - Begin gossip of KV store through ASC (new instance? from leader?)
+        - When AC_Deliver(KVStore) arrives, we can "unfreeze" the primary ASC used in TOB
+            - Simple boolean flag in AC_Propose to determine whether to send out ProposeMessage or NoopMessage?
+            - Could catch NoopMessage as an ignore case in acl uponEvent {}
