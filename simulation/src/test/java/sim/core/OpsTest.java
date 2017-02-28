@@ -27,11 +27,11 @@ import org.junit.Test;
 import se.sics.kompics.config.Conversions;
 import se.sics.kompics.simulator.SimulationScenario;
 import se.sics.kompics.simulator.run.LauncherComp;
-import stormy.converters.TAddressConverter;
+import stormy.converters.NetAddressConverter;
 
 public class OpsTest {
 
-    static final TAddressConverter CONVERTER = new TAddressConverter();
+    static final NetAddressConverter CONVERTER = new NetAddressConverter();
     private static final int NUM_MESSAGES = 10;
 
     static {

@@ -68,12 +68,10 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
 
     epfd uponEvent {
         case Suspect(p: NetAddress) => handle {
-            logger.info(s"Received suspected process $p")
             suspected = suspected union Set(p)
             leaderCheck()
         }
         case Restore(p: NetAddress) => handle {
-            logger.info(s"Received suspected process $p")
             suspected = suspected - p
             leaderCheck()
         }
@@ -84,7 +82,7 @@ class Omega(init: Init[Omega]) extends ComponentDefinition with StrictLogging {
             !suspected.contains(rankNodePair._2)
         ).head._2)
         if (newLeader.isEmpty) {
-            logger.warn("No new leader available!")
+            logger.warn("No new leader available. Assigning self as leader.")
             leader = Some(self)
         } else if (leader.isEmpty || leader.get != newLeader.get) {
             leader = newLeader

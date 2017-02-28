@@ -21,7 +21,7 @@ class KVService extends ComponentDefinition with StrictLogging {
 
     routing uponEvent {
         case msg@WrappedOperation(from, op: Operation) => handle {
-            logger.info(s"$self Received routed operation $op")
+            logger.debug(s"$self Received routed operation $op")
             trigger(TOB_Broadcast(msg) -> tob)
         }
     }

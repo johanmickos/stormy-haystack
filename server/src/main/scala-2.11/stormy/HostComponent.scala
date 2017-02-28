@@ -10,7 +10,8 @@ import se.sics.kompics.timer.java.JavaTimer
 import stormy.networking.NetAddress
 
 class HostComponent extends ComponentDefinition with StrictLogging {
-    val self = cfg.getValue[NetAddress]("stormy.address")
+
+    val self: NetAddress = cfg.getValue[NetAddress]("stormy.address")
 
     val timer: Component = create(classOf[JavaTimer], Init.NONE)
     val network: Component = create(classOf[NettyNetwork], new NettyInit(self))
@@ -18,11 +19,4 @@ class HostComponent extends ComponentDefinition with StrictLogging {
 
     connect[Timer](timer -> parent)
     connect[Network](network -> parent)
-
-    ctrl uponEvent {
-        case item => handle {
-            logger.warn(s"Received unexpected event: ${item}")
-        }
-    }
-
 }

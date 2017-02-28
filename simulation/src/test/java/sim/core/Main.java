@@ -3,13 +3,13 @@ package sim.core;
 import se.sics.kompics.config.Conversions;
 import se.sics.kompics.simulator.SimulationScenario;
 import se.sics.kompics.simulator.run.LauncherComp;
-import stormy.converters.TAddressConverter;
+import stormy.converters.NetAddressConverter;
 
 /**
  * Created by khaled on 2/25/17.
  */
 public class Main {
-    static final TAddressConverter CONVERTER = new TAddressConverter();
+    static final NetAddressConverter CONVERTER = new NetAddressConverter();
     private static final int NUM_MESSAGES = 10;
 
     static {

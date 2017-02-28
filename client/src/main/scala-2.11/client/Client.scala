@@ -7,13 +7,13 @@ import org.apache.commons.cli.{CommandLineParser, DefaultParser, Options}
 import se.sics.kompics.Kompics
 import se.sics.kompics.config.{Config, Conversions, ValueMerger}
 import se.sics.kompics.network.netty.serialization.Serializers
-import stormy.converters.TAddressConverter
+import stormy.converters.NetAddressConverter
 import stormy.networking.{NetAddress, NetHeader, NetMessage}
 import stormy.serialization.PickleSerializer
 
 object Client {
 
-    val converter = new TAddressConverter
+    val converter = new NetAddressConverter
 
     Conversions.register(converter)
     Serializers.register(PickleSerializer, "pickleS")

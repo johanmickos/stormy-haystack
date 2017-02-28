@@ -4,14 +4,14 @@ import se.sics.kompics.simulator.run.LauncherComp;
 import sim.core.ScenarioGen;
 import sim.core.SimulationResultMap;
 import sim.core.SimulationResultSingleton;
-import stormy.converters.TAddressConverter;
+import stormy.converters.NetAddressConverter;
 
 /**
  * Created by khaled on 2/23/17.
  */
 public class Main {
 
-    static final TAddressConverter CONVERTER = new TAddressConverter();
+    static final NetAddressConverter CONVERTER = new NetAddressConverter();
     private static final int NUM_MESSAGES = 10;
 
     static {

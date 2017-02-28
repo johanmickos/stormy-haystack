@@ -15,7 +15,7 @@ import stormy.networking.NetAddress
   * To register:
   *     Conversions.register(TAddressConverter);
   */
-class TAddressConverter extends Converter[NetAddress] with LazyLogging {
+class NetAddressConverter extends Converter[NetAddress] with LazyLogging {
 
     override def convert(o: Object): NetAddress = {
         o match {

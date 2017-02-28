@@ -52,22 +52,17 @@ class RoutingManager extends ComponentDefinition with StrictLogging {
 
     epfd uponEvent {
         case Suspect(node: NetAddress) => handle {
-            logger.info(s"Suspecting ${node}")
             suspected = suspected + node
         }
         case Restore(node: NetAddress) => handle {
-            logger.info(s"Restoring ${node}")
             suspected = suspected - node
-        }
-        case unknown => handle {
-            logger.info(s"Received unknown event $unknown")
         }
     }
 
     network uponEvent {
         case ctx@NetMessage(source, self, opResponse: OperationResponse) => handle {
             logger.debug("Received response from cluster. Verifying majority vote.")
-            // TODO
+            // TODO verify majority response
             trigger(NetMessage(source, opResponse.operation.client, opResponse) -> network)
         }
         // Below catches BEB_Broadcast to prevent having to have a
@@ -108,17 +103,6 @@ class RoutingManager extends ComponentDefinition with StrictLogging {
                 case None =>
                     logger.warn(s"Rejecting connection request from $source as system is not ready yet")
             }
-        }
-    }
-
-    routing uponEvent {
-        case NetMessage(source, self, payload: RouteMessage) => handle {
-            logger.info("Received local route message")
-            // TODO Check that lut.get() doesn't return None
-            val partitions = lut.get.lookup(payload.key)
-            val randomTarget: NetAddress = partitions.toList.head
-            logger.info(s"Routing message for key ${payload.key} to $randomTarget")
-            trigger(NetMessage(self, randomTarget, payload.msg) -> network)
         }
     }
 

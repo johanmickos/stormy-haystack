@@ -205,13 +205,13 @@ class ASC(init: Init[ASC]) extends ComponentDefinition with StrictLogging {
     epfd uponEvent {
         case Suspect(node) => handle {
             // TODO Fix this when implementing reconfiguration
+            logger.debug(s"$self removing $node from topology")
             t = t + 1
             topology = topology - node
             readList.remove(node)
             accepted.remove(node)
             decided.remove(node)
             N = topology.size
-            logger.info(s"$self removing $node from topology")
         }
     }
 }

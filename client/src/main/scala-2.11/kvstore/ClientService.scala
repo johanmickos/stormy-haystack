@@ -65,7 +65,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
 
     timer uponEvent {
         case ev: ConnectTimeout => handle {
-            logger.info(s"Received event: $ev\n${connected.get}\n${connected.get.id}\n${ev.getTimeoutId}")
+            logger.debug(s"Received event: $ev\n${connected.get}\n${connected.get.id}\n${ev.getTimeoutId}")
             connected match {
                 case Some(ack: Ack) =>
                     if (!ack.id.equals(ev.getTimeoutId.toString)) {

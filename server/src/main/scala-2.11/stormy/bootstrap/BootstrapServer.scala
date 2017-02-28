@@ -59,7 +59,6 @@ class BootstrapServer extends ComponentDefinition with StrictLogging {
                         state = State.Done
                     }
                 case State.Done =>
-                    logger.info("In DONE state, committing suicide")
                     suicide()
             }
         }

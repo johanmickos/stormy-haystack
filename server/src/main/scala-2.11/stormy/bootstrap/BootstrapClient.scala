@@ -56,7 +56,7 @@ class BootstrapClient extends ComponentDefinition with StrictLogging {
                     trigger(NetMessage(self, server, CheckIn) -> network)
                 case ClientState.Started =>
                     trigger(NetMessage(self, server, Ready) -> network)
-                    suicide() // TODO Determine why we suicide here (and what it does)
+                    suicide()
             }
         }
     }
