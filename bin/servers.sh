@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
+SCRIPT_LOC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 print_info() {
-    echo    ".-----------[BEGIN STATUS]------------."
+    echo    ".-------------[DATA NODE STATUS]---------------."
     echo -e "Log directory:"
     echo -e "\t${LOG_DIR}"
     echo -e ".jar directory:"
     echo -e "\t${JAR_LOC}"
-    echo -e "Process IDs:"
+    echo -e "Data Node PIDs:"
     for ((i=0; i<N; i++)); do
         echo -e "\t${PIDS[$i]}"
     done
-    echo -e "'-----------[END   STATUS]------------'\n"
+    echo -e "'-----------[ END DATA NODE STATUS]------------'\n"
 }
 
 print_done() {
@@ -32,7 +33,6 @@ interrupt_handler() {
 }
 
 PKILL_PATTERN="server.jar" # TODO Ensure this doesn't clash with other unrelated processes
-SCRIPT_LOC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 START=0
 N=2
 ARTIFACT_DIR="../out/artifacts/node_jar"
@@ -62,7 +62,6 @@ if [ ! -d ${LOG_DIR} ]; then
 fi
 
 for i in "$@"; do
-
     case ${i} in
         -n=*|--num-nodes=*)
         N="${i#*=}"
@@ -94,9 +93,5 @@ print_info
 printf "Press any key to terminate... "
 read -n1 -s key
 
-echo -e "\nTerminating Stormy Haystack data servers"
-for ((i=0; i<N; i++)); do
-    kill -9 ${PIDS[$i]}
-done
-
+terminate
 print_done
