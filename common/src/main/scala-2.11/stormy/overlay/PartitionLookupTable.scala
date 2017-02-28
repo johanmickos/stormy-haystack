@@ -15,7 +15,7 @@ class PartitionLookupTable(val replicationFactor: Int) {
         for ((node, i) <- nodes.zipWithIndex) {
             val partition: Int = i % numPartitions
             partitions.addBinding(partition, node)
-            val rank = i % replicationFactor + 1
+            val rank = i / replicationFactor + 1
             ranks(node) = rank
         }
     }
@@ -31,7 +31,7 @@ class PartitionLookupTable(val replicationFactor: Int) {
     }
 
     def lookup(key: String): mutable.Set[NetAddress] = {
-        val keyHash: Int = key.hashCode
+        val keyHash: Int = key.hashCode % partitions.size
         val partition: Int = Some(partitions.keySet.minBy(it => math.abs(keyHash - it))).getOrElse(partitions.keySet.last)
         partitions(partition)
     }
