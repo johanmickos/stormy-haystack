@@ -2,18 +2,27 @@ package kvstore
 
 import java.io.PrintWriter
 
+import com.google.common.util.concurrent.SettableFuture
 import org.apache.log4j.{LogManager, Logger, PatternLayout, WriterAppender}
 import org.jline.reader.{LineReader, LineReaderBuilder}
 import org.jline.terminal.{Terminal, TerminalBuilder}
 import stormy.kv.OperationResponse
 
 import scala.collection.mutable
+import scala.concurrent.TimeoutException
+import scala.concurrent.duration.TimeUnit
+
+// TODO Clean this messy thing up!
 
 object Console {
     private final val PROMPT: String = "> "
+    private final val OP_TIMEOUT: Long = 3000
+    private final val OP_TIMEOUT_UNIT: TimeUnit = java.util.concurrent.TimeUnit.MILLISECONDS
 }
 
 class Console(service: ClientService) extends Runnable {
+    import kvstore.Console._
+
     val exitCommand: Command = new Command() {
         override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
             out.get.println("Exiting...")
@@ -21,7 +30,7 @@ class Console(service: ClientService) extends Runnable {
             true
         }
 
-        override def usage: String = "exit|quit"
+        override def usage: String = "exit"
 
         override def help: String = "Closes the shell"
     }
@@ -32,9 +41,7 @@ class Console(service: ClientService) extends Runnable {
         override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
             if (cmdline.length == 2) {
                 val fr = worker.op(cmdline)
-                val resp: OperationResponse = fr.get()
-                out.get.println(s"[${resp.status}] ${resp.content.getOrElse("")}")
-                true
+                handleResponse(fr)
             } else {
                 false
             }
@@ -48,9 +55,7 @@ class Console(service: ClientService) extends Runnable {
         override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
             if (cmdline.length == 2) {
                 val fr = worker.op(cmdline)
-                val resp: OperationResponse = fr.get()
-                out.get.println(s"[${resp.status}] ${resp.content.getOrElse("")}")
-                true
+                handleResponse(fr)
             } else {
                 false
             }
@@ -64,9 +69,7 @@ class Console(service: ClientService) extends Runnable {
         override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
             if (cmdline.length == 3) {
                 val fr = worker.op(cmdline)
-                val resp: OperationResponse = fr.get()
-                out.get.println(s"[${resp.status}] ${resp.content.getOrElse("")}")
-                true
+                handleResponse(fr)
             } else {
                 false
             }
@@ -80,9 +83,7 @@ class Console(service: ClientService) extends Runnable {
         override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
             if (cmdline.length == 4) {
                 val fr = worker.op(cmdline)
-                val resp: OperationResponse = fr.get()
-                out.get.println(s"[${resp.status}] ${resp.content.getOrElse("")}")
-                true
+                handleResponse(fr)
             } else {
                 false
             }
@@ -92,12 +93,32 @@ class Console(service: ClientService) extends Runnable {
 
         override def help: String = "Performs a compare-and-swap for <key>. If the value at <key> equals <refValue>, <newValue> is stored."
     })
+    commands.put("help", new Command() {
+        override def execute(cmdline: Array[String], worker: ClientService): Boolean = {
+            out.get.println("Available commands: \n\n")
+            val comSet= commands.values
+            val sb = new StringBuilder()
+            for (c <- comSet) {
+                val usage = c.usage
+                sb.append(usage)
+                for (i <- usage.length until padTo) {
+                    sb.append(" ")
+                }
+                sb.append(c.help).append("\n")
+            }
+            out.get.println(sb.toString())
+            true
+        }
+
+        override def usage: String = "help"
+
+        override def help: String = "Shows this help"
+    })
 
 
     var padTo = 0
 
     commands.put("exit", exitCommand)
-    commands.put("quit", exitCommand)
 
     val commandSet: Set[Command] = commands.values.toSet
 
@@ -151,6 +172,19 @@ class Console(service: ClientService) extends Runnable {
                 }
             }
         }
+    }
+
+    private def handleResponse(fr: SettableFuture[OperationResponse]): Boolean = {
+        try {
+            val resp: OperationResponse = fr.get(OP_TIMEOUT, OP_TIMEOUT_UNIT)
+            out.get.println(s"[${resp.status}] ${resp.content.getOrElse("")}")
+        } catch {
+            case _: TimeoutException =>
+                out.get.println(s"[Timeout] Request timed out. System may be reconfiguring.")
+            case other: Exception =>
+                out.get.println(s"[Warn] Request resulted in exception: ${other.getMessage}")
+        }
+        true
     }
 
     abstract class Command {
