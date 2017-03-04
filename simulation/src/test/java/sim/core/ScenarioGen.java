@@ -229,9 +229,9 @@ public abstract class ScenarioGen {
         }
     };
 
-    static Operation1 casOp = new Operation1<StartNodeEvent, Integer>() {
+    static Operation2 casOp = new Operation2<StartNodeEvent, Integer, Integer>() {
         @Override
-        public StartNodeEvent generate(final Integer self) {
+        public StartNodeEvent generate(final Integer self, Integer valType) {
             return new StartNodeEvent() {
                 final NetAddress bsAdr;
                 final NetAddress selfAdr;
@@ -253,7 +253,11 @@ public abstract class ScenarioGen {
 
                 @Override
                 public Init getComponentInit() {
-                    return new ClientCas.Init(selfAdr.getIp().toString(), self.toString(), ((Integer) (self + 1000)).toString());
+                    if(valType.equals(0)) { // engage correct refValue
+                        return new ClientCas.Init(selfAdr.getIp().toString(), self.toString(), ((Integer) (self + 1000)).toString());
+                    } else {
+                        return new ClientCas.Init(selfAdr.getIp().toString(), "incorrectVal", ((Integer) (self + 1000)).toString());
+                    }
                 }
 
                 @Override
@@ -426,12 +430,13 @@ public abstract class ScenarioGen {
      *  - testPutGet: A key-value pair is inserted to the store. We test getting this value by it's key
      *  - testPut: Same as previous operation, without getting any value [testing put operation alone]
      *  - testCasEmptyStore: The store is empty, so the comparing and swapping a value must not go through
-     *  - testPutCas: A key-value pair is inserted to the store. We test swapping this value to a new value
+     *  - testPutCas: A key-value pair is inserted to the store. We test swapping a key with it's corresponding correct refvalue to a new value
+     *  - testPutCasIncorrectRefValue: A key-value pair is inserted to the store. We test swapping a key with it's corresponding incorrect refvalue to a new value
      */
 
     /**
      * Simulation Scenario to test Get Operation when there are no values in the key-store
-     * The Simulation initializes the server with 6 nodes and 3 clients
+     * The Simulation initializes the server with 5 nodes and 3 clients
      */
     public static SimulationScenario testGetEmptyStore() {
         SimulationScenario testGet = new SimulationScenario() {
@@ -439,7 +444,7 @@ public abstract class ScenarioGen {
                 StochasticProcess initSrvNodes = new StochasticProcess() {
                     {
                         eventInterArrivalTime(constant(1000));
-                        raise(6, startServerOp, new BasicIntSequentialDistribution(1));
+                        raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
                 StochasticProcess initClientNodes = new StochasticProcess() {
@@ -464,7 +469,7 @@ public abstract class ScenarioGen {
 
     /**
      * Simulation Scenario to test Put and Get Operations.
-     * The Simulation initializes the server with 6 nodes and 3 clients
+     * The Simulation initializes the server with 5 nodes and 3 clients
      */
     public static SimulationScenario testPutGet() {
         SimulationScenario testPutGet = new SimulationScenario() {
@@ -472,7 +477,7 @@ public abstract class ScenarioGen {
                 StochasticProcess initSrvNodes = new StochasticProcess() {
                     {
                         eventInterArrivalTime(constant(1000));
-                        raise(6, startServerOp, new BasicIntSequentialDistribution(1));
+                        raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
                 StochasticProcess initClientNodes = new StochasticProcess() {
@@ -504,7 +509,7 @@ public abstract class ScenarioGen {
 
     /**
      * Simulation Scenario to test Put Operation.
-     * The Simulation initializes the server with 6 nodes and 3 clients
+     * The Simulation initializes the server with 5 nodes and 3 clients
      */
     public static SimulationScenario testPut() {
         SimulationScenario testPut = new SimulationScenario() {
@@ -512,7 +517,7 @@ public abstract class ScenarioGen {
                 StochasticProcess initSrvNodes = new StochasticProcess() {
                     {
                         eventInterArrivalTime(constant(1000));
-                        raise(6, startServerOp, new BasicIntSequentialDistribution(1));
+                        raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
                 StochasticProcess initClientNodes = new StochasticProcess() {
@@ -539,7 +544,7 @@ public abstract class ScenarioGen {
 
     /**
      * Simulation Scenario to test Cas Operation when there are no keys or values in the key-store
-     * The Simulation initializes the server with 6 nodes and 3 clients
+     * The Simulation initializes the server with 5 nodes and 3 clients
      */
     public static SimulationScenario testCasEmptyStore() {
         SimulationScenario testCas = new SimulationScenario() {
@@ -547,7 +552,7 @@ public abstract class ScenarioGen {
                 StochasticProcess initSrvNodes = new StochasticProcess() {
                     {
                         eventInterArrivalTime(constant(1000));
-                        raise(6, startServerOp, new BasicIntSequentialDistribution(1));
+                        raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
                 StochasticProcess initClientNodes = new StochasticProcess() {
@@ -558,7 +563,7 @@ public abstract class ScenarioGen {
                 };
                 StochasticProcess casProcess = new StochasticProcess() {
                     {
-                        raise(1, casOp, new BasicIntSequentialDistribution(1));
+                        raise(1, casOp, new BasicIntSequentialDistribution(1), constant(0));
                     }
                 };
                 initSrvNodes.start();
@@ -572,7 +577,8 @@ public abstract class ScenarioGen {
 
     /**
      * Simulation Scenario to test Cas Operation when there are no keys or values in the key-store
-     * The Simulation initializes the server with 6 nodes and 3 clients
+     * The cas will check the correct reference value and swap it with a new value
+     * The Simulation initializes the server with 5 nodes and 3 clients
      */
     public static SimulationScenario testPutCas() {
         SimulationScenario testPutCas = new SimulationScenario() {
@@ -580,7 +586,7 @@ public abstract class ScenarioGen {
                 StochasticProcess initSrvNodes = new StochasticProcess() {
                     {
                         eventInterArrivalTime(constant(1000));
-                        raise(6, startServerOp, new BasicIntSequentialDistribution(1));
+                        raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
                 StochasticProcess initClientNodes = new StochasticProcess() {
@@ -596,16 +602,57 @@ public abstract class ScenarioGen {
                 };
                 StochasticProcess casProcess = new StochasticProcess() {
                     {
-                        raise(1, casOp, new BasicIntSequentialDistribution(1));
+                        raise(1, casOp, new BasicIntSequentialDistribution(1), constant(0));
                     }
                 };
                 initSrvNodes.start();
                 initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
                 putProcess.startAfterTerminationOf(7000, initClientNodes);
                 casProcess.startAfterTerminationOf(7000, putProcess);
-                terminateAfterTerminationOf(9000, casProcess);
+                terminateAfterTerminationOf(9500, casProcess);
             }
         };
         return testPutCas;
+    }
+
+
+    /**
+     * Simulation Scenario to test Cas Operation when there are no keys or values in the key-store
+     * The cas will try to preform with correct key and incorrect reference value
+     * The Simulation initializes the server with 5 nodes and 3 clients
+     */
+    public static SimulationScenario testPutCasIncorrectRefValue() {
+        SimulationScenario testPutCasIncorrectRefValue = new SimulationScenario() {
+            {
+                StochasticProcess initSrvNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(5, startServerOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess initClientNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess putProcess = new StochasticProcess() {
+                    {
+                        raise(1, putOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess casProcess = new StochasticProcess() {
+                    {
+                        raise(1, casOp, new BasicIntSequentialDistribution(1), constant(-1));
+                    }
+                };
+                initSrvNodes.start();
+                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
+                putProcess.startAfterTerminationOf(7000, initClientNodes);
+                casProcess.startAfterTerminationOf(7000, putProcess);
+                terminateAfterTerminationOf(9100, casProcess);
+            }
+        };
+        return testPutCasIncorrectRefValue;
     }
 }

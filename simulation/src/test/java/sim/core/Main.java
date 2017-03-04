@@ -26,7 +26,12 @@ public class Main {
 
         SimulationScenario testEPFD = ScenarioGen.testEPFD_Properties();
         SimulationScenario testELD = ScenarioGen.testELD_Properties();
-        SimulationScenario test_get = ScenarioGen.test_get();
-        test_get.simulate(LauncherComp.class);
+        SimulationScenario testGetEmptyStore = ScenarioGen.testGetEmptyStore();
+        SimulationScenario testPutGet = ScenarioGen.testPutGet();
+        SimulationScenario testPut = ScenarioGen.testPut();
+        SimulationScenario testCasEmptyStore = ScenarioGen.testCasEmptyStore();
+        SimulationScenario testPutCas = ScenarioGen.testPutCas();
+        SimulationScenario testPutCasIncorrectRefValue = ScenarioGen.testPutCasIncorrectRefValue();
+        testGetEmptyStore.simulate(LauncherComp.class);
     }
 }
