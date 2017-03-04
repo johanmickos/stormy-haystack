@@ -25,21 +25,25 @@ package sim.core;/*
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import se.sics.kompics.ComponentDefinition;
 import se.sics.kompics.Init;
 import se.sics.kompics.network.Address;
 import se.sics.kompics.simulator.SimulationScenario;
 import se.sics.kompics.simulator.adaptor.Operation1;
+import se.sics.kompics.simulator.adaptor.Operation2;
+import se.sics.kompics.simulator.adaptor.distributions.ConstantDistribution;
 import se.sics.kompics.simulator.adaptor.distributions.extra.BasicIntSequentialDistribution;
 import se.sics.kompics.simulator.events.system.KillNodeEvent;
 import se.sics.kompics.simulator.events.system.StartNodeEvent;
-import sim.wrapper.EldParent;
-import sim.wrapper.EpfdParent;
 import stormy.ParentComponent;
+import stormy.kv.GetOperation;
+import stormy.kv.KVService;
+import stormy.kv.Operation;
 import stormy.networking.NetAddress;
+import stormy.networking.NetMessage;
 
 import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class ScenarioGen {
     private final static Logger logger = LoggerFactory.getLogger(ScenarioGen.class);
@@ -122,7 +126,7 @@ public abstract class ScenarioGen {
 
                 @Override
                 public Class getComponentDefinition() {
-                    return ScenarioClient.class;
+                    return client.ParentComponent.class;
                 }
 
                 @Override
@@ -133,6 +137,123 @@ public abstract class ScenarioGen {
                 @Override
                 public Init getComponentInit() {
                     return Init.NONE;
+                }
+
+                @Override
+                public Map<String, Object> initConfigUpdate() {
+                    HashMap<String, Object> config = new HashMap<>();
+                    config.put("stormy.address", selfAdr);
+                    config.put("stormy.type", "client");
+                    config.put("stormy.coordinatorAddress", bsAdr);
+                    return config;
+                }
+            };
+        }
+    };
+
+    static Operation1 getOp = new Operation1<StartNodeEvent, Integer>() {
+        @Override
+        public StartNodeEvent generate(final Integer self) {
+            return new StartNodeEvent() {
+                final NetAddress bsAdr;
+                final NetAddress selfAdr;
+
+                {
+                    bsAdr = new NetAddress(new InetSocketAddress("192.168.0.1", 45678));
+                    selfAdr = new NetAddress(new InetSocketAddress("192.168.1." + self, 45678));
+                }
+
+                @Override
+                public Address getNodeAddress() {
+                    return selfAdr;
+                }
+
+                @Override
+                public Class<? extends ComponentDefinition> getComponentDefinition() {
+                    return ClientGet.class;
+                }
+
+                @Override
+                public Init getComponentInit() {
+                    return new ClientGet.Init(selfAdr.getIp().toString());
+                }
+
+                @Override
+                public Map<String, Object> initConfigUpdate() {
+                    HashMap<String, Object> config = new HashMap<>();
+                    config.put("stormy.address", selfAdr);
+                    config.put("stormy.type", "client");
+                    config.put("stormy.coordinatorAddress", bsAdr);
+                    return config;
+                }
+            };
+        }
+    };
+
+    static Operation1 putOp = new Operation1<StartNodeEvent, Integer>() {
+        @Override
+        public StartNodeEvent generate(final Integer self) {
+            return new StartNodeEvent() {
+                final NetAddress bsAdr;
+                final NetAddress selfAdr;
+
+                {
+                    bsAdr = new NetAddress(new InetSocketAddress("192.168.0.1", 45678));
+                    selfAdr = new NetAddress(new InetSocketAddress("192.168.1." + self, 45678));
+                }
+
+                @Override
+                public Address getNodeAddress() {
+                    return selfAdr;
+                }
+
+                @Override
+                public Class<? extends ComponentDefinition> getComponentDefinition() {
+                    return ClientPut.class;
+                }
+
+                @Override
+                public Init getComponentInit() {
+                    return new ClientPut.Init(selfAdr.getIp().toString(), self.toString()); // we can change the value to something else later
+                }
+
+                @Override
+                public Map<String, Object> initConfigUpdate() {
+                    HashMap<String, Object> config = new HashMap<>();
+                    config.put("stormy.address", selfAdr);
+                    config.put("stormy.type", "client");
+                    config.put("stormy.coordinatorAddress", bsAdr);
+                    return config;
+                }
+            };
+        }
+    };
+
+    static Operation1 casOp = new Operation1<StartNodeEvent, Integer>() {
+        @Override
+        public StartNodeEvent generate(final Integer self) {
+            return new StartNodeEvent() {
+                final NetAddress bsAdr;
+                final NetAddress selfAdr;
+
+                {
+                    bsAdr = new NetAddress(new InetSocketAddress("192.168.0.1", 45678));
+                    selfAdr = new NetAddress(new InetSocketAddress("192.168.1." + self, 45678));
+                }
+
+                @Override
+                public Address getNodeAddress() {
+                    return selfAdr;
+                }
+
+                @Override
+                public Class<? extends ComponentDefinition> getComponentDefinition() {
+                    return ClientCas.class;
+                }
+
+                @Override
+                public Init getComponentInit() {
+                    return new ClientCas.Init(selfAdr.getIp().toString(), self.toString(), ((Integer) (self + 1000)).toString());
                 }
 
                 @Override
@@ -170,42 +291,6 @@ public abstract class ScenarioGen {
         };
     }
 
-    static Operation1 epfdGroupNode = new Operation1<StartNodeEvent, Integer>() {
-        @Override
-        public StartNodeEvent generate(final Integer self) {
-            logger.info("Generating StartEpfdNodeEvent");
-            return new StartNodeEvent() {
-                NetAddress selfAdr;
-                int port = self + 10000;
-
-                {
-                    selfAdr = new NetAddress(new InetSocketAddress("192.168.0." + self, 45678));
-                }
-
-                @Override
-                public Address getNodeAddress() {
-                    return selfAdr;
-                }
-
-                @Override
-                public Class getComponentDefinition() {
-                    return EpfdParent.class;
-                }
-
-                @Override
-                public Init getComponentInit() {
-                    return Init.NONE;
-                }
-
-                @Override
-                public String toString() {
-                    return "Start EPFD <" + selfAdr.toString() + ">";
-                }
-            };
-        }
-    };
-
-
     static Operation1 killNode = new Operation1<KillNodeEvent, Integer>() {
         @Override
         public KillNodeEvent generate(final Integer self) {
@@ -230,40 +315,6 @@ public abstract class ScenarioGen {
         }
     };
 
-    static Operation1 eldGroupNode = new Operation1<StartNodeEvent, Integer>() {
-        @Override
-        public StartNodeEvent generate(final Integer self) {
-            logger.info("Generating StartEpfdNodeEvent");
-            return new StartNodeEvent() {
-                NetAddress selfAdr;
-
-                {
-                    selfAdr = new NetAddress(new InetSocketAddress("192.168.0." + self, 45678));
-                }
-
-                @Override
-                public Address getNodeAddress() {
-                    return selfAdr;
-                }
-
-                @Override
-                public Class getComponentDefinition() {
-                    return EldParent.class;
-                }
-
-                @Override
-                public Init getComponentInit() {
-                    return Init.NONE;
-                }
-
-                @Override
-                public String toString() {
-                    return "Start ELD <" + selfAdr.toString() + ">";
-                }
-            };
-        }
-    };
-
     /**
      * Simulation Scenario to test eventually perfect failure detector properties
      * 1.	EPFD1: Strong completeness: Every crashed process is eventually detected by all correct processes
@@ -273,10 +324,10 @@ public abstract class ScenarioGen {
         SimulationScenario testEPFD = new SimulationScenario() {
             {
 
-                SimulationScenario.StochasticProcess startEPFD = new SimulationScenario.StochasticProcess() {
+                SimulationScenario.StochasticProcess srvNodes = new SimulationScenario.StochasticProcess() {
                     {
                         eventInterArrivalTime(constant(500));
-                        raise(5, epfdGroupNode, new BasicIntSequentialDistribution(1));
+                        raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
 
@@ -288,14 +339,14 @@ public abstract class ScenarioGen {
 
                 StochasticProcess killNode2 = new StochasticProcess() {
                     {
-                        raise(1, killNode, new BasicIntSequentialDistribution(3));
+                        raise(1, killNode, new BasicIntSequentialDistribution(5));
                     }
                 };
 
-                startEPFD.start();
-                killNode1.startAfterTerminationOf(5000, startEPFD);
+                srvNodes.start();
+                killNode1.startAfterTerminationOf(5000, srvNodes);
                 killNode2.startAfterTerminationOf(1000, killNode1);
-                terminateAfterTerminationOf(50000, startEPFD);
+                terminateAfterTerminationOf(5000, killNode2);
             }
         };
 
@@ -311,51 +362,250 @@ public abstract class ScenarioGen {
     public static SimulationScenario testELD_Properties() {
         SimulationScenario testLeaderElection = new SimulationScenario() {
             {
-                StochasticProcess nodeGroupProcess = new StochasticProcess() {
+                StochasticProcess srvNodes = new StochasticProcess() {
                     {
                         eventInterArrivalTime(constant(0));
-                        raise(5, eldGroupNode, new BasicIntSequentialDistribution(1));
+                        raise(9, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
 
-                //Kill node in even group with ip ending with 2
+                StochasticProcess killNode5 = new StochasticProcess() {
+                    {
+                        raise(1, killNode, new BasicIntSequentialDistribution(5));
+                    }
+                };
+
+                StochasticProcess restartNode5 = new StochasticProcess() {
+                    {
+                        raise(1, startServerOp, new BasicIntSequentialDistribution(5));
+                    }
+                };
+
                 StochasticProcess killNode2 = new StochasticProcess() {
                     {
                         raise(1, killNode, new BasicIntSequentialDistribution(2));
                     }
                 };
 
-
-                //Restart node in even group with ip ending with 2
                 StochasticProcess restartNode2 = new StochasticProcess() {
                     {
-                        raise(1, eldGroupNode, new BasicIntSequentialDistribution(2));
+                        raise(1, startServerOp, new BasicIntSequentialDistribution(2));
                     }
                 };
 
-                StochasticProcess killNode1 = new StochasticProcess() {
+                StochasticProcess killNode7 = new StochasticProcess() {
                     {
-                        raise(1, killNode, new BasicIntSequentialDistribution(1));
+                        raise(1, killNode, new BasicIntSequentialDistribution(7));
                     }
                 };
 
-
-                //Restart node in even group with ip ending with 2
-                StochasticProcess restartNode1 = new StochasticProcess() {
+                StochasticProcess restartNode7 = new StochasticProcess() {
                     {
-                        raise(1, eldGroupNode, new BasicIntSequentialDistribution(1));
+                        raise(1, startServerOp, new BasicIntSequentialDistribution(7));
                     }
                 };
 
-                nodeGroupProcess.start();
-                killNode1.startAfterTerminationOf(1000, nodeGroupProcess);
-                killNode2.startAfterTerminationOf(1000, killNode1);
-                restartNode2.startAfterTerminationOf(1000, killNode2);
-                restartNode1.startAfterTerminationOf(1000, restartNode2);
-                terminateAfterTerminationOf(1000, restartNode1);
+                srvNodes.start();
+                killNode5.startAfterTerminationOf(1000, srvNodes);
+                killNode2.startAfterTerminationOf(1000, killNode5);
+                killNode7.startAfterTerminationOf(1000, killNode2);
+                restartNode7.startAfterTerminationOf(1000, killNode7);
+                restartNode2.startAfterTerminationOf(1000, restartNode7);
+                restartNode5.startAfterTerminationOf(1000, restartNode2);
+                terminateAfterTerminationOf(1000, restartNode5);
             }
         };
 
         return testLeaderElection;
+    }
+
+
+    /**
+     * There are 5 scenarios to test key-value store. They can be summarized as the following:
+     *  - testGetEmptyStore: The store is empty, so the getting some unavailable value must return nothing (not found)
+     *  - testPutGet: A key-value pair is inserted to the store. We test getting this value by it's key
+     *  - testPut: Same as previous operation, without getting any value [testing put operation alone]
+     *  - testCasEmptyStore: The store is empty, so the comparing and swapping a value must not go through
+     *  - testPutCas: A key-value pair is inserted to the store. We test swapping this value to a new value
+     */
+
+    /**
+     * Simulation Scenario to test Get Operation when there are no values in the key-store
+     * The Simulation initializes the server with 6 nodes and 3 clients
+     */
+    public static SimulationScenario testGetEmptyStore() {
+        SimulationScenario testGet = new SimulationScenario() {
+            {
+                StochasticProcess initSrvNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(6, startServerOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess initClientNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess getProcess = new StochasticProcess() {
+                    {
+                        raise(1, getOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                initSrvNodes.start();
+                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
+                getProcess.startAfterTerminationOf(1000, initClientNodes);
+                terminateAfterTerminationOf(7000, getProcess);
+            }
+        };
+        return testGet;
+    }
+
+    /**
+     * Simulation Scenario to test Put and Get Operations.
+     * The Simulation initializes the server with 6 nodes and 3 clients
+     */
+    public static SimulationScenario testPutGet() {
+        SimulationScenario testPutGet = new SimulationScenario() {
+            {
+                StochasticProcess initSrvNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(6, startServerOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess initClientNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess putProcess = new StochasticProcess() {
+                    {
+                        raise(1, putOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess getProcess = new StochasticProcess() {
+                    {
+                        raise(1, getOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+
+                initSrvNodes.start();
+                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
+                putProcess.startAfterTerminationOf(5000, initClientNodes);
+                getProcess.startAfterTerminationOf(5000, getProcess);
+                terminateAfterTerminationOf(7000, getProcess);
+            }
+        };
+        return testPutGet;
+    }
+
+    /**
+     * Simulation Scenario to test Put Operation.
+     * The Simulation initializes the server with 6 nodes and 3 clients
+     */
+    public static SimulationScenario testPut() {
+        SimulationScenario testPut = new SimulationScenario() {
+            {
+                StochasticProcess initSrvNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(6, startServerOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess initClientNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess putProcess = new StochasticProcess() {
+                    {
+                        raise(1, putOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+
+                initSrvNodes.start();
+                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
+                putProcess.startAfterTerminationOf(5000, initClientNodes);
+                terminateAfterTerminationOf(1000, putProcess);
+            }
+        };
+        return testPut;
+    }
+
+
+    /**
+     * Simulation Scenario to test Cas Operation when there are no keys or values in the key-store
+     * The Simulation initializes the server with 6 nodes and 3 clients
+     */
+    public static SimulationScenario testCasEmptyStore() {
+        SimulationScenario testCas = new SimulationScenario() {
+            {
+                StochasticProcess initSrvNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(6, startServerOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess initClientNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess casProcess = new StochasticProcess() {
+                    {
+                        raise(1, casOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                initSrvNodes.start();
+                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
+                casProcess.startAfterTerminationOf(7000, initClientNodes);
+                terminateAfterTerminationOf(9000, casProcess);
+            }
+        };
+        return testCas;
+    }
+
+    /**
+     * Simulation Scenario to test Cas Operation when there are no keys or values in the key-store
+     * The Simulation initializes the server with 6 nodes and 3 clients
+     */
+    public static SimulationScenario testPutCas() {
+        SimulationScenario testGet = new SimulationScenario() {
+            {
+                StochasticProcess initSrvNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(6, startServerOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess initClientNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess putProcess = new StochasticProcess() {
+                    {
+                        raise(1, putOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess casProcess = new StochasticProcess() {
+                    {
+                        raise(1, casOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                initSrvNodes.start();
+                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
+                putProcess.startAfterTerminationOf(7000, initClientNodes);
+                casProcess.startAfterTerminationOf(7000, putProcess);
+                terminateAfterTerminationOf(9000, casProcess);
+            }
+        };
+        return testGet;
     }
 }

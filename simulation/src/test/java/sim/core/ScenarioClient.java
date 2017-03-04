@@ -51,9 +51,12 @@ public class ScenarioClient extends ComponentDefinition {
 
     protected final Positive<Network> net = requires(Network.class);
     protected final Positive<Timer> timer = requires(Timer.class);
+
     //******* Fields ******
+
     private final NetAddress self = config().getValue("stormy.address", NetAddress.class);
     private final NetAddress server = config().getValue("stormy.coordinatorAddress", NetAddress.class);
+
     private final SimulationResultMap res = SimulationResultSingleton.getInstance();
     private final Map<String, String> pending = new TreeMap<>();
 

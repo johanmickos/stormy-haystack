@@ -26,6 +26,7 @@ public class Main {
 
         SimulationScenario testEPFD = ScenarioGen.testEPFD_Properties();
         SimulationScenario testELD = ScenarioGen.testELD_Properties();
-        testELD.simulate(LauncherComp.class);
+        SimulationScenario test_get = ScenarioGen.test_get();
+        test_get.simulate(LauncherComp.class);
     }
 }

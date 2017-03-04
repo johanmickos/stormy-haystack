@@ -53,13 +53,4 @@ public class OpsTest {
             // of course the correct response should be SUCCESS not NOT_IMPLEMENTED, but like this the test passes
         }
     }
-
-    @Test
-    public void epfdSuspectTest() {
-        long seed = 123;
-        SimulationScenario.setSeed(seed);
-        SimulationScenario killPongersScenario = ScenarioGen.testEPFD_Properties();
-        killPongersScenario.simulate(LauncherComp.class);
-    }
-
 }
