@@ -151,7 +151,7 @@ public abstract class ScenarioGen {
         }
     };
 
-    static Operation1 getOp = new Operation1<StartNodeEvent, Integer>() {
+    private static final Operation1 getOp = new Operation1<StartNodeEvent, Integer>() {
         @Override
         public StartNodeEvent generate(final Integer self) {
             return new StartNodeEvent() {
@@ -190,7 +190,7 @@ public abstract class ScenarioGen {
         }
     };
 
-    static Operation1 putOp = new Operation1<StartNodeEvent, Integer>() {
+    private static final Operation1 putOp = new Operation1<StartNodeEvent, Integer>() {
         @Override
         public StartNodeEvent generate(final Integer self) {
             return new StartNodeEvent() {
@@ -229,7 +229,7 @@ public abstract class ScenarioGen {
         }
     };
 
-    static Operation2 casOp = new Operation2<StartNodeEvent, Integer, Integer>() {
+    private final static Operation2 casOp = new Operation2<StartNodeEvent, Integer, Integer>() {
         @Override
         public StartNodeEvent generate(final Integer self, Integer valType) {
             return new StartNodeEvent() {
@@ -272,30 +272,7 @@ public abstract class ScenarioGen {
         }
     };
 
-    public static SimulationScenario simpleOps(final int servers) {
-        return new SimulationScenario() {
-            {
-                SimulationScenario.StochasticProcess startCluster = new SimulationScenario.StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(servers, startServerOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
-
-                SimulationScenario.StochasticProcess startClients = new SimulationScenario.StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(1, startClientOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
-                startCluster.start();
-                startClients.startAfterTerminationOf(50000, startCluster);
-                terminateAfterTerminationOf(500000, startClients);
-            }
-        };
-    }
-
-    static Operation1 killNode = new Operation1<KillNodeEvent, Integer>() {
+    private final static Operation1 killNode = new Operation1<KillNodeEvent, Integer>() {
         @Override
         public KillNodeEvent generate(final Integer self) {
             logger.info("Generating KillNodeEvent");
@@ -318,6 +295,29 @@ public abstract class ScenarioGen {
             };
         }
     };
+
+    public final static SimulationScenario simpleOps(final int servers) {
+        return new SimulationScenario() {
+            {
+                SimulationScenario.StochasticProcess startCluster = new SimulationScenario.StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(servers, startServerOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+
+                SimulationScenario.StochasticProcess startClients = new SimulationScenario.StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(1, startClientOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                startCluster.start();
+                startClients.startAfterTerminationOf(50000, startCluster);
+                terminateAfterTerminationOf(500000, startClients);
+            }
+        };
+    }
 
     /**
      * Simulation Scenario to test eventually perfect failure detector properties
