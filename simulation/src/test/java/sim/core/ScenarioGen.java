@@ -655,4 +655,91 @@ public abstract class ScenarioGen {
         };
         return testPutCasIncorrectRefValue;
     }
+
+    /**
+     * Simulation Scenario to test AbortableSequenceConsensus
+     * The test tries to put/cas/get and then kill nodes
+     * Later the scenario performs the put/cas/get for other nodes
+     */
+    public static SimulationScenario testAbortableSequenceConsensus() {
+
+        SimulationScenario testAbortableSequenceConsensus = new SimulationScenario() {
+            {
+                StochasticProcess initSrvNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(0));
+                        raise(9, startServerOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+                StochasticProcess initClientNodes = new StochasticProcess() {
+                    {
+                        eventInterArrivalTime(constant(1000));
+                        raise(5, startClientOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+
+                StochasticProcess putClient = new StochasticProcess() {
+                    {
+                        raise(1, putOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+
+                StochasticProcess casClient = new StochasticProcess() {
+                    {
+                        raise(1, casOp, new BasicIntSequentialDistribution(1), constant(0));
+                    }
+                };
+
+                StochasticProcess getClient = new StochasticProcess() {
+                    {
+                        raise(1, getOp, new BasicIntSequentialDistribution(1));
+                    }
+                };
+
+                StochasticProcess putClient2 = new StochasticProcess() {
+                    {
+                        raise(1, putOp, new BasicIntSequentialDistribution(2));
+                    }
+                };
+
+                StochasticProcess casClient2 = new StochasticProcess() {
+                    {
+                        raise(1, casOp, new BasicIntSequentialDistribution(2), constant(0));
+                    }
+                };
+
+                StochasticProcess getClient2 = new StochasticProcess() {
+                    {
+                        raise(1, getOp, new BasicIntSequentialDistribution(2));
+                    }
+                };
+
+                StochasticProcess killNode1 = new StochasticProcess() {
+                    {
+                        raise(1, killNode, new BasicIntSequentialDistribution(1));
+                    }
+                };
+
+                StochasticProcess killNode3 = new StochasticProcess() {
+                    {
+                        raise(1, killNode, new BasicIntSequentialDistribution(3));
+                    }
+                };
+
+                initSrvNodes.start();
+                putClient.start();
+                casClient.startAfterTerminationOf(100, putClient);
+                getClient.startAfterTerminationOf(100,casClient);
+
+                killNode1.startAfterTerminationOf(100, getClient);
+                killNode3.startAfterTerminationOf(100, killNode1);
+
+                putClient2.startAfterStartOf(100, killNode3);
+                casClient2.startAfterTerminationOf(100, putClient2);
+                getClient2.startAfterTerminationOf(100,casClient2);
+            }
+        };
+
+        return testAbortableSequenceConsensus;
+    }
 }
