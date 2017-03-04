@@ -575,7 +575,7 @@ public abstract class ScenarioGen {
      * The Simulation initializes the server with 6 nodes and 3 clients
      */
     public static SimulationScenario testPutCas() {
-        SimulationScenario testGet = new SimulationScenario() {
+        SimulationScenario testPutCas = new SimulationScenario() {
             {
                 StochasticProcess initSrvNodes = new StochasticProcess() {
                     {
@@ -606,6 +606,6 @@ public abstract class ScenarioGen {
                 terminateAfterTerminationOf(9000, casProcess);
             }
         };
-        return testGet;
+        return testPutCas;
     }
 }
