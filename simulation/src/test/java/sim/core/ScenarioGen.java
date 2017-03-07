@@ -24,26 +24,21 @@ package sim.core;/*
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import se.sics.kompics.ComponentDefinition;
 import se.sics.kompics.Init;
 import se.sics.kompics.network.Address;
 import se.sics.kompics.simulator.SimulationScenario;
 import se.sics.kompics.simulator.adaptor.Operation1;
 import se.sics.kompics.simulator.adaptor.Operation2;
-import se.sics.kompics.simulator.adaptor.distributions.ConstantDistribution;
 import se.sics.kompics.simulator.adaptor.distributions.extra.BasicIntSequentialDistribution;
 import se.sics.kompics.simulator.events.system.KillNodeEvent;
 import se.sics.kompics.simulator.events.system.StartNodeEvent;
 import stormy.ParentComponent;
-import stormy.kv.GetOperation;
-import stormy.kv.KVService;
-import stormy.kv.Operation;
 import stormy.networking.NetAddress;
-import stormy.networking.NetMessage;
 
 import java.net.InetSocketAddress;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class ScenarioGen {
     private final static Logger logger = LoggerFactory.getLogger(ScenarioGen.class);
@@ -459,8 +454,7 @@ public abstract class ScenarioGen {
                     }
                 };
                 initSrvNodes.start();
-                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
-                getProcess.startAfterTerminationOf(1000, initClientNodes);
+                getProcess.startAfterTerminationOf(10000, initSrvNodes);
                 terminateAfterTerminationOf(7000, getProcess);
             }
         };

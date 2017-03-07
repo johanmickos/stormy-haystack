@@ -2,7 +2,10 @@ package sim.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.sics.kompics.*;
+import se.sics.kompics.ComponentDefinition;
+import se.sics.kompics.Handler;
+import se.sics.kompics.Positive;
+import se.sics.kompics.Start;
 import se.sics.kompics.network.Network;
 import se.sics.kompics.timer.Timer;
 import stormy.kv.GetOperation;
@@ -11,8 +14,6 @@ import stormy.kv.OperationResponse;
 import stormy.networking.NetAddress;
 import stormy.networking.NetMessage;
 import stormy.overlay.RouteMessage;
-
-import java.util.UUID;
 
 public class ClientGet extends ComponentDefinition {
     final static Logger LOG = LoggerFactory.getLogger(ScenarioClient.class);
@@ -42,12 +43,12 @@ public class ClientGet extends ComponentDefinition {
     protected final Handler<NetMessage> handler = new Handler<NetMessage>() {
         @Override
         public void handle(NetMessage event) {
-            LOG.debug("Got OperationResponse: {}", event.payload());
+            LOG.info("Got OperationResponse: {}", event.payload());
             if (event.payload() instanceof OperationResponse) {
                 OperationResponse content = (OperationResponse) event.payload();
                 String key = content.id();
                 if (key != null) {
-                    LOG.info("Got key: " + key);
+                    LOG.info("Got key: " + key + " with status " + content.status());
                 } else {
                     LOG.warn("Key is not available");
                 }
