@@ -8,7 +8,6 @@ import se.sics.kompics.Positive;
 import se.sics.kompics.Start;
 import se.sics.kompics.network.Network;
 import se.sics.kompics.timer.Timer;
-import stormy.kv.GetOperation;
 import stormy.kv.Operation;
 import stormy.kv.PutOperation;
 import stormy.networking.NetAddress;
@@ -40,7 +39,7 @@ public class ClientPut extends ComponentDefinition {
     protected final Handler<Start> startHandler = new Handler<Start>() {
         @Override
         public void handle(Start event) {
-            Operation op = new PutOperation(key, value, "put_id", self);
+            Operation op = new PutOperation(key, value, "put_id_" + Common.getLastOctet(key) + key, self);
             RouteMessage rm = new RouteMessage(op.key(), op);
             trigger(new NetMessage<>(self, server, rm), net);
             LOG.info("Sending {}", op);

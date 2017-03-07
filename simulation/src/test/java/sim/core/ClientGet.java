@@ -15,6 +15,8 @@ import stormy.networking.NetAddress;
 import stormy.networking.NetMessage;
 import stormy.overlay.RouteMessage;
 
+import java.util.UUID;
+
 public class ClientGet extends ComponentDefinition {
     final static Logger LOG = LoggerFactory.getLogger(ScenarioClient.class);
 
@@ -33,7 +35,7 @@ public class ClientGet extends ComponentDefinition {
     protected final Handler<Start> startHandler = new Handler<Start>() {
         @Override
         public void handle(Start event) {
-            Operation op = new GetOperation(key, "get_op", self);
+            Operation op = new GetOperation(key, "get_op_" + Common.getLastOctet(key), self);
             RouteMessage rm = new RouteMessage(op.key(), op);
             trigger(new NetMessage<>(self, server, rm), net);
             LOG.info("Sending {}", op);
@@ -48,7 +50,7 @@ public class ClientGet extends ComponentDefinition {
                 OperationResponse content = (OperationResponse) event.payload();
                 String key = content.id();
                 if (key != null) {
-                    LOG.info("Got key: " + key + " with status " + content.status());
+                    LOG.info("Got id: " + key + " with status " + content.status());
                 } else {
                     LOG.warn("Key is not available");
                 }
