@@ -43,7 +43,7 @@ public class ClientCas extends ComponentDefinition {
     protected final Handler<Start> startHandler = new Handler<Start>() {
         @Override
         public void handle(Start event) {
-            Operation op = new CASOperation(key, value, newValue, UUID.randomUUID().toString(), self);
+            Operation op = new CASOperation(key, value, newValue, "cas_op", self);
             RouteMessage rm = new RouteMessage(op.key(), op);
             trigger(new NetMessage<>(self, server, rm), net);
             LOG.info("Sending {}", op);

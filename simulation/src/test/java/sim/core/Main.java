@@ -32,6 +32,7 @@ public class Main {
         SimulationScenario testCasEmptyStore = ScenarioGen.testCasEmptyStore();
         SimulationScenario testPutCas = ScenarioGen.testPutCas();
         SimulationScenario testPutCasIncorrectRefValue = ScenarioGen.testPutCasIncorrectRefValue();
+        SimulationScenario testAbortableSequenceConsensus = ScenarioGen.testAbortableSequenceConsensus();
         testGetEmptyStore.simulate(LauncherComp.class);
     }
 }

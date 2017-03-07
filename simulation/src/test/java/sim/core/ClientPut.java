@@ -40,7 +40,7 @@ public class ClientPut extends ComponentDefinition {
     protected final Handler<Start> startHandler = new Handler<Start>() {
         @Override
         public void handle(Start event) {
-            Operation op = new PutOperation(key, value, UUID.randomUUID().toString(), self);
+            Operation op = new PutOperation(key, value, "put_id", self);
             RouteMessage rm = new RouteMessage(op.key(), op);
             trigger(new NetMessage<>(self, server, rm), net);
             LOG.info("Sending {}", op);

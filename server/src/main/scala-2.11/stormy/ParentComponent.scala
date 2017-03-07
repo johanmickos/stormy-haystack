@@ -83,5 +83,4 @@ class ParentComponent extends ComponentDefinition with StrictLogging {
     connect[Routing](overlay -> epfd)
     connect[Network](network -> epfd)
     connect[Timer](timer -> epfd)
-
 }
