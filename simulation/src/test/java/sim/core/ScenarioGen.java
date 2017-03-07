@@ -121,7 +121,7 @@ public abstract class ScenarioGen {
 
                 @Override
                 public Class getComponentDefinition() {
-                    return client.ParentComponent.class;
+                    return ScenarioClient.class;
                 }
 
                 @Override
@@ -440,12 +440,6 @@ public abstract class ScenarioGen {
                     {
                         eventInterArrivalTime(constant(1000));
                         raise(5, startServerOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
-                StochasticProcess initClientNodes = new StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
                     }
                 };
                 StochasticProcess getProcess = new StochasticProcess() {
