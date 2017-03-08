@@ -39,10 +39,10 @@ public class ClientPut extends ComponentDefinition {
     protected final Handler<Start> startHandler = new Handler<Start>() {
         @Override
         public void handle(Start event) {
-            Operation op = new PutOperation(key, value, "put_id_" + Common.getLastOctet(key) + key, self);
+            Operation op = new PutOperation(key, value, "put_id_" + Common.getLastOctet(key), self);
             RouteMessage rm = new RouteMessage(op.key(), op);
             trigger(new NetMessage<>(self, server, rm), net);
-            LOG.info("Sending {}", op);
+            LOG.info("Sending put_op: {}", op);
         }
     };
 

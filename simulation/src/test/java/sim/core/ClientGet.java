@@ -38,7 +38,7 @@ public class ClientGet extends ComponentDefinition {
             Operation op = new GetOperation(key, "get_op_" + Common.getLastOctet(key), self);
             RouteMessage rm = new RouteMessage(op.key(), op);
             trigger(new NetMessage<>(self, server, rm), net);
-            LOG.info("Sending {}", op);
+            LOG.info("Sending get_op: {}", op);
         }
     };
 
@@ -52,7 +52,7 @@ public class ClientGet extends ComponentDefinition {
                 if (key != null) {
                     LOG.info("Got id: " + key + " with status " + content.status());
                 } else {
-                    LOG.warn("Key is not available");
+                    LOG.info("Key is not available");
                 }
             }
         }

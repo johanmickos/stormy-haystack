@@ -43,10 +43,10 @@ public class ClientCas extends ComponentDefinition {
     protected final Handler<Start> startHandler = new Handler<Start>() {
         @Override
         public void handle(Start event) {
-            Operation op = new CASOperation(key, value, newValue, "cas_op", self);
+            Operation op = new CASOperation(key, value, newValue, "cas_op" + Common.getLastOctet(key), self);
             RouteMessage rm = new RouteMessage(op.key(), op);
             trigger(new NetMessage<>(self, server, rm), net);
-            LOG.info("Sending {}", op);
+            LOG.info("Sending cas_op: {}", op);
         }
     };
 
@@ -58,7 +58,6 @@ public class ClientCas extends ComponentDefinition {
                 OperationResponse content = (OperationResponse) event.payload();
                 String key = content.id();
                 if (key != null) {
-                    LOG.info("Got key: " + key);
                     LOG.info("CAS status: " + content.status());
                 } else {
                     LOG.warn("Key is not available");

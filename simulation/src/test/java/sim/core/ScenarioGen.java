@@ -481,7 +481,7 @@ public abstract class ScenarioGen {
 
                 initSrvNodes.start();
                 putProcess.startAfterTerminationOf(10000, initSrvNodes);
-                getProcess.startAfterTerminationOf(10000, getProcess);
+                getProcess.startAfterTerminationOf(1000, getProcess);
                 terminateAfterTerminationOf(7000, getProcess);
             }
         };
@@ -529,20 +529,13 @@ public abstract class ScenarioGen {
                         raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
-                StochasticProcess initClientNodes = new StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
                 StochasticProcess casProcess = new StochasticProcess() {
                     {
                         raise(1, casOp, new BasicIntSequentialDistribution(1), constant(0));
                     }
                 };
                 initSrvNodes.start();
-                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
-                casProcess.startAfterTerminationOf(7000, initClientNodes);
+                casProcess.startAfterTerminationOf(10000, initSrvNodes);
                 terminateAfterTerminationOf(9000, casProcess);
             }
         };
@@ -604,12 +597,6 @@ public abstract class ScenarioGen {
                         raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
-                StochasticProcess initClientNodes = new StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
                 StochasticProcess putProcess = new StochasticProcess() {
                     {
                         raise(1, putOp, new BasicIntSequentialDistribution(1));
@@ -621,9 +608,8 @@ public abstract class ScenarioGen {
                     }
                 };
                 initSrvNodes.start();
-                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
-                putProcess.startAfterTerminationOf(7000, initClientNodes);
-                casProcess.startAfterTerminationOf(7000, putProcess);
+                putProcess.startAfterTerminationOf(10000, initSrvNodes);
+                casProcess.startAfterTerminationOf(10000, putProcess);
                 terminateAfterTerminationOf(9100, casProcess);
             }
         };
@@ -643,12 +629,6 @@ public abstract class ScenarioGen {
                     {
                         eventInterArrivalTime(constant(0));
                         raise(9, startServerOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
-                StochasticProcess initClientNodes = new StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(5, startClientOp, new BasicIntSequentialDistribution(1));
                     }
                 };
 
@@ -701,16 +681,17 @@ public abstract class ScenarioGen {
                 };
 
                 initSrvNodes.start();
-                putClient.start();
-                casClient.startAfterTerminationOf(100, putClient);
-                getClient.startAfterTerminationOf(100,casClient);
+                putClient.startAfterTerminationOf(10000, initSrvNodes);
+                casClient.startAfterTerminationOf(10000, putClient);
+                getClient.startAfterTerminationOf(10000,casClient);
 
-                killNode1.startAfterTerminationOf(100, getClient);
-                killNode3.startAfterTerminationOf(100, killNode1);
+                killNode1.startAfterTerminationOf(10000, getClient);
+                killNode3.startAfterTerminationOf(10000, killNode1);
 
-                putClient2.startAfterStartOf(100, killNode3);
-                casClient2.startAfterTerminationOf(100, putClient2);
-                getClient2.startAfterTerminationOf(100,casClient2);
+                putClient2.startAfterStartOf(10000, killNode3);
+                casClient2.startAfterTerminationOf(10000, putClient2);
+                getClient2.startAfterTerminationOf(10000,casClient2);
+                terminateAfterTerminationOf(9100, getClient2);
             }
         };
 
