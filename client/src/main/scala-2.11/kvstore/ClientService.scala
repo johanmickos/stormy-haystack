@@ -85,6 +85,7 @@ class ClientService extends ComponentDefinition with StrictLogging {
         trigger(owf, onSelf)
         owf.sf
     }
+
     private[kvstore] def op(cmdline: Array[String]): SettableFuture[OperationResponse] = {
         val key = cmdline(1)
         var op: Option[Operation] = None

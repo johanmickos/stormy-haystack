@@ -24,26 +24,21 @@ package sim.core;/*
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import se.sics.kompics.ComponentDefinition;
 import se.sics.kompics.Init;
 import se.sics.kompics.network.Address;
 import se.sics.kompics.simulator.SimulationScenario;
 import se.sics.kompics.simulator.adaptor.Operation1;
 import se.sics.kompics.simulator.adaptor.Operation2;
-import se.sics.kompics.simulator.adaptor.distributions.ConstantDistribution;
 import se.sics.kompics.simulator.adaptor.distributions.extra.BasicIntSequentialDistribution;
 import se.sics.kompics.simulator.events.system.KillNodeEvent;
 import se.sics.kompics.simulator.events.system.StartNodeEvent;
 import stormy.ParentComponent;
-import stormy.kv.GetOperation;
-import stormy.kv.KVService;
-import stormy.kv.Operation;
 import stormy.networking.NetAddress;
-import stormy.networking.NetMessage;
 
 import java.net.InetSocketAddress;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class ScenarioGen {
     private final static Logger logger = LoggerFactory.getLogger(ScenarioGen.class);
@@ -126,7 +121,7 @@ public abstract class ScenarioGen {
 
                 @Override
                 public Class getComponentDefinition() {
-                    return client.ParentComponent.class;
+                    return ScenarioClient.class;
                 }
 
                 @Override
@@ -436,7 +431,7 @@ public abstract class ScenarioGen {
 
     /**
      * Simulation Scenario to test Get Operation when there are no values in the key-store
-     * The Simulation initializes the server with 5 nodes and 3 clients
+     * The Simulation initializes the server with 5 nodes
      */
     public static SimulationScenario testGetEmptyStore() {
         SimulationScenario testGet = new SimulationScenario() {
@@ -447,20 +442,13 @@ public abstract class ScenarioGen {
                         raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
-                StochasticProcess initClientNodes = new StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
                 StochasticProcess getProcess = new StochasticProcess() {
                     {
                         raise(1, getOp, new BasicIntSequentialDistribution(1));
                     }
                 };
                 initSrvNodes.start();
-                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
-                getProcess.startAfterTerminationOf(1000, initClientNodes);
+                getProcess.startAfterTerminationOf(10000, initSrvNodes);
                 terminateAfterTerminationOf(7000, getProcess);
             }
         };
@@ -469,7 +457,7 @@ public abstract class ScenarioGen {
 
     /**
      * Simulation Scenario to test Put and Get Operations.
-     * The Simulation initializes the server with 5 nodes and 3 clients
+     * The Simulation initializes the server with 5 nodes
      */
     public static SimulationScenario testPutGet() {
         SimulationScenario testPutGet = new SimulationScenario() {
@@ -478,12 +466,6 @@ public abstract class ScenarioGen {
                     {
                         eventInterArrivalTime(constant(1000));
                         raise(5, startServerOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
-                StochasticProcess initClientNodes = new StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
                     }
                 };
                 StochasticProcess putProcess = new StochasticProcess() {
@@ -498,9 +480,8 @@ public abstract class ScenarioGen {
                 };
 
                 initSrvNodes.start();
-                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
-                putProcess.startAfterTerminationOf(5000, initClientNodes);
-                getProcess.startAfterTerminationOf(5000, getProcess);
+                putProcess.startAfterTerminationOf(10000, initSrvNodes);
+                getProcess.startAfterTerminationOf(1000, getProcess);
                 terminateAfterTerminationOf(7000, getProcess);
             }
         };
@@ -520,12 +501,6 @@ public abstract class ScenarioGen {
                         raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
-                StochasticProcess initClientNodes = new StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
                 StochasticProcess putProcess = new StochasticProcess() {
                     {
                         raise(1, putOp, new BasicIntSequentialDistribution(1));
@@ -533,8 +508,7 @@ public abstract class ScenarioGen {
                 };
 
                 initSrvNodes.start();
-                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
-                putProcess.startAfterTerminationOf(5000, initClientNodes);
+                putProcess.startAfterTerminationOf(10000, initSrvNodes);
                 terminateAfterTerminationOf(1000, putProcess);
             }
         };
@@ -555,20 +529,13 @@ public abstract class ScenarioGen {
                         raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
-                StochasticProcess initClientNodes = new StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
                 StochasticProcess casProcess = new StochasticProcess() {
                     {
                         raise(1, casOp, new BasicIntSequentialDistribution(1), constant(0));
                     }
                 };
                 initSrvNodes.start();
-                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
-                casProcess.startAfterTerminationOf(7000, initClientNodes);
+                casProcess.startAfterTerminationOf(10000, initSrvNodes);
                 terminateAfterTerminationOf(9000, casProcess);
             }
         };
@@ -630,12 +597,6 @@ public abstract class ScenarioGen {
                         raise(5, startServerOp, new BasicIntSequentialDistribution(1));
                     }
                 };
-                StochasticProcess initClientNodes = new StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(3, startClientOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
                 StochasticProcess putProcess = new StochasticProcess() {
                     {
                         raise(1, putOp, new BasicIntSequentialDistribution(1));
@@ -647,9 +608,8 @@ public abstract class ScenarioGen {
                     }
                 };
                 initSrvNodes.start();
-                initClientNodes.startAfterTerminationOf(5000, initSrvNodes);
-                putProcess.startAfterTerminationOf(7000, initClientNodes);
-                casProcess.startAfterTerminationOf(7000, putProcess);
+                putProcess.startAfterTerminationOf(10000, initSrvNodes);
+                casProcess.startAfterTerminationOf(10000, putProcess);
                 terminateAfterTerminationOf(9100, casProcess);
             }
         };
@@ -669,12 +629,6 @@ public abstract class ScenarioGen {
                     {
                         eventInterArrivalTime(constant(0));
                         raise(9, startServerOp, new BasicIntSequentialDistribution(1));
-                    }
-                };
-                StochasticProcess initClientNodes = new StochasticProcess() {
-                    {
-                        eventInterArrivalTime(constant(1000));
-                        raise(5, startClientOp, new BasicIntSequentialDistribution(1));
                     }
                 };
 
@@ -727,16 +681,17 @@ public abstract class ScenarioGen {
                 };
 
                 initSrvNodes.start();
-                putClient.start();
-                casClient.startAfterTerminationOf(100, putClient);
-                getClient.startAfterTerminationOf(100,casClient);
+                putClient.startAfterTerminationOf(10000, initSrvNodes);
+                casClient.startAfterTerminationOf(10000, putClient);
+                getClient.startAfterTerminationOf(10000,casClient);
 
-                killNode1.startAfterTerminationOf(100, getClient);
-                killNode3.startAfterTerminationOf(100, killNode1);
+                killNode1.startAfterTerminationOf(10000, getClient);
+                killNode3.startAfterTerminationOf(10000, killNode1);
 
-                putClient2.startAfterStartOf(100, killNode3);
-                casClient2.startAfterTerminationOf(100, putClient2);
-                getClient2.startAfterTerminationOf(100,casClient2);
+                putClient2.startAfterStartOf(10000, killNode3);
+                casClient2.startAfterTerminationOf(10000, putClient2);
+                getClient2.startAfterTerminationOf(10000,casClient2);
+                terminateAfterTerminationOf(9100, getClient2);
             }
         };
 

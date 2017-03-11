@@ -2,7 +2,10 @@ package sim.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.sics.kompics.*;
+import se.sics.kompics.ComponentDefinition;
+import se.sics.kompics.Handler;
+import se.sics.kompics.Positive;
+import se.sics.kompics.Start;
 import se.sics.kompics.network.Network;
 import se.sics.kompics.timer.Timer;
 import stormy.kv.GetOperation;
@@ -32,24 +35,24 @@ public class ClientGet extends ComponentDefinition {
     protected final Handler<Start> startHandler = new Handler<Start>() {
         @Override
         public void handle(Start event) {
-            Operation op = new GetOperation(key, UUID.randomUUID().toString(), self);
+            Operation op = new GetOperation(key, "get_op_" + Common.getLastOctet(key), self);
             RouteMessage rm = new RouteMessage(op.key(), op);
             trigger(new NetMessage<>(self, server, rm), net);
-            LOG.info("Sending {}", op);
+            LOG.info("Sending get_op: {}", op);
         }
     };
 
     protected final Handler<NetMessage> handler = new Handler<NetMessage>() {
         @Override
         public void handle(NetMessage event) {
-            LOG.debug("Got OperationResponse: {}", event.payload());
+            LOG.info("Got OperationResponse: {}", event.payload());
             if (event.payload() instanceof OperationResponse) {
                 OperationResponse content = (OperationResponse) event.payload();
                 String key = content.id();
                 if (key != null) {
-                    LOG.info("Got key: " + key);
+                    LOG.info("Got id: " + key + " with status " + content.status());
                 } else {
-                    LOG.warn("Key is not available");
+                    LOG.info("Key is not available");
                 }
             }
         }
